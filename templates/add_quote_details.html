@@ -1,0 +1,353 @@
+{% include "header.html" %}
+<div class="main-div">
+    {% if 'user_info' in session %}
+    <!-- to add a spacing between navbar and the next div below -->
+
+    <div class="row " style="overflow-x: hidden;">
+
+        <!-- Column to Add quote details -->
+        <div class="col-md-8 pt-1" id="add_quote_details_div">
+
+            <!-- Buttons: +new section name and added section names -->
+            <div class="row">
+                <!-- Section names -->
+                <div class="col-md-12">
+                    <div class="form-row bg-light p-2">
+                        <!-- + New section -->
+                        <div class="col-md-1">
+                            <button class="btn btn-light bold btn-sm  " onclick="AddSection()">+ Section</button>
+                        </div>
+                        <!-- Setion names -->
+                        <div class="col-md-11 " id="section_names_div">
+                            {% if quote_data['section_names']|length > 0 %}
+                            {% for section_name in quote_data['section_names'] %}
+                            {% if section_name == selected_section_name %}
+                            <a href="#" onclick="sectionNameOnClick(this)" type="button" class="btn btn-sm  d-inline-block bold btn-dark">{{section_name}}</a>
+                            {% else %}
+                            <a href="#" onclick="sectionNameOnClick(this)" type="button" class="btn btn-sm  d-inline-block bold text-dark underline">{{section_name}}</a>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modify buttons -->
+            <div class="form-row mt-3 mb-1">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <button type="button" class="btn  btn-info      d-inline-block      {{ '' if quote_data['section_names']|length > 1 else 'hide' }}" id="reorder_section_btn" onclick="loadReorderSections(this)"> <small>Reorder section</small></button>
+                    <button type="button" class="btn  btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn" onclick="copySection()"> <small>Copy section</small></button>
+                    <button type="button" class="btn  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="save_section_btn" onclick="saveCurrentSectionDetailsToDB()"><small>Save section</small></button>
+                    <button type="button" class="btn  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="delete_section_btn" onclick="deleteSelectedSection()"> <small class="">Delete section</small></button>
+                </div>
+            </div>
+
+
+
+
+            <!-- Form: Add details -->
+            <div class="border  p-3 {{ '' if quote_data['section_names']|length > 0 else 'hide' }}" id="quote_detail_div" style="overflow-x: hidden; overflow-y: auto; height: 78vh;">
+                {% if selected_section_name %}
+                <div class="form-row">
+                    <div class="col-md-1 mb-1 text-primary "><small class="bold">Sub-heading</small></div>
+                    <div class="col-md-1 mb-1 text-primary "><small class="bold">Image</small></div>
+                    <div class="col-md-6 mb-1 text-primary "><small class="bold">Details</small></div>
+                    <div class="col-md-1 mb-1 text-primary "><small class="bold">Qty</small></div>
+                    <div class="col-md-1 mb-1 text-primary "><small class="bold">Unit cost ($)</small></div>
+                    <div class="col-md-2 mb-1 text-primary "><small class="bold"></small></div>
+                </div>
+                {% endif %}
+
+                <!-- Add Section Details -->
+                {% set section_data = quote_data['all_sections_data'][selected_section_name] %}
+                <div class="" id="section_details_div">
+                    <!-- display  data for the selected section name -->
+                    {% if selected_section_name %}
+                    {% set section_detail_rows = section_data['section_detail_rows'] %}
+                    {% for row in section_detail_rows %}
+                    <div class="form-row section_detail_row mb-2" id="section_detail_row_{{loop.index}}">
+                        <div class="col-md-1">
+                            <input type="text" class="form-control form-control-sm" name="section_sub_heading_{{loop.index}}" autocomplete="off" value="{{row['section_sub_heading']}}">
+                        </div>
+
+                        <div class="col-md-1">
+                            <input type="text" class="form-control form-control-sm" name="section_image_row_{{loop.index}}" autocomplete="off" value="{{row['section_image_row']}}" readonly tabindex="-1">
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control form-control-sm " name="section_text_row_{{loop.index}}" autocomplete="off" value="{{row['section_text']}}">
+                        </div>
+
+                        <div class="col-md-1">
+                            <input type="number" class="form-control form-control-sm" name="section_qty_row_{{loop.index}}" autocomplete="off" value="{{ '' if row['section_qty_row'] == 0 else row['section_qty_row'] }}">
+                        </div>
+
+                        <div class="col-md-1">
+                            <input type="number" class="form-control form-control-sm" name="unit_cost_row_{{loop.index}}" autocomplete="off" value="{{ '' if row['section_unit_cost_row'] == 0 else row['section_unit_cost_row']}}">
+                        </div>
+
+                        <div class="col-md-2 bg-light d-flex justify-content-center px-0">
+                            <button type="button" class="btn btn-sm btn-link  px-1" name="add_remove_row_image_btn_{{loop.index}}" data-img_inp_name="section_image_row_{{loop.index}}" onclick="addRemoveRowImage(this)" tabindex="-1">
+                                {% if row['section_image_row']|length > 0 %} <small class="text-red">-Image</small> {% else %} <small>+Image</small> {% endif %}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-link px-1" onclick="saveTextToDb('section_detail_row_{{loop.index}}' , 'section_text_row_{{loop.index}}')" tabindex="-1"><small>Save text</small></button>
+                            <button type="button" class="btn btn-sm btn-link px-1" onclick="addNewSectionDetailsRowBelow('section_detail_row_{{loop.index}}')" tabindex="-1"><small>+Row</small></button>
+                            <button type="button" class="btn btn-sm btn-link px-1 text-red" onclick="removeSectionDetailsRow('section_detail_row_{{loop.index}}')" tabindex="-1"><small>-Row</small></button>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% endif %}
+                </div>
+
+                <!-- Images div -->
+                <div id="quote_image_div">
+                    {% if selected_section_name %}
+                    {% set section_image_full_names = section_data['section_image_full_names'] %}
+                    {% for image_info in section_image_full_names %}
+                    {% set image_name = image_info['image_full_name'].split('.')[0] %}
+                    {% set image_path ="images/uploads/" + image_info['image_full_name'] %}
+                    <div class="m-1 mb-2 d-inline-block img-container" id="{{ image_name }}">
+                        <img src="{{url_for('static', filename= image_path)}}" max-width="100%" height="120px" alt="{{image_name}}">
+                        <p class="img-container-text">{{image_name}}</p>
+                        <button type="button" class="img-container-btn-delete" data-div_id="{{image_name}}" onclick="removeFromQuoteImageDiv(this)">x</button>
+                        <div id="section_image_size_div">
+                            <select class="border border-0 bold bg-lightgray pl-1 pt-1 pb-1 pr-0">
+                                {% for item in all_section_image_size %}
+                                {% if item['section_image_size_id'] == image_info['image_size_info']['section_image_size_id'] %}
+                                <option value="{{item['section_image_size_id']}}" selected>{{item['section_image_size_name']}}</option>
+                                {% else %}
+                                <option value="{{item['section_image_size_id']}}">{{item['section_image_size_name']}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Column for Resources for building Quote  -->
+        <div class="col-md-4 pl-0 pt-1 {{ '' if quote_data['section_names']|length > 0 else 'hide' }}" id="add_resources_div">
+            <!-- Buttons: Text, Image, EO Text -->
+            <div class="mb-2">
+                <button type="button" id="addTextBtn" class="btn btn-sm btn-dark  bold pl-3 pr-3 mr-2" onclick="showAddTextDiv()">Text</button>
+                <button type="button" id="addImageBtn" class="btn btn-sm  bold pl-3 pr-3 mr-2" onclick="showAddImageDiv()">Image</button>
+                <button type="button" id="addEoTextBtn" class="btn btn-sm   bold pl-3 pr-3" onclick="showAddEoTextDiv()">EO Text</button>
+            </div>
+
+            <!--  ADD TEXT DIV -->
+            <div id="addTextDiv" class=" color-border">
+                <!-- Search Text Div-->
+                <div class="row mb-2">
+                    <div class="col-md-12 ">
+                        <div class="input-group" id="text_serach_div">
+                            <div class="form-outline mr-1">
+                                <input type="text" id="text_search_input" name="text_search_word" placeholder="Search Texts ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary  mr-1" onclick="getSearchedTextsFromDb()"> &#128270; </button>
+                            <button type="button" class="btn btn-sm text-blue bold  " onclick="refreshTextResultDiv()"> &#8634; </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display Texts Div -->
+                <div id="text_display_div" style=" overflow-x: hidden; overflow-y: auto; height: 78.5vh;">
+                    <!-- frequently used texts -->
+                    <ul id="frequently_used_text_ul_block" class="pl-3 my-0">
+                        {% if frequently_used_texts_by_user_id %}
+                        <small class="bold">Frequently used texts</small>
+                        {% for text in frequently_used_texts_by_user_id %}
+                        <li class="mb-1" id="frequently_used_text_li_id_{{text['id']}}">
+                            <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="frequently_used_text_id_{{text['id']}}">{{text['text']}}</span>
+                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="frequently_used_text_li_id_{{ text['id'] }}" data-text_id="{{ text['id'] }}" onclick="deleteFrequentlyUsedText(this)">Remove</small>
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                    </ul>
+
+                    <!-- saved texts -->
+                    <ul id="text_ul_block" class="pl-3">
+                        {% if texts_by_user_id %}
+                        <small class="bold">Saved texts</small>
+                        {% for text in texts_by_user_id %}
+                        <li class="mb-1" id="text_li_id_{{ text['text_id'] }}">
+                            <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="text_id_{{text['text_id']}}">{{text['text']}}</span>
+                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="text_li_id_{{ text['text_id'] }}" data-text_id="{{text['text_id']}}" onclick="deleteTextDb(this)">Delete</small>
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <!-- ADD IMAGE DIV -->
+            <div id="addImageDiv" class=" color-border hide">
+
+                <!-- Search Image -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group" id="image_serach_div">
+                            <div class="form-outline mr-1 ">
+                                <input type="text" id="image_search_input" name="image_search_word" placeholder="Search Images ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary mr-1" onclick="getSearchedImagesFromDb()"> &#128270; </button>
+                            <button type="button" class="btn btn-sm text-blue bold  " onclick="refreshImageResultDiv()"> &#8634; </button>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-sm bold text-red float-right" id="showUploadImageBtn" onclick="showUploadImageDiv()"> <small>*Upload new image</small> </button>
+                    </div>
+                </div>
+
+                <!-- Image tag names - radio -->
+                <div class="row mb-1">
+                    <div class="col-md-12" id="image_tag_name_div">
+
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input  mr-0" type="radio" name="image_tag_name" id="image_tag_id_0" onclick="showImageByTagName(this)" checked>
+                                <small>All</small>
+                            </label>
+                        </div>
+
+                        {% for image_tag in all_image_tags %}
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input mr-0" type="radio" name="image_tag_name" id="image_tag_id_{{ image_tag['image_tag_id'] }}" onclick="showImageByTagName(this)">
+                                <small>{{ image_tag['image_tag_name'] }}</small>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Show  Images -->
+                <div id="imageSearchResultDiv" style="overflow-x: hidden; overflow-y: auto; height: 76.5vh;">
+                    {% if all_images %}
+                    {% for image in all_images %}
+                    <div class="m-1 mb-2 d-inline-block img-container" id="image_div_id_{{image['image_id']}}">
+                        <img src="{{url_for('static', filename= image['image_path'])}}" class="equal-size-imgage" alt="{{image['image_full_name']}}">
+                        <button type="button" class="img-container-btn" data-image_path="{{ image['image_path'] }}" onclick="addToQuoteImageDiv(this)">+</button>
+                        <button type="button" class="img-container-btn-delete" data-image_div_id="image_div_id_{{image['image_id']}}" data-image_id="{{ image['image_id'] }}" onclick="deleteImage(this)">-</button>
+                        <p class="img-container-text">{{image['image_name_lower_no_ext']}}</p>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- upload image -->
+                <div class=" hide m-4" id="uploadImageDiv">
+                    <h5 class="bold mb-4">Upload Image</h5>
+
+                    <form enctype="multipart/form-data" id="form_img_upload">
+
+                        <div class="form-group mb-2">
+                            <input type="file" name="img_file" id="image_file_input" class="form-control-file" required>
+                        </div>
+                        <div class="form-group">
+                            <select name="image_tag_name" id="image_tag_name_inp" class="border border-dark form-control form-control-sm col-sm-5">
+
+                                {% for image_tag in all_image_tags %}
+                                <option>{{ image_tag['image_tag_name'] }}</option>
+                                {% endfor %}
+                                <option></option>
+                                <option selected>--select a tag name--</option>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-sm btn-dark pl-3 pr-3 mr-2" onclick="saveImageInfoToDbAndFolder() "><small>Upload</small></button>
+                            <button type="button" class="btn btn-sm  btn-secondary pl-3 pr-3" onclick="hideUploadImageDiv()"><small>Close</small></button>
+                        </div>
+                        <div class="mt-3 text-red" id="file_Upload_Msg_Div"></div>
+                    </form>
+                </div>
+                <!-- end upload image -->
+
+            </div>
+
+
+            <!-- ADD EO TEXT DIV -->
+            <div id="addEoExcelTextDiv" class=" color-border hide">
+
+                <!-- Search EO Text -->
+                <div class="row">
+                    <div class="col-md-8 mb-1">
+                        <div class="input-group" id="eo_excel_text_serach_div">
+                            <div class="form-outline mr-1">
+                                <input type="text" id="eo_excel_text_search_input" data-user_id="{{ session['user_info']['user_id'] }}" name="eo_excel_text_search_word" placeholder="Search EO text ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary mr-1" onclick="getSearchedEoExcelTextFromDb()"> &#128270; </button>
+                            <button type="button" class="btn btn-sm text-blue bold " onclick="refreshEoExcelTextResultDiv()"> &#8634; </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-sm btn-primary bold mb-2 float-right" id="showUploadEoExcelBtn" onclick="showUploadEoExcelDiv()"> <small>*Upload Excel file</small> </button>
+                    </div>
+                </div>
+
+                <!-- upload excel file -->
+                <div class=" hide p-3" id="uploadEoExcelDiv">
+                    <h6 class="bold mb-5">Upload EO Excel File</h6>
+
+                    <form enctype="multipart/form-data" id="form_eo_excel_upload">
+                        <div class="form-group mb-5">
+                            <input type="file" name="eo_excel_file" id="eo_excel_file_input" required>
+                        </div>
+
+                        <button type="button" class="btn btn-sm btn-dark" data-user_id="{{session['user_info']['user_id']}}" onclick="saveEoExcelFileToDb(this) ">Upload</button>
+                        &nbsp;
+                        <button type="button" onclick="hideUploadEoExcelDiv()" class="btn btn-sm  btn-secondary ">Close</button>
+                        <div class="mt-3 text-danger" id="eo_excel_file_Upload_Msg_Div"></div>
+                    </form>
+                </div>
+
+
+                <!-- Display EO Text Div -->
+                <div id="eoExcelTextResultDiv" style="overflow-x: hidden; overflow-y: auto; height: 79vh;">
+                    <ul id="eo_excel_text_ul_block" class="pl-4 mb-1">
+                        {% if eo_excel_text %}
+                        {% for text in eo_excel_text %}
+                        <li class="mb-1" id="eo_excel_text_li_id_{{text['id']}}">
+                            <span class="pr-1" onclick="addEoTextToQuoteDetail(this.id)" id="eo_text_id_{{text['id']}}">{{text['text']}}</span>
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- End -Display EO Text Div -->
+
+            </div>
+            <!-- END -EO TEXT DIV -->
+
+        </div>
+
+
+    </div>
+
+
+    {% else %}
+    <!-- display the message below if the user is not logged in -->
+    <center>
+        <p class=" text-red">Ooopss.. Seems like you are logged out..</p>
+        <a href="{{url_for('login')}}"> Click here to login again </a>
+    </center>
+
+    {% endif %}
+</div>
+{% include "footer.html" %}

@@ -1,0 +1,77 @@
+#quote_date_table td:hover .delete_rev_date_btn{
+    display: block;
+}
+
+table td{
+    font-size: 16px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    color: black;
+}
+
+#main_quote_div{
+    color: black;
+    font-family: century gothic;
+}
+
+#main_quote_div p {
+    font-size: 16px;
+    margin: 0;
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+
+#condition_of_supply_table td{
+    font-size: 13px;
+    font-style: italic;
+    color: black;
+}
+
+
+/* borders 3px */
+.border-top-3{
+    border-top: 3px solid black;
+}
+
+.border-right-3{
+    border-right: 3px solid black;
+}
+
+.border-left-3{
+    border-left: 3px solid black;
+}
+
+.border-bottom-3{
+    border-bottom: 3px solid black;
+}
+
+.border-all-3{
+    border: 3px solid black;
+}
+
+.border-all-1{
+    border: 1px solid black;
+}
+
+/* borders 1px */
+.border-top-1{
+    border-top: 1px solid black;
+}
+
+.border-right-1{
+    border-right: 1px solid black;
+}
+
+.border-left-1{
+    border-left: 1px solid black;
+}
+
+.border-bottom-1{
+    border-bottom: 1px solid black;
+}
+
+

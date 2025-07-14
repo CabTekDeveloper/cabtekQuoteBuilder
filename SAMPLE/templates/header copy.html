@@ -1,0 +1,53 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CabTek Solutions Web App</title>
+
+    <!-- fav icon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'favicons/favicon-cabtek.ico') }}">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap4/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+
+    <!-- Font Awesome core CSS -->
+    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/fontawesome.min.css') }}" rel="stylesheet">
+
+
+  </head>
+
+  <body>
+    <!-- This will highlight the active nav link -->
+    {% set active_page = page_name %}
+    <nav class="navbar navbar-expand-lg light_grey_bg  sticky-top ">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url_for('index') }}">
+            <h4 class="blue-text bold-text">CabTek Solutions</h4>
+          </a>
+        </div>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="{{ 'white-bg' if active_page == 'index' else '' }}"><a class="nav-link blue-text" href="{{ url_for('index') }}">
+              <h6 class="bold-text padding-lr">Home</h6>
+            </a></li>
+          <li class="{{ 'white-bg' if active_page == 'add_issue' else '' }}"><a class="nav-link blue-text" href="{{ url_for('add_issue') }}">
+              <h6 class="bold-text padding-lr">Add Issue</h6>
+            </a></li>
+          <li class="{{ 'white-bg' if active_page == 'edit_program_name' else '' }}"><a class="nav-link blue-text" href="{{ url_for('edit_program_name') }}">
+              <h6 class="bold-text padding-lr">Edit Program Names</h6>
+          </a></li>
+          
+          <li>
+            <a class="nav-link" href="{{ url_for('cp_home') }}"><h6 class="blue-text bold-text padding-lr">Cabinet Parameters</h6></a>
+          </li>
+        
+        </ul>
+
+      </div>
+    </nav>

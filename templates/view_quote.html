@@ -1,0 +1,411 @@
+{% include "header.html" %}
+
+<div class="main-div">
+
+    <!-- check if the user is logged in -->
+    {% if session %}
+
+    <!-- check if there are data added to the selected quote -->
+    {% if quote_data['section_names']|length > 0 %}
+
+    <div class="row">
+        <div class="col-md-1  hide_in_printing_div">
+            <h1>&nbsp;</h1>
+        </div>
+
+        <div class="col-md-8" id="div_for_printing">
+            <!-- Quote -->
+            <div id="main_quote_div">
+
+                <!-- company info div -->
+                <div class="row m-0 p-0 " id="company_info_div">
+
+                    <div class="col-sm-4 pl-0" id="cabtek_logo">
+                        <img src="{{url_for('static', filename= company_info['logo_path'])}}" height="100px">
+                    </div>
+
+                    <div class="col-sm-4 " id="cabtek_info_div">
+                        <center>
+                            <table class="">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2">
+                                            <h5 class="m-0 p-0 bold">{{ company_info['company_name'] }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tel</td>
+                                        <td>: {{ company_info['phone_no'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ABN</td>
+                                        <td>: {{ company_info['abn'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <!-- Quote Only div -->
+                                        <td colspan="2" class="pt-3">
+                                            <h2 class=" bold m-0">QUOTE ONLY</h2>
+                                        </td><!-- end  -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </center>
+                    </div>
+
+                    <div class="col-sm-4  p-0 m-0 bg-warni" id="quote_date_div">
+                        <table class="table-borderless ml-5 float-right" id="quote_date_table">
+                            <tbody class="bold">
+                                <tr>
+                                    <td class=" ">Date </td>
+                                    <td class="p-0 m-0 pr-1 align-text-top">: </td>
+                                    <td class="text-left"> {{ quote_info['date_quote_created'] }}</td>
+                                </tr>
+                                <tr class="">
+                                    <td class="align-text-top">Quote </td>
+                                    <td class="p-0 m-0 pr-1 align-text-top">: </td>
+                                    <td class="text-left"> {{ quote_info['quote_name'] }}</td>
+                                </tr>
+
+                                {% set revision_dates = quote_info['revision_dates'].split("|") if quote_info['revision_dates'] else [] %}
+                                {% for date in revision_dates %}
+                                <tr>
+                                    <td class="font-weight-normal ">Rev {{loop.index }} </td>
+                                    <td class="font-weight-normal  p-0 m-0 pr-1 align-text-top">: </td>
+                                    <td class="font-weight-normal  text-left"> {{ date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- End  -->
+
+
+                <!-- customer details -->
+                <table width="100%" id="customer_info">
+                    <thead>
+                        <tr>
+                            <th width="40%" colspan="2" class=" bold">Customer:</th>
+                            <th width="20%" rowspan="3"></th>
+                            <th width="40%" colspan="2" class=" bold">Deliver to:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-right border-left-3 border-top-3  ">Name :</td>
+                            <td class="border-right-3 border-top-3   pl-1"> {{quote_info['customer_name'] if quote_info['customer_name'] != '' else '.......................................................................'}}</td>
+                            <td class="border-top-0"></td>
+                            <td rowspan="3" class="align-text-top   border-all-3    pl-2">{{quote_info['delivery_info']}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right border-left-3  ">Email :</td>
+                            <td class="border-right-3   pl-1"> {{quote_info['customer_email'] if quote_info['customer_email'] != '' else '.......................................................................' }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right border-left-3 border-bottom-3  ">Phone :</td>
+                            <td class="border-right-3 border-bottom-3   pl-1"> {{quote_info['customer_phone_no'] if quote_info['customer_phone_no'] != '' else '.......................................................................' }}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- End -->
+
+                <!-- quote section detials -->
+                {% set section_names = quote_data['section_names'] %}
+                {% if section_names|length > 0 %}
+                {% set all_sections_data = quote_data['all_sections_data'] %}
+
+                <table class="  border-all-3    mt-2" width="100%" id='view_quote_table'>
+                    <tbody>
+                        <tr class="border-bottom-1  ">
+                            <!-- sub-heading width set here -->
+                            <td width="13%"></td>
+                            <td>
+                                <h5 class="text-center m-0 bold" id="joinery_supply_type_header">{{ quote_info['joinery_supply_type'] }}</h5>
+                            </td>
+                            <td width="4%"></td>
+                            <td width="10%"></td>
+                            <td width="11%"></td>
+                        </tr>
+                        <tr class="bg-lightgray">
+                            <td colspan="2" class="border-right-1   pl-1">
+                                <h5 class="m-0  bold">General joinery finishes</h5>
+                            </td>
+                            <td class=" text-center pl-1 pr-1 bold">Qty</td>
+                            <td class="border-left-1 border-right-1   text-center bold">Unit cost $</td>
+                            <td class="text-center bold">Total Cost $</td>
+                        </tr>
+                        {% for section_name in section_names %}
+
+                        {% set section_data = all_sections_data[section_name] %}
+
+                        <!-- section name -->
+                        <tr class="border-top-1  ">
+                            <td colspan="2" class="pl-1">
+                                <!-- <h5 class=" underline bold m-0">{{ section_name }}</h5> -->
+                                <a href="{{url_for('add_quote_details',quote_name =quote_info['quote_name'], add_new_section = 'no', section_name = section_name )}}" type="button" class="btn btn-link p-0 m-0">
+                                    <h5 class="  black-text bold underline  m-0 p-0">{{ section_name }}</h5>
+                                </a>
+                            </td>
+                            <td class="border-right-1 border-left-1  "></td>
+                            <td class="border-right-1  "></td>
+                            <td></td>
+                        </tr>
+
+                        <!-- section row details -->
+                        {% set section_detail_rows = section_data['section_detail_rows'] %}
+                        {% for row in section_detail_rows %}
+                        <tr onclick="addBorderBottom(this)">
+                            {% if row['section_image_row'] == '' %}
+                            {% if row['section_sub_heading'] != '' %}
+                            <td class=" align-text-top pl-2">{{ row['section_sub_heading'] }}</td>
+                            {% else %}
+                            <td>&nbsp</td>
+                            {% endif %}
+
+                            {% if row['section_text'] != '' %}
+                            <td class="align-text-top pl-3">
+                                <ul class="mb-0 p-0">
+                                    <li class="">{{ row['section_text'] }} </li>
+                                </ul>
+                            </td>
+                            {% else %}
+                            <td>&nbsp</td>
+                            {% endif %}
+                            {% else %}
+                            {% set image_path = "images/uploads/" + row['section_image_row'] %}
+                            <td colspan="2">
+                                <table>
+                                    <tr width="full-width">
+                                        <td class="p-2 pr-2"><img src="{{url_for('static', filename = image_path)}}" height="200px"></td>
+                                        <td class="align-text-top">{{ row['section_text'] }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            {% endif %}
+
+                            {% if row['section_qty_row'] != 0 %}
+                            <td class="text-center border-left-1 border-right-1   align-text-top">{{ row['section_qty_row'] }}</td>
+                            {% else %}
+                            <td class="text-center border-left-1 border-right-1   "></td>
+                            {% endif %}
+
+                            {% if row['section_unit_cost_row'] != 0 %}
+                            <td class="text-right border-right-1   pr-1 align-text-top "><span>$ </span><span>{{ "{:,.2f}".format(row['section_unit_cost_row']) }}</span></td>
+                            {% else %}
+                            <td class="border-right-1  "></td>
+                            {% endif %}
+
+                            {% if row['section_total_cost_row'] > 0 %}
+                            <td class="text-right pr-1 bold align-text-top"><span>$ </span><span>{{ "{:,.2f}".format(row['section_total_cost_row']) }}</span></td>
+                            {% else %}
+                            <td class="text-right"></td>
+                            {% endif %}
+
+                        </tr>
+                        {% endfor %}
+
+                        <!-- section images -->
+                        {% set image_full_names = section_data['section_image_full_names']%}
+                        {% if image_full_names|length > 0 %}
+                        <tr>
+                            <td></td>
+                            <td class="border-right-1  ">
+                                {% for image_info in image_full_names %}
+                                {% set image_path = "images/uploads/" + image_info['image_full_name'] %}
+                                <img src="{{url_for('static', filename = image_path)}}" class="mt-1 mr-1 align-bottom" max-width="100%" height="{{image_info['image_size_info']['section_image_height']}}">
+                                <!-- <img src="{{url_for('static', filename = image_path)}}" class="mt-1 mr-1 align-bottom" max-width="100%" height="160px"> -->
+                                <!-- <img src="{{url_for('static', filename = image_path)}}" class="mt-1 mr-1 align-bottom" max-width="100%" height="200px"> -->
+                                {% endfor %}
+                            </td>
+                            <td></td>
+                            <td class="border-left-1 border-right-1  "></td>
+                            <td></td>
+                        </tr>
+                        {% endif %}
+                        <!-- end -section images -->
+
+                        <!-- add extra empty row to just diveide the sections -->
+                        <tr>
+                            <td class="border-bottom-3"></td>
+                            <td class="border-bottom-3 border-right-1  ">
+                                <h6 onclick="addBlankData(this)">&nbsp;<small class=" font-italic btn-link disable-in-printing">+ blank space<small></small></h6>
+                            </td>
+                            <td class="border-bottom-3"></td>
+                            <td class="border-left-1 border-bottom-3 border-right-1  "></td>
+                            <td class="border-bottom-3"></td>
+                        </tr>
+                        <!-- end -->
+                        {% endfor %}
+
+                        <!-- sign off -->
+                        <tr class="border-all-3">
+                            <td colspan="5" class="p-2">
+                                Kind regards, <br>
+                                {{quoted_by_info['full_name']}} <br>
+                                {{ quoted_by_info['phone_no'] }}
+                            </td>
+
+                        </tr>
+                        <!-- end sign off -->
+
+                        <!-- Total cost -->
+                        <tr class=" border-all-3 ">
+                            <td colspan="2" rowspan="7" class="border-right-3   align-text-top pl-2 pt-1">
+                                <table id="condition_of_supply_table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="bold">Conditions of supply: </td>
+                                        </tr>
+                                        {% for condition in company_info['conditions_of_supply'] %}
+                                        <tr>
+                                            <td>* {{condition}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                        <!-- <tr>
+                                            <td>* All goods remain the property of Cabtek until final invoice paid.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>* Any amendments to job after commencement are at customers cost.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>* Cabtek are not responsible for incorrect measurements or information supplied by customer.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>* Payment methods: Cash, Cheque, Credit Card, EFTPOS or EFT (Cheques made payable to CabTek Industries). </td>
+                                        </tr>
+                                        <tr>
+                                            <td>* Credit card payments incur 1.5% surcharge ex gst.  (not greater than the charge to us.)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>* The purchaser must accept delivery during business hours whenever possible.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>* Payment is 50% deposit 50% on Pickup.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>* 20-30 day lead times, 30-40 day lead times for full assemble and install.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>* Full terms and conditions will be included in final quote contract</td>
+                                        </tr> -->
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td colspan="2" class="border-left-3 border-right-3   text-right pr-1 bold">Total ex. GST</td>
+                            <td class="text-right bold">
+                                <span>$ </span><span>{{ "{:,.2f}".format(quote_data['total_cost_ex_gst']) }}</span>
+                            </td>
+                        </tr>
+
+                        <tr class="border-top-3  ">
+                            <!-- <td colspan="2" class="border-right-3  "></td> -->
+                            <td colspan="2" class="border-left-3 border-right-3   text-right pr-1 bold">GST</td>
+                            <td class="text-right bold">
+                                <span>$</span> <span>{{ "{:,.2f}".format(quote_data['total_gst']) }}</span>
+                            </td>
+                        </tr>
+
+                        <tr class="border-top-3  ">
+                            <!-- <td colspan="2" class="border-right-3  "></td> -->
+                            <td colspan="2" class="border-left-3 border-right-3   text-right pr-1 bold"> Total inc. GST</td>
+                            <td class="text-right bold">
+                                <span>$ </span> <span>{{ "{:,.2f}".format(quote_data['total_cost_inc_gst']) }}</span>
+                            </td>
+                        </tr>
+
+                        <!-- Bank details -->
+                        <tr class="border-top-3  ">
+                            <td colspan="3" class="text-right   text-center pt-1 ">Bank Details : {{ company_info['bank_details']['acc_name'] }} </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right text-center">Bank : {{ company_info['bank_details']['bank'] }} </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right  text-center">BSB : {{ company_info['bank_details']['bsb'] }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right  text-center pb-1">Acc : {{ company_info['bank_details']['acc_no'] }}</td>
+                        </tr>
+
+                        <!-- customer sign -->
+                        <tr class="border-top-3   ">
+                            <td colspan="5" class=" text-left pt-3 pb-1 pl-2">
+                                I,................................................................
+                                accept the terms & wish to proceed.
+                                <span class="pl-3">Sign: ............................... </span>
+                                <span class="pl-3">Date: ____ /____ /_______</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class=" text-center pt-1 pb-1 bold pl-2">This quote is valid for 30 days from the date of issue</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <!-- <h4 class="font-italic text-center p-1 bold">"Custom cabinet solutions for the trade"</h4> -->
+                {% if company_info['quote_footer']|length > 0 %}
+                <h4 class="font-italic text-center p-1 bold">"{{company_info['quote_footer']}}"</h4>
+                {% endif %}
+                {% endif %}
+                <!-- end quote section detials -->
+
+                <!-- quote-footer -->
+                <div id="quote_footer_div">
+
+                </div>
+                <!-- end quote footer -->
+
+            </div>
+            <!-- End Quote -->
+        </div>
+
+
+        <div class="col-md-3 mt-5 hide_in_printing_div">
+            <!-- <h1>&nbsp;</h1> -->
+            <ul class="mt-5">
+                <small class="text-primary">
+                    <li>You can click on section detail text to add/remove a border below it. This will help in formatting the quote when printing.</li>
+                </small>
+                <small class="text-primary">
+                    <li class="mt-1">You can add blank spaces below sections. This will help in moving a section to a new page when printing.</li>
+                </small>
+            </ul>
+
+            <div class="form-group ml-4 mr-3">
+                {% set joinery_supply_type = ['Supply of customised joinery','Supply of customised joinery - Flat packed', 'Supply of customised joinery - Assembled', 'Supply and Installation of customised joinery'] %}
+                <label for="joinery_supply_type"><small class="bold">Update joinery supply type</small></label>
+                <select class="form-control form-control-sm" id="joinery_supply_type" name="joinery_supply_type" data-quote_id="{{quote_info['quote_id']}}" onchange="updateJoinerySupplyType(this)">
+                    <option>{{ quote_info['joinery_supply_type'] }}</option>
+                    {% for item in joinery_supply_type %}
+                    {% if item != quote_info['joinery_supply_type'] %}
+                    <option>{{ item }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
+    <center>
+        <h6 class="mt-5 text-red">No data to display!</h6>
+    </center>
+    {% endif %}
+    <!-- End - check if there are data added to the selected quote -->
+
+    {% else %}
+    <!-- display the message below if the user is not logged in -->
+    <center>
+        <p class=" text-red">Ooopss.. Seems like you are logged out..</p>
+        <a href="{{url_for('login')}}"> Click here to login again </a>
+    </center>
+    {% endif %}
+    <!-- end - check if the use is logged in -->
+
+</div>
+{% include "footer.html" %}

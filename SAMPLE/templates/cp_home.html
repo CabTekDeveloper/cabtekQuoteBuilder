@@ -1,0 +1,171 @@
+{% include "cp_header.html" %}
+
+
+
+<div class="px-5 mx-5 py-1">
+
+    <div class="row small prevent_text_selectecction">
+
+        <!-- Column 1 -->
+        <div class="col-md-3 ">
+            <div class="row ">
+                <div class="col-md-12">
+
+                    <!-- Filter: Product type and Product -->
+                    <div class="row py-3 pr-3 bg-white rounded text-dark">
+                        <div class="col-md-12">
+                            <!-- Product Type -->
+                            <div class="row mb-2">
+                                <!-- <span class="col-sm-12">Filter:</span> -->
+                                <span class="col-sm-4  my-auto bold">Product Type:</span>
+                                <select class="col-sm-8 form-control form-control-sm " name="product_type_options" id="product_type_options" onchange="productTypeOnChange()">
+                                    <option value=""></option>
+                                    {% for row in all_product_types %}
+                                        <option value="{{row['id']}}">{{ row['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!-- Product -->
+                            <div class="row">
+                                <span class="col-sm-4  my-auto bold">Product:</span>
+                                <select class="col-sm-8 form-control form-control-sm " name="product_options" id="product_options" onchange="productOnChange()">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Product Part Details  -->
+                    <div class="row  mt-2  bg-white" id="product_parts_div">
+
+                        <div class="col-sm-12 bg-primary text-light py-2 ">
+                            <div class="row" id="product_parts_header_div">
+                                <div class="col-sm-9 d-flex align-items-center ">
+                                    <span class=" text-light mr-2 bold">Parts</span>
+                                </div>
+                                <div class="col-sm-3 d-flex align-items-center justify-content-end">
+                                    <span class=" text-light cursor-pointer  small hide d-block hover-bold hover-underline"  id="btn_load_edit_product_parts_modal" onclick="LoadEditProductPartsModal()">Edit List</span>
+                                </div>
+                            </div>
+                        </div>
+                  
+
+                        <div class="col-sm-12" id="part_details_div" style="overflow-x: hidden; overflow-y: auto; height: 75vh;">
+                            <!-- Data will be added from JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="col-sm-9">
+            <div class="row ">
+
+                <!-- CNCCODE Details -->
+                <div class="col-md-6 ">
+                    <div class="row ml-1 bg-white hide" id="cnccode_details_div" style="overflow-x: hidden; overflow-y: auto; height: 91vh;">
+                        <div class="col-md-12 mb-3">
+
+                            <div class="row">
+                                <!-- CNCCODE Name -->
+                                <div class="col-sm-12 bg-dark text-light py-2  bold " id="cnccode_name_div">
+                                    <span>CncCode name :</span>
+                                    <span class="bg-light text-dark rounded px-2" id="cnccode_name">xxxx
+                                        <!-- Data will be added from JS -->
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!--CNCCODE Description -->
+                                <div class="col-sm-12 my-2">
+                                    <span class="bold">Description:</span>
+                                    <span class=" cursor-pointer  float-right hover-bold hover-underline small text-primary"  onclick="LoadEditCnccodeDescription()">Edit</span>
+                                    <textarea class="w-100 bg-light border-0 no-outline rounded " name="cnccode_description" id="cnccode_description" rows="20" readonly >
+                                        <!-- Data will be added from JS -->
+                                    </textarea>
+                                </div>
+
+                                <!--CNCCODE Parameters -->
+                                <div class="col-sm-12  my-2">
+                                    <span class="bold">Parameters:</span>
+                                    <span class=" cursor-pointer  float-right hover-bold hover-underline small text-primary"  onclick="LoadEditCnccodeParameters()">Edit Parameters List</span>
+
+                                    <div class="" id="cnccode_parameters">
+                                        <!-- Data will be added from JS -->
+                                    </div>
+                                </div>
+
+                                <!--CNCCODE Images -->
+                                <div class="col-sm-12 my-2">
+                                    <span class="bold">Images:</span>
+                                    <span class=" cursor-pointer  float-right hover-bold hover-underline small text-primary"  onclick="LoadEditCnccodeImages()">Edit Images List</span>
+                                    <div class="" id="cnccode_images">
+                                        <!-- Data will be added from JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PARAMETER Details -->
+                <div class="col-md-6">
+                    <div class="row ml-1 bg-white hide" id="parameter_details_div" style="overflow-x: hidden; overflow-y: auto; height: 91vh;">
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <!-- PARAMETER Name -->
+                                <div class="col-sm-12 bg-secondary text-light py-2  bold ">
+                                    <span>Parameter name :</span>
+                                    <span class="bg-light text-dark rounded px-2" id="parameter_name">
+                                        <!-- Data will be added from JS -->
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!--PARAMETER Description -->
+                                <div class="col-sm-12 my-2">
+                                    <span class="bold">Description:</span>
+                                    <span class=" cursor-pointer  float-right hover-bold hover-underline small text-primary"  onclick="LoadEditParameterDescription()">Edit</span>
+                                    <textarea class="w-100 bg-light border-0 no-outline p-1 " name="cnccode_description" id="parameter_description" rows="20" readonly>
+                                        <!-- Data will be added from JS -->
+                                    </textarea>
+                                </div>
+
+                                <!-- PARAMETER Values -->
+                                <div class="col-sm-12 my-2">
+                                    <span class="bold">Values:</span>
+                                    <span class=" cursor-pointer  float-right hover-bold hover-underline small text-primary"  onclick="LoadEditParameterValues()">Edit values</span>
+
+                                    <div class="py-1" id="parameter_values">
+                                        <!-- Data will be added from JS -->
+                                    </div> 
+                                </div>
+
+
+                                <!--PARAMETER Images -->
+                                <div class="col-sm-12 my-2">
+                                    <span class=" cursor-pointer  float-right hover-bold hover-underline small text-primary"  onclick="LoadEditParameterImages()">Edit Images List</span>
+                                    <span class="bold">Images:</span>
+                                    <div class="" id="parameter_images">
+                                        <!-- Data will be added from JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% include "cp_footer.html" %}

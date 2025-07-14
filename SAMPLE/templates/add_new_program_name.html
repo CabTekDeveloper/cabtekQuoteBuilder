@@ -1,0 +1,55 @@
+{% include "header.html" %}
+
+<div class="body-container">
+
+    <div class="row">
+
+        <div class="col-md-2">
+            {% if all_programs|length > 0 %}
+            <h5 class="blue-text">Program Names</h5>
+            <hr>
+            <ul>
+                {% for row in all_programs %}
+                <li>
+                    <h6>{{ row['program_name'] }}</h6>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <div class="col-md-3 offset-1">
+            <!-- display form  -->
+            <h5 class="blue-text bold-text">Add New Program Name</h5>
+            <hr>
+            <form method="POST">
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-sm" name="new_program_name" required>
+                    <!-- <small  class="form-text text-muted">Adding new program name will redirect you to Add New Issue.</small> -->
+                </div>
+                <button type="submit" class="btn btn-sm padding-lr bold-text blue-bg white-text"> Add </button>
+                {% if return_url == 'edit_issue' %}
+                <a href="{{ url_for('edit_issue', issue_id = issue_id, program_id = program_id) }}" class="btn btn-sm btn-dark bold-text padding-lr">Cancel</a>
+                {% elif return_url == 'add_issue' %}
+                <a href="{{ url_for('add_issue') }}" class="btn btn-sm btn-dark bold-text padding-lr">Cancel</a>
+                {% else %}
+                <a href="{{ url_for('index') }}" class="btn btn-sm btn-dark bold-text padding-lr">Cancel</a>
+                {% endif %}
+            </form>
+            <!-- end - display form -->
+
+        </div>
+
+        
+
+
+    </div>
+    <br><br>
+
+
+
+</div>
+
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,75 @@
+{% include "header.html" %}
+<div class="main-div">
+
+    {% if "user_info" in session %}
+
+
+    <div class="row m-5">
+        <div class="col-md-4 offset-4">
+
+            <div class="p-5 bg-warning rounded ">
+                <h4 class="text-center bold bg-warning mb-5">Update Quote Status</h4>
+                <div class="form-group row">
+                    <label for="phone_no" class="col-sm-4 ">Quote Name :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control form-control-sm " name="phone_no" value=" {{ quote_info['quote_name'] if quote_info}}" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="phone_no" class="col-sm-4   ">Quote Status :</label>
+                    <div class="col-sm-8">
+                        <select class="form-control form-control-sm" id=quote_status_inp>
+
+                            {% if quote_info and quote_info['quote_status']|length > 0 %}
+                            <option>{{ quote_info['quote_status'] }}</option>
+                            {% endif %}
+
+
+                            {% for status in all_quote_status %}
+                            {% if status['quote_status'] != quote_info['quote_status'] %}
+                            <option>{{ status['quote_status'] }}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% if quote_info and quote_info['quote_status']|length == 0 %}
+                            <option selected>--none--</option>
+                            {% else %}
+                            <option>--none--</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center text-primary bold  mb-2" style="height: 1px;" id="quote_status_msg_div">
+                    <!-- When the quote is updated, the msg will be added here&nbsp; -->
+                </div>
+
+            </div>
+
+
+            <div class="form-group row ml-5 mr-5 mt-3 mb-3">
+                <button type="button" class="btn btn-sm btn-dark col-sm-4 offset-2 bold" data-quote_id="{{ quote_info['quote_id'] }}" onclick="update_quote_status(this)">Update</button>
+                <a href="{{ url_for('index') }}" type="button" class="btn btn-sm btn-secondary col-sm-4 offset-1 bold">Close</a>
+            </div>
+
+
+            <div class="hide" id="quote_accepted_img_div">
+                <iframe src="https://giphy.com/embed/l4q8cJzGdR9J8w3hS" width="100%" height="100" frameBorder="0" class="giphy-embed"></iframe>
+            </div>
+
+            <div class="hide" id="quote_rejected_img_div">
+                <iframe src="https://giphy.com/embed/nk5SZqJPduGBnaKqlw" width="100%" height="100" frameBorder="0" class="giphy-embed"></iframe>
+            </div>
+        </div>
+    </div>
+
+
+    {% else %}
+    <center>
+        <p class=" text-red">Ooopss.. Seems like you are logged out..</p>
+        <a href="{{url_for('login')}}"> Click here to login again </a>
+    </center>
+
+    {% endif %}
+</div>
+{% include "footer.html" %}

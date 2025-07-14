@@ -1,0 +1,10 @@
+.disable-in-printing{
+    display: none;
+}
+
+
+/* @media print {
+    tr{
+        page-break-inside: avoid;  
+    }
+} */

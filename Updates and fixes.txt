@@ -1,0 +1,33 @@
+* This file will log all the updates and fixes to this web app.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+21-09-2023  -Wangchuk
+=> Added new field 'joinery_supply_type' in 'quotes_table'
+=> 'joinery_supply_type' will be set to 'Supply of customised joinery' for new quotes. Users can then change it when viewing the quote. 
+=> Added option in 'view_quote.html' to change the joinery supply header
+=> Added function 'updateJoinerySupplyType()' in 'view_quote.js' to update 'joinery_supply_type' in the database and the form view.
+
+=> Removed 'id' field from the 'quote_details_table' because this field was never being used. The foreign keys (quote_id and seciton_name_id) were enough to uniquely find a row
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+19-02-2024 -Wangchuk
+=> Add option to reorder sections
+=> When searching for texts or images, just by typing a letter will start the search. You don't have to press enter or click on search button.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+11-09-2024 -Wangchuk
+=> Changed quotin_database.db path from "../Database/quoting_database.db"  to  "\\\\MANAGER1\\SharedDatabase\\CabTek Quote Builder Database\\quoting_database.db"  
+=> Added new field "company_id" to "quotes_table"
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+12-09-2024 -Wangchuk
+=> created ne file "company_info_manager.py"
+    - This file will replace "company_info_table"
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+18-12-2024 -Wangchuk
+=>Renamed quoting_database to quoting_db
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+15-07-2025 -Wangchuk
+=>Renamed parent folder to "cabtek quote builder"
+=>Pushed to GitHub repository "cabtekQuoteBuilder"

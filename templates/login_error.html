@@ -1,0 +1,11 @@
+{% include "header.html" %}
+
+<div class="main-div">
+
+    <!-- display the message below if the user is not logged in -->
+    <center>
+        <p class=" text-red">Ooopss.. Seems like you are logged out..</p>
+        <a href="{{url_for('login')}}"> Click here to login again </a>
+    </center>
+</div>
+{% include "footer.html" %}

@@ -1,0 +1,69 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabinet parameter</title>
+
+  <!-- fav icon -->
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'favicons/favicon-cabtek.ico') }}">
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap4/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/styles_cp.css')}}" rel="stylesheet">
+
+  <!-- Font Awesome core CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="bg-light">
+
+  <!-- Modals -->
+  {% include "cp_modal_upload_image.html" %}
+  {% include "cp_modal_image.html" %}
+  {% include "cp_modal_edit_product_parts.html" %}
+  {% include "cp_modal_edit_part_cncodes.html" %}
+  {% include "cp_modal_edit_cnccode_description.html" %}
+  {% include "cp_modal_edit_cnccode_parameters.html" %}
+  {% include "cp_modal_edit_cnccode_images.html" %}
+  {% include "cp_modal_edit_parameter_description.html" %}
+  {% include "cp_modal_edit_parameter_images.html" %}
+  {% include "cp_modal_edit_parameter_values.html" %}
+
+
+  <!-- Nav bar -->
+  <nav class="navbar navbar-expand-lg p-1 pl-5 pr-5 bg-dark sticky-top ">
+
+    <!-- Search -->
+
+      <form class="form-inline my-2 my-lg-0 ml-auto">
+        <input class="form-control form-control-sm mr-1 " type="search" id="searched_parmater" name="searched_parmater" placeholder="Search parameter">
+        <button class="btn btn-dark mr-5"><i class="fa fa-search fa-1x"></i></button>
+      </form>
+
+    
+
+    <!-- Settings -->
+    <div class="dropdown navbar-nav mr-5">
+      <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+        <i class="fa fa-bars fa-1x pr-2"></i><span class="small">Settings</span>
+      </button>
+      <div class="dropdown-menu p-1 ">
+        <!-- <a class="dropdown-item small pl-2 pr-2" href="#">Upload Images</a>
+        <a class="dropdown-item small pl-2 pr-2" href="#">Add CNCCODE to Part</a>
+        <a class="dropdown-item small pl-2 pr-2" href="#">Add Parameter to CNCCODE</a> -->
+        <span class="dropdown-item small  cursor-pointer hover-text-blue" onclick="LoadUploadImageModal()" >Upload Images</span>
+        <span class="dropdown-item small  cursor-pointer hover-text-blue" onclick="LoadUpdateParametersModal()" >Update Parameters</span>
+
+      </div>
+    </div>
+
+    <!-- Home -->
+    <div class="navbar-nav">
+      <a class="small text-light" href="{{ url_for('index') }}" title="Home"> <i class="fa fa-home fa-2x"></i> </a>
+    </div>
+
+  </nav>

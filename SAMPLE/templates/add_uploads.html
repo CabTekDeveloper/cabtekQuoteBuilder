@@ -1,0 +1,120 @@
+{% include "header.html" %}
+<div class="body-container">
+    <div class="row">
+        <div class="col-md-5">
+            <h6 class="blue-text">Current Issue details</h6>
+            <hr>
+            <h6 class="bold-text margin-b0">Program:</h6>
+            <p>{{ program_name}}</p>
+
+            <h6 class="bold-text margin-b0">Issue:</h6>
+            <p>{{ single_issue['issue_name'] }}</p>
+
+            <h6 class="bold-text margin-b0">Cause:</h6>
+            <p>{{ single_issue['cause'] }}</p>
+
+            <h6 class="bold-text margin-b0">Solution:</h6>
+            <p>{{ single_issue['solution'] }}</p>
+
+            {% if single_issue['example']|length > 0 %}
+            <h6 class="bold-text margin-b0">Example:</h6>
+            <p>{{ single_issue['example'] }}</p>
+            {% endif %}
+
+             <!-- display links of files if they exist for the current issue -->
+             {% if files_by_issue_id|length > 0 %}
+             <h6 class="bold-text margin-b0">Images:</h6>
+             <ul>
+             {% for file in files_by_issue_id %}
+                 {% if file['file_type'] == "image" %}
+                     <li><a href="{{ url_for('show_file', file_id = file['file_id']) }}" target="_blank" class="green-text"><i>{{ file['file_path'].split('/')[-1] }}</i></a></li>
+                 {% endif %}
+             {% endfor %}
+             </ul>
+
+             <h6 class="bold-text margin-b0">Videos:</h6>
+             <ul>
+             {% for file in files_by_issue_id %}
+                 {% if file['file_type'] == "video" %}
+                     <li ><a href="{{ url_for('show_file', file_id = file['file_id']) }}" target="_blank" class="green-text"><i>{{ file['file_path'].split('/')[-1] }}</i></a></li>
+                 {% endif %}
+             {% endfor %}
+             </ul>
+             
+         {% endif %}
+         <!-- end display file links -->
+
+            <h6 class="bold-text margin-b0">Added by:</h6>
+            <p>{{ single_issue['added_by'] }}</p>
+        </div>
+
+        <!-- upload files -->
+        <div class="col-md-4 offset-1">
+            <h6 class="blue-text ">Click the buttons below to upload images and videos</h6>
+            <hr>
+            <button class="btn btn-sm padding-lr bold-text blue-bg white-text" onclick="showAddImageDiv()"> Add Images </button>
+            <button class="btn btn-sm padding-lr bold-text grey-bg " onclick="showAddVideoDiv()"> Add Videos </button>
+            <br><br>
+    
+            
+            <!-- display  message -->
+            <div id="errorMsgDiv">
+                {% if 'uploaded successfully' in message %}
+                    <p class="green-text">{{message}}</p>
+                {% else %}
+                    <p class="red-text">{{message}}</p>
+                {% endif %}
+            </div>
+            <!-- end display  message -->
+
+            <!-- upload photos -->
+            <div class="rounded-border hide" id="addImageDiv">
+                <h6 class="bold-text">Upload Image</h6>
+                <br>
+                <form enctype="multipart/form-data" method="post" action="{{url_for('upload_file', issue_id = single_issue['issue_id'], file_type = 'image')}}">
+                    <div class="form-group">
+                        <input type="file" name="file_obj" required>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-sm padding-lr blue-bg white-text">Upload</button>
+                    &nbsp;
+                    <button onclick="hideUploadDiv()" class="btn btn-sm padding-lr btn-dark white-text">Cancel</button>
+                </form>
+            </div>
+            <!-- end upload photos -->
+
+            <!-- upload videos -->
+            <div class="rounded-border hide grey-bg" id="addVideoDiv">
+                <h6 class="bold-text">Upload Videos</h6>
+                <form enctype="multipart/form-data" method="post" action="{{url_for('upload_file', issue_id = single_issue['issue_id'], file_type = 'video')}}">
+                    <div class="form-group">
+                        <input type="file" name="file_obj" required>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-sm padding-lr blue-bg white-text">Upload</button>
+                    &nbsp;
+                    <button onclick="hideUploadDiv()" class="btn btn-sm padding-lr btn-dark white-text">Cancel</button>
+                </form>
+                <br>
+            </div>
+            <!-- end upload videos -->
+
+            
+
+
+            <!-- done  button -->
+            <div>
+                <br><br><br><br><br><br>
+                <hr>
+                <p class="green-text bold-text">Click Done if you don't have any files to upload.</p>
+                <a href="{{ url_for('index', issue_id = single_issue['issue_id'], program_id = single_issue['program_id']) }}" class="btn btn-lg btn-success padding-lr bold-text">Done</a>
+            </div>
+            <!-- end - done button -->
+
+        </div>
+        <!-- end file uploads -->
+
+    </div>
+</div>
+
+{% include "footer.html" %}

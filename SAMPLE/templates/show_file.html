@@ -1,0 +1,26 @@
+<div class="body-container">
+    
+
+    {% if single_file|length > 0 %}
+        {% if single_file['file_type'] == "image" %}
+        <div>
+            <center>
+                <img src="{{url_for('static', filename=single_file['file_path'])}}" width="80%" height="auto">
+            </center>
+        </div>
+
+        {% else %}
+            <div style="margin: 10px auto;">
+                <center>
+                    <video  width="80%" height="auto" controls="controls" preload="preload">
+                        <source src="{{url_for('static', filename=single_file['file_path'])}}" type="video/mp4"></source>
+                    </video>
+                </center>
+            </div>
+        {% endif %}
+        <center>
+            <h3>{{ single_file['file_path'].split('/')[-1] }}</h3>
+        </center>
+    {% endif %}
+
+</div>
