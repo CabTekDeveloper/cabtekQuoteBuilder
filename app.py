@@ -1,3 +1,6 @@
+# Wangchuk added
+# Wangchuk modified 01-08-2025
+
 # from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify, Markup
 from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify
 
@@ -265,7 +268,7 @@ def reorder_section_names_db():
                 
         else:
             return render_template('login_error.html')
-    
+
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 # ----------------------------------------------------------------------------------------------#
@@ -310,6 +313,7 @@ def get_all_images_db(image_tag_id = None):
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 
+
 @app.route('/get_searched_images_db/<search_str>', methods=["GET"])
 def get_searched_images_db(search_str):
     try:
@@ -318,6 +322,7 @@ def get_searched_images_db(search_str):
 
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
 
 @app.route('/delete_image_by_id_db', methods=["POST"])
 def delete_image_by_id_db():
@@ -342,6 +347,7 @@ def delete_image_by_id_db():
 
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
 
 @app.route('/get_all_section_image_size_db', methods=["GET"])
 def get_all_section_image_size_db():
@@ -552,8 +558,7 @@ def delete_selected_section_db():
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 #----------------------------------------------------------------------------------------------#
-# Copy quote and its details,  delete quote
-
+# Copy quote and its details
 @app.route('/copy_quote_and_details', methods=['POST'])
 def copy_quote():
     try:

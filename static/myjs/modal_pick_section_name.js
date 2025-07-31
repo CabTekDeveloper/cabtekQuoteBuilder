@@ -1,12 +1,13 @@
 // Wangchuk added, 08-05-2025
+// Wangchuk modified 01-08-2025
 
 /* Variables ------------------------------------------------------------------------------------------------------------------------*/
-let modalAddCopySection = document.getElementById("modal_add_copy_section");
-let closeModalAddCopySection = modalAddCopySection.querySelector("#close_modal_btn");
-let modalHeaderTag = modalAddCopySection.querySelector("#modal_header");
-let sectionNameoptionSelectTag = modalAddCopySection.querySelector("#section_name_options");
-let addNewSectionNameBtn = modalAddCopySection.querySelector("#add_new_section_name_btn");
-let commitButton = modalAddCopySection.querySelector("#commit_btn");
+let modalPickSectionName = document.getElementById("modal_pick_section_name");
+let closeModalPickSectionName = modalPickSectionName.querySelector("#close_modal_btn");
+let modalHeaderTag = modalPickSectionName.querySelector("#modal_header");
+let sectionNameoptionSelectTag = modalPickSectionName.querySelector("#section_name_options");
+let addNewSectionNameBtn = modalPickSectionName.querySelector("#add_new_section_name_btn");
+let commitButton = modalPickSectionName.querySelector("#commit_btn");
 
 const ActionTypes = Object.freeze({
     Add: "Add",
@@ -17,44 +18,45 @@ let commitButtonActionType = null;
 /* Functions ------------------------------------------------------------------------------------------------------------------------*/
 
 // Close modal 
-if (closeModalAddCopySection != null) {
-    closeModalAddCopySection.onclick = (e) => closeModal(modalAddCopySection.id);
+if (closeModalPickSectionName != null) {
+    closeModalPickSectionName.onclick = (e) => closeModal(modalPickSectionName.id);
 }
 
+
 // Reset modal
-function resetModalPickAndAddSection() {
+function resetModalPickSectionName() {
     sectionNameoptionSelectTag.innerHTML = "";
     modalHeaderTag.innerText = "";
     commitButton.innerText = "";
     commitButtonActionType = null;
 }
 
+
 function AddSection() {
-    resetModalPickAndAddSection();
+    resetModalPickSectionName();
     modalHeaderTag.innerText = "+ New Section"
     commitButton.innerText = "Add";
     commitButtonActionType = ActionTypes.Add
-    loadModalPickAndAddSection();
-
+    loadModalPickSectionName();
 }
 
 
 function copySection() {
-    resetModalPickAndAddSection();
+    resetModalPickSectionName();
     modalHeaderTag.innerText = `Copy section: ${getActiveSectionNameFromDiv()}`;
     commitButton.innerText = "Copy";
     commitButtonActionType = ActionTypes.Copy;
-    loadModalPickAndAddSection();
+    loadModalPickSectionName();
 }
 
 
 // Load modal
-async function loadModalPickAndAddSection() {
+async function loadModalPickSectionName() {
     let AllSectionNames = await GetAllSectionNamesFromDB();
     if (getSelectedSectionNamesFromDiv().length > 0) { await autoSaveSectionDetails(); }
 
     if (!isEmpty(AllSectionNames)) {
-        openModal(modalAddCopySection.id)
+        openModal(modalPickSectionName.id)
         updateSectionNameOptionSelectTag(sectionNameoptionSelectTag, AllSectionNames)
     }
 }
@@ -141,7 +143,7 @@ async function addCopySectionToDBandDIV() {
             quoteImageDiv.innerText = "";     
             if (getSelectedSectionNamesFromDiv().length == 1) { window.location.href = (`/add_quote_details/${data_to_post['quote_name']}`); }
         }
-        closeModal(modalAddCopySection.id);
+        closeModal(modalPickSectionName.id);
     }
     else {
         alert(`Section not ${(isNewSection ? "added" : "copied")}. Try again!`)
