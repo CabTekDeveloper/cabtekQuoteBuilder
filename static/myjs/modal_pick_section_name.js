@@ -10,8 +10,8 @@ let addNewSectionNameBtn = modalPickSectionName.querySelector("#add_new_section_
 let commitButton = modalPickSectionName.querySelector("#commit_btn");
 
 const ActionTypes = Object.freeze({
-    Add: "Add",
-    Copy: "Copy"
+    AddNewSection: "AddNewSection",
+    CopyCurrentSection: "CopyCurrentSection"
 });
 
 let commitButtonActionType = null;
@@ -32,25 +32,27 @@ function resetModalPickSectionName() {
 }
 
 
+//Add new section
 function AddNewSection() {
     resetModalPickSectionName();
     modalHeaderTag.innerText = "+ New Section"
     commitButton.innerText = "Add";
-    commitButtonActionType = ActionTypes.Add
+    commitButtonActionType = ActionTypes.AddNewSection
     loadModalPickSectionName();
 }
 
 
+//Copy current section
 function copyCurrentSection() {
     resetModalPickSectionName();
     modalHeaderTag.innerText = `Copy section: ${getActiveSectionNameFromDiv()}`;
     commitButton.innerText = "Copy";
-    commitButtonActionType = ActionTypes.Copy;
+    commitButtonActionType = ActionTypes.CopyCurrentSection;
     loadModalPickSectionName();
 }
 
 
-// Load modal
+// Load Pick section name modal
 async function loadModalPickSectionName() {
     let AllSectionNames = await GetAllSectionNamesFromDB();
     if (getSelectedSectionNamesFromDiv().length > 0) { await autoSaveSectionDetails(); }
@@ -96,8 +98,7 @@ if (addNewSectionNameBtn != null) {
 async function getNewSectionNameAndAddToDBandSelectTag(optionSelectTag) {
     let newSectionName = (prompt("Save new section name to database?\n\nEnter a new section name:"))
     if (newSectionName == null || newSectionName.trim().length == 0) return
-    // Split section name into an array and remove the empty items.
-    //Then, check if the items contain only alphabets and numbers only
+    // Split section name into an array and remove the empty items.Then, check if the items contain only alphabets and numbers only
     let arrNewSectionName = newSectionName.split(" ").filter(Boolean);
     if (arrNewSectionName.every(item => isAlphaNumeric(item))) {
         newSectionName = arrNewSectionName.join(" ");
@@ -125,11 +126,12 @@ if (commitButton != null) {
     commitButton.onclick = (e) => addcopyCurrentSectionToDBandDIV();
 }
 
+
 // Add or Copy section to database and Div
 async function addcopyCurrentSectionToDBandDIV() {
     hideElement(commitButton);
     let newSectionName = sectionNameoptionSelectTag.options[sectionNameoptionSelectTag.selectedIndex].value.trim();
-    let isNewSection = (commitButtonActionType == ActionTypes.Add) ? true : false;
+    let isNewSection = (commitButtonActionType == ActionTypes.AddNewSection) ? true : false;
     let preparedSectionData = prepareSectionDataToSave(isNewSection);
     preparedSectionData['section_name'] = newSectionName
 
