@@ -15,7 +15,7 @@
                     <div class="form-row bg-light p-2">
                         <!-- + New section -->
                         <div class="col-md-1">
-                            <button class="btn btn-light bold btn-sm  " onclick="AddSection()">+ Section</button>
+                            <button class="btn btn-light bold btn-sm  " onclick="AddNewSection()">+ Section</button>
                         </div>
                         <!-- Setion names -->
                         <div class="col-md-11 " id="section_names_div">
@@ -38,13 +38,11 @@
             <div class="form-row mt-3 mb-1">
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button" class="btn  btn-info      d-inline-block      {{ '' if quote_data['section_names']|length > 1 else 'hide' }}" id="reorder_section_btn" onclick="loadReorderSections(this)"> <small>Reorder section</small></button>
-                    <button type="button" class="btn  btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn" onclick="copySection()"> <small>Copy section</small></button>
+                    <button type="button" class="btn  btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn" onclick="copyCurrentSection()"> <small>Copy current section</small></button>
                     <button type="button" class="btn  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="save_section_btn" onclick="saveCurrentSectionDetailsToDB()"><small>Save section</small></button>
                     <button type="button" class="btn  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="delete_section_btn" onclick="deleteSelectedSection()"> <small class="">Delete section</small></button>
                 </div>
             </div>
-
-
 
 
             <!-- Form: Add details -->

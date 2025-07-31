@@ -32,7 +32,7 @@ function resetModalPickSectionName() {
 }
 
 
-function AddSection() {
+function AddNewSection() {
     resetModalPickSectionName();
     modalHeaderTag.innerText = "+ New Section"
     commitButton.innerText = "Add";
@@ -41,7 +41,7 @@ function AddSection() {
 }
 
 
-function copySection() {
+function copyCurrentSection() {
     resetModalPickSectionName();
     modalHeaderTag.innerText = `Copy section: ${getActiveSectionNameFromDiv()}`;
     commitButton.innerText = "Copy";
@@ -122,11 +122,11 @@ async function getNewSectionNameAndAddToDBandSelectTag(optionSelectTag) {
 
 // Button: To copy and add section to the database and also an empty section template to the DOM. Users can then add section details rows.
 if (commitButton != null) {
-    commitButton.onclick = (e) => addCopySectionToDBandDIV();
+    commitButton.onclick = (e) => addcopyCurrentSectionToDBandDIV();
 }
 
 // Add or Copy section to database and Div
-async function addCopySectionToDBandDIV() {
+async function addcopyCurrentSectionToDBandDIV() {
     hideElement(commitButton);
     let newSectionName = sectionNameoptionSelectTag.options[sectionNameoptionSelectTag.selectedIndex].value.trim();
     let isNewSection = (commitButtonActionType == ActionTypes.Add) ? true : false;
