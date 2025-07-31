@@ -138,6 +138,7 @@ async function addCopySectionToDBandDIV() {
         addNewSectionNameBtnToDiv(newSectionName);
         if (isNewSection) {
             addEmptySectionDetailsRowTemplate();
+            quoteImageDiv.innerText = "";     
             if (getSelectedSectionNamesFromDiv().length == 1) { window.location.href = (`/add_quote_details/${data_to_post['quote_name']}`); }
         }
         closeModal(modalAddCopySection.id);
