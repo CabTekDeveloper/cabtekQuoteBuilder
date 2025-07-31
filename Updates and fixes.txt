@@ -33,5 +33,5 @@
 =>Pushed to GitHub repository "cabtekQuoteBuilder"
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-15-07-2025 -Wangchuk
+31-07-2025 -Wangchuk
 => Working on fixing the issue: Adding a new section when on a saved section which has images, also copies the images from the saved section to the new section.
