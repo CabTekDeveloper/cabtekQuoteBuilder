@@ -6,6 +6,9 @@ let modalCopyExternalSection = document.getElementById("modal_copy_external_sect
 let closeModalCopyExternalSection = modalCopyExternalSection.querySelector("#close_modal_btn");
 let confirmCopyBtn = modalCopyExternalSection.querySelector("#commit_btn");
 
+let quoteNameoptionSelectTag = modalCopyExternalSection.querySelector("#quote_name_options");
+
+
 /* Functions ------------------------------------------------------------------------------------------------------------------------*/
 
 // Close modal 
@@ -24,9 +27,21 @@ async function loadModalCopyExternalSection(copyBtn) {
 
     if (!isEmpty(QuotesByUserId)) {
         openModal(modalCopyExternalSection.id)
-        // updateSectionNameOptionSelectTag(sectionNameoptionSelectTag, AllSectionNames)
+        updateQuoteNameOptionSelectTag( QuotesByUserId)
     }
     
     
+}
+
+
+function updateQuoteNameOptionSelectTag( QuotesByUserId) {
+    quoteNameoptionSelectTag.innerHTML = "";
+    let optionsHTML = `<option value=""></option>`;
+
+    QuotesByUserId.forEach(item => {
+        option = `<option value="${item['quote_id']}">  ${item['quote_name']} </option>`;
+        optionsHTML += option;
+    });
+    quoteNameoptionSelectTag.insertAdjacentHTML('beforeend', optionsHTML);
 }
 
