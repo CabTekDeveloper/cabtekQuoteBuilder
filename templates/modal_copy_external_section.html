@@ -1,3 +1,48 @@
 <!-- Wangchuk added, 01-08-2025 -->
 <!-- Modal: Copy external section-->
 
+
+<div id="modal_copy_external_section" class="modal">
+    <div class="modal_content w-20">
+
+        <!-- Header -->
+        <div class="row">
+            <div class="col-sm-12 bg-dark py-2 text-light text-center">
+                <span class="bold" id="modal_header">
+                    Copy external section
+                </span>
+                <span class="float-right pr-2 cursor-pointer hover-text-bold" id="close_modal_btn">&#x2715;</span>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="row bg-light  p-4 ">
+
+            <!-- Quote name options -->
+            <div class="col-sm-12 p-0 mb-2">
+                <span class="">Pick quote and then pick the section to copy</span>
+                <select class="mt-1 form-control form-control-sm" id="quote_name_options" autocomplete="off" autofocus>   <!-- Data will come from JS --> </select>
+            </div>
+
+            <!-- Section names of the selected quote -->
+            <div class="col-sm-12">
+                <div class="row bg-lightgray ">
+
+                    <div class="col-sm-12 " id="section_names_of_selected_quote_div" style="overflow-x: hidden; overflow-y: auto; height: 40vh;">
+                        <!-- Data will come from JS -->
+                    </div>
+
+                </div>
+            </div>
+
+            
+            <div class="col-sm-12 py-3 text-center">
+                <button class="btn btn-sm btn-dark px-3  d-inline-block hide" id="commit_btn" >
+                    Copy
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>

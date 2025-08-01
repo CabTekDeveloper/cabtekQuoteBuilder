@@ -49,7 +49,9 @@ def index(showSavedTemplate = 'no'):
     
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
-# ----------------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------------#
+
+
 
 @app.route('/', methods=["POST", "GET"])
 def login():
@@ -356,6 +358,18 @@ def get_all_section_image_size_db():
         return jsonify(all_section_image_size)
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+#----------------------------------------------------------------------------------------------#
+
+# Get quotes by user id
+@app.route('/get_quotes_by_user_id_db/<user_id>', methods=["GET"])
+def get_quotes_by_user_id_db(user_id):
+    try:
+        quotes_by_user_id = quote_builder_db.get_quotes_by_user_id(user_id)
+        return jsonify(quotes_by_user_id)
+    
+    except Exception as ex:
+        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
 #----------------------------------------------------------------------------------------------#
 # frequently used texts routes
 @app.route('/get_frequently_used_texts_by_user_id_db', methods=["GET"])

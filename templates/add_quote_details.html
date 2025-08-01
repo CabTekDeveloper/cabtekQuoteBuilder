@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="col-md-2 d-flex justify-content-end px-0">
-                            <button type="button" class="btn btn-link btn-sm" id="copy_external_section_btn" onclick="loadModalCopyExternalSection()"> <small>Copy external section</small></button>
+                            <button type="button" class="btn btn-link btn-sm" data-user_id="{{ session['user_info']['user_id'] }}"  id="copy_external_section_btn" onclick="loadModalCopyExternalSection(this)"> <small>Copy external section</small></button>
                         </div>
                     </div>
                 </div>

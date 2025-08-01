@@ -237,3 +237,11 @@ async function GetAllSectionNamesFromDB() {
     if (res.status == 200) { data = await res.json() };
     return data
 }
+
+async function GetQuotesByUserId(user_id) {
+    let data = []
+    const url = `/get_quotes_by_user_id_db/${user_id}`
+    const res = await fetch(url, OPTIONS_GET);
+    if (res.status == 200) { data = await res.json() };
+    return data
+}
