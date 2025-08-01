@@ -28,7 +28,7 @@ function resetReorderSectionModal() {
     allSectionsDiv.innerHTML = "";
 }
 
-async function loadReorderSections() {
+async function loadModalReorderSections() {
     await autoSaveSectionDetails();
 
     resetReorderSectionModal();

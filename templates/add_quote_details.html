@@ -18,7 +18,7 @@
                             <button class="btn btn-light bold btn-sm  " onclick="AddNewSection()">+ Section</button>
                         </div>
                         <!-- Setion names -->
-                        <div class="col-md-11 " id="section_names_div">
+                        <div class="col-md-9 " id="section_names_div">
                             {% if quote_data['section_names']|length > 0 %}
                             {% for section_name in quote_data['section_names'] %}
                             {% if section_name == selected_section_name %}
@@ -29,6 +29,10 @@
                             {% endfor %}
                             {% endif %}
                         </div>
+
+                        <div class="col-md-2 d-flex justify-content-end px-0">
+                            <button type="button" class="btn btn-link btn-sm" id="copy_external_section_btn" onclick="loadModalCopyExternalSection()"> <small>Copy external section</small></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,10 +41,10 @@
             <!-- Modify buttons -->
             <div class="form-row mt-3 mb-1">
                 <div class="col-md-12 d-flex justify-content-end">
-                    <button type="button" class="btn  btn-info      d-inline-block      {{ '' if quote_data['section_names']|length > 1 else 'hide' }}" id="reorder_section_btn" onclick="loadReorderSections(this)"> <small>Reorder section</small></button>
-                    <button type="button" class="btn  btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn" onclick="copyCurrentSection()"> <small>Copy current section</small></button>
-                    <button type="button" class="btn  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="save_section_btn" onclick="saveCurrentSectionDetailsToDB()"><small>Save section</small></button>
-                    <button type="button" class="btn  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="delete_section_btn" onclick="deleteSelectedSection()"> <small class="">Delete section</small></button>
+                    <button type="button" class="btn btn-sm   btn-info      d-inline-block      {{ '' if quote_data['section_names']|length > 1 else 'hide' }}" id="reorder_section_btn" onclick="loadModalReorderSections(this)"> <small>Reorder section</small></button>
+                    <button type="button" class="btn btn-sm   btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn" onclick="copyCurrentSection()"> <small>Copy current section</small></button>
+                    <button type="button" class="btn btn-sm  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="save_section_btn" onclick="saveCurrentSectionDetailsToDB()"><small>Save section</small></button>
+                    <button type="button" class="btn btn-sm  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="delete_section_btn" onclick="deleteSelectedSection()"> <small class="">Delete section</small></button>
                 </div>
             </div>
 
