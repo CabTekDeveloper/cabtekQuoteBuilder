@@ -100,9 +100,10 @@ async function CopySelectedSectionInDB() {
     let data_to_post = SelectedSectionData;
 
     let data = await saveSectionDetailsInDB(data_to_post);
-
     if (data && data['saved']) {
         closeModal(modalPickSectionName.id);
+        window.location.href = (`/add_quote_details/${CurrentQuoteName}/no/${SelectedSectionData['section_name']}`)
+
     }
     else {
         alert(`Section not "copied")}. Try again!`)
