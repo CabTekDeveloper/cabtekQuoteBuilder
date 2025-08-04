@@ -20,25 +20,20 @@
 
             <!-- Quote name options -->
             <div class="col-sm-12 p-0 mb-2">
-                <span class="">Pick quote and then pick the section to copy</span>
-                <select class="mt-1 form-control form-control-sm" id="quote_name_options" autocomplete="off" autofocus>   <!-- Data will come from JS --> </select>
+                <span class="">Pick quote</span>
+                <select class="mt-1 form-control form-control-sm" id="quote_name_options" autocomplete="off" autofocus onchange="QuoteNameOnChange()">   <!-- Data will come from JS --> </select>
             </div>
 
             <!-- Section names of the selected quote -->
-            <div class="col-sm-12">
-                <div class="row bg-lightgray ">
-
-                    <div class="col-sm-12 " id="section_names_of_selected_quote_div" style="overflow-x: hidden; overflow-y: auto; height: 40vh;">
-                        <!-- Data will come from JS -->
-                    </div>
-
-                </div>
+            <div class="col-sm-12 p-0 mb-2 ">
+                <span class="">Pick section to copy.</span>
+                <select class="mt-1 form-control form-control-sm" id="section_name_options" autocomplete="off" autofocus onchange="SectionNameOptionOnChange()">   <!-- Data will come from JS --> </select>
             </div>
 
             
             <div class="col-sm-12 py-3 text-center">
                 <button class="btn btn-sm btn-dark px-3  d-inline-block hide" id="commit_btn" >
-                    Copy
+                    Copy Section
                 </button>
             </div>
 

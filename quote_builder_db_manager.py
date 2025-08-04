@@ -777,7 +777,7 @@ def get_quote_info_by_quote_name(quote_name):
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         return quote_info
     
-# print(get_quote_info_by_quote_name("we"))
+# print(get_quote_info_by_quote_name("Testquote2"))
 
 def get_quote_info_by_quote_id(quote_id):
     quote_info = {}
@@ -1852,7 +1852,7 @@ def get_quote_section_info_by_quote_id(quote_id):
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         return quote_section_info_by_quote_id
    
-# print(get_quote_section_info_by_quote_id(56))
+# print(get_quote_section_info_by_quote_id(286))
 
 def get_quote_section_info_by_quoteId_and_sectionNameId(quote_id, section_name_id):
     quote_section_info = []

@@ -126,7 +126,6 @@ if (commitButton != null) {
     commitButton.onclick = (e) => addcopyCurrentSectionToDBandDIV();
 }
 
-
 // Add or Copy section to database and Div
 async function addcopyCurrentSectionToDBandDIV() {
     hideElement(commitButton);
