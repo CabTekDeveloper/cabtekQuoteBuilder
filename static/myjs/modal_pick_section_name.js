@@ -150,7 +150,7 @@ async function addcopyCurrentSectionToDBandDIV() {
         alert(`Section not ${(isNewSection ? "added" : "copied")}. Try again!`)
         unHideElement(commitButton);
     }
-
+    
 }
 
 

@@ -60,6 +60,8 @@ async function deleteSectionFromDB(data_to_post) {
 }
 
 async function saveSectionDetailsInDB(data_to_post) {
+    // console.log(data_to_post);
+    
     let data = {}
     OPTIONS_POST_JSON_DATA.body = JSON.stringify(data_to_post)
     const url = `/save_quote_section_detials_db`;

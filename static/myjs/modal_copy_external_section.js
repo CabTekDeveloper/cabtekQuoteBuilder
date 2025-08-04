@@ -84,7 +84,19 @@ if (copySectionBtn != null) {
 
 
 async function CopySelectedSectionInDB(){
-    SelectedSectionData.quote_name = CurrentQuoteName;
+    let sectionImages = SelectedSectionData['section_image_full_names'];
+    let sectionImageNamesAndSize = "";
+
+    for(let i=0;i<sectionImages.length;i++){
+        let image = sectionImages[i];
+        let imageSizeInfo = image['image_size_info'];
+        let imageSizeId =  imageSizeInfo['section_image_size_id']
+        sectionImageNamesAndSize += `${image['image_full_name']};imageSizeId_${imageSizeId}`;
+        if(i != sectionImages.length-1) {sectionImageNamesAndSize += "|";}
+    }
+    
+    SelectedSectionData['quote_name'] = CurrentQuoteName;
+    SelectedSectionData['section_image_full_names'] = sectionImageNamesAndSize;
     let data_to_post = SelectedSectionData;
 
     let data = await saveSectionDetailsInDB(data_to_post);
