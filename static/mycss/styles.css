@@ -25,6 +25,12 @@ input::-webkit-inner-spin-button {
     font-size: 13px;
 }
 
+
+#saved_quote_table tr:hover .visible-off,
+#saved_template_table tr:hover .visible-off{
+    visibility: visible;
+}
+
 /* end */
 
 

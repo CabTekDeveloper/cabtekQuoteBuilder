@@ -156,11 +156,11 @@ async function copyQuoteAndDetails(copyBtn) {
                             <td>${copied_quote_info['quote_name']}${diy_badge}</td>
                             <td>${copied_quote_info['quoted_by']}</td>
                             <td>${copied_quote_info['date_quote_created']}</td>
-                            <td ><a href="/add_quote_details/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 "><small class=" pl-1 pr-1">Modify</small></a></td>
-                            <td ><a href="/view_quote/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-info full-width p-0 m-0"><small class=" pl-1 pr-1">View</small></a></td>
-                            <td ><a href="/edit_quote/${copied_quote_info['quote_id']}" type="button" class="btn btn-sm btn-success full-width p-0 m-0"><small class=" pl-1 pr-1">Edit</small></a></td>
-                            <td ><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 " data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id ="${copied_quote_info['quote_id']}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
-                            <td ><button  type="button" class="btn btn-sm btn-danger full-width p-0 m-0" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id="${copied_quote_info['quote_id']}" data-is_template="${copied_quote_info['is_template']}" onclick="deleteQuote(this)"><small class=" pl-1 pr-1">Delete</small></button></td>
+                            <td ><a href="/add_quote_details/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Modify</small></a></td>
+                            <td ><a href="/view_quote/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
+                            <td ><a href="/edit_quote/${copied_quote_info['quote_id']}" type="button" class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
+                            <td ><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id ="${copied_quote_info['quote_id']}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
+                            <td ><button  type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id="${copied_quote_info['quote_id']}" data-is_template="${copied_quote_info['is_template']}" onclick="deleteQuote(this)"><small class=" pl-1 pr-1">Delete</small></button></td>
                         </tr>`
                 savedTemplateTable.getElementsByTagName('tBody')[0].insertAdjacentHTML("afterbegin", newRow)
             }
@@ -172,11 +172,11 @@ async function copyQuoteAndDetails(copyBtn) {
                             <td>${copied_quote_info['date_quote_created']}</td>
                             <td >  ${copied_quote_info['rev_date']}</td>
                             <td>${copied_quote_info['customer_name']}</td>
-                            <td ><a href="/add_quote_details/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 "><small class=" pl-1 pr-1">Modify</small></a></td>
-                            <td ><a href="/view_quote/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-info full-width p-0 m-0"><small class=" pl-1 pr-1">View</small></a></td>
-                            <td ><a href="/edit_quote/${copied_quote_info['quote_id']}" type="button" class="btn btn-sm btn-success full-width p-0 m-0"><small class=" pl-1 pr-1">Edit</small></a></td>
-                            <td ><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 " data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id ="${copied_quote_info['quote_id']}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
-                            <td ><button  type="button" class="btn btn-sm btn-danger full-width p-0 m-0" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id="${copied_quote_info['quote_id']}" data-is_template="${copied_quote_info['is_template']}" onclick="deleteQuote(this)"><small class=" pl-1 pr-1">Delete</small></button></td>
+                            <td ><a href="/add_quote_details/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Modify</small></a></td>
+                            <td ><a href="/view_quote/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
+                            <td ><a href="/edit_quote/${copied_quote_info['quote_id']}" type="button" class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
+                            <td ><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id ="${copied_quote_info['quote_id']}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
+                            <td ><button  type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id="${copied_quote_info['quote_id']}" data-is_template="${copied_quote_info['is_template']}" onclick="deleteQuote(this)"><small class=" pl-1 pr-1">Delete</small></button></td>
                             
                         </tr>`
                 // <td><a href="/update_quote_status/${copied_quote_info['quote_id']}" type="button" class="btn btn-sm btn-warning full-width p-0 m-0"><small class=" pl-1 pr-1">Update status</small></a></td>

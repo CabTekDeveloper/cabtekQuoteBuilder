@@ -625,7 +625,7 @@ def delete_quote():
             if request.method == "POST":
                 data = request.get_json()
                 quote_id= int(data['quote_id'])
-                print(data)
+
                 quote_builder_db.delete_quote_and_its_data(quote_id)
                 return jsonify({"deleted": True})
         else:
