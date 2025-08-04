@@ -111,8 +111,9 @@ function addRemoveRowImage(clickedAddRemoveRowImgBtn) {
 // DELETE SELECTED SECTION
 async function deleteSelectedSection() {
     let sectionName = getActiveSectionNameFromDiv();
-    let quoteName = quoteNameElement.innerText
+    let quoteName = quoteNameElement.innerText;
 
+    
     if (sectionName == null || sectionName.trim().length == 0) return
 
     if (confirm(`Are you sure you want to delete ''${sectionName}?`)) {

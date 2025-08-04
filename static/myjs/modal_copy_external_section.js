@@ -8,6 +8,7 @@ let copySectionBtn = modalCopyExternalSection.querySelector("#commit_btn");
 let quoteNameoptionSelectTag = modalCopyExternalSection.querySelector("#quote_name_options");
 let sectionNameOptionSelectTag = modalCopyExternalSection.querySelector("#section_name_options");
 
+let CurrentQuoteName = null;
 let SelectedQuoteData = null;
 let SelectedSectionData = null;
 
@@ -21,30 +22,28 @@ if (closeModalCopyExternalSection != null) {
 function resetModalCopyExternalSection() {
     quoteNameoptionSelectTag.innerHTML = "";
     sectionNameOptionSelectTag.innerHTML = "";
+    CurrentQuoteName = null;
     SelectedQuoteData = null;
-    SelectedQuotedId = null;
-    SelectedSectionId = null;
+    SelectedSectionData = null;
+
 }
 
 // Load Pick section name modal
 async function loadModalCopyExternalSection(copyBtn) {
     resetModalCopyExternalSection();
-
     if (getSelectedSectionNamesFromDiv().length > 0) { await autoSaveSectionDetails(); }
-
+    CurrentQuoteName = quoteNameElement.innerText.trim();
     let user_id = copyBtn.getAttribute('data-user_id')
     let QuotesByUserId = await GetQuotesByUserId(user_id);
 
     if (!isEmpty(QuotesByUserId)) {
         let optionsHTML = `<option value=""></option>`;
-        QuotesByUserId.forEach(item => optionsHTML += `<option value="${item['quote_id']}">  ${item['quote_name']} </option>`);
+        let filterQuotes = QuotesByUserId.filter(quote => quote['quote_name'] != CurrentQuoteName)
+        filterQuotes.forEach(item => optionsHTML += `<option value="${item['quote_id']}">  ${item['quote_name']} </option>`);
         quoteNameoptionSelectTag.innerHTML = optionsHTML;
         openModal(modalCopyExternalSection.id)
-
     }
 }
-
-
 
 
 async function QuoteNameOnChange() {
@@ -80,5 +79,21 @@ function SectionNameOptionOnChange() {
 
 
 if (copySectionBtn != null) {
-    copySectionBtn.onclick = (e) => console.log(SelectedSectionData);
+    copySectionBtn.onclick = (e) => CopySelectedSectionInDB();
+}
+
+
+async function CopySelectedSectionInDB(){
+    SelectedSectionData.quote_name = CurrentQuoteName;
+    let data_to_post = SelectedSectionData;
+
+    let data = await saveSectionDetailsInDB(data_to_post);
+
+    if (data && data['saved']) {
+        closeModal(modalPickSectionName.id);
+    }
+    else {
+        alert(`Section not "copied")}. Try again!`)
+        unHideElement(commitButton);
+    }
 }
