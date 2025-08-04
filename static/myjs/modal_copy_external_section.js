@@ -56,10 +56,11 @@ async function QuoteNameOnChange() {
 
         if (!isEmpty(SelectedQuoteData)) {
             let sectionNames = SelectedQuoteData['section_names']
-
             if (!isEmpty(sectionNames)) {
+                let currentSectionNamesFromDiv = getSelectedSectionNamesFromDiv();
+                filteredSectionNames = sectionNames.filter(item => !currentSectionNamesFromDiv.includes(item));
                 let optionsHTML = `<option value=""></option>`;
-                sectionNames.forEach(item => optionsHTML += `<option value="${item}">  ${item} </option>`);
+                filteredSectionNames.forEach(item => optionsHTML += `<option value="${item}">  ${item} </option>`);
                 sectionNameOptionSelectTag.innerHTML = optionsHTML;
             }
         }
@@ -74,7 +75,6 @@ function SectionNameOptionOnChange() {
         SelectedSectionData = SelectedQuoteData['all_sections_data'][selectedSectionName];
         unHideElement(copySectionBtn)
     }
-
 }
 
 
@@ -83,18 +83,18 @@ if (copySectionBtn != null) {
 }
 
 
-async function CopySelectedSectionInDB(){
+async function CopySelectedSectionInDB() {
     let sectionImages = SelectedSectionData['section_image_full_names'];
     let sectionImageNamesAndSize = "";
 
-    for(let i=0;i<sectionImages.length;i++){
+    for (let i = 0; i < sectionImages.length; i++) {
         let image = sectionImages[i];
         let imageSizeInfo = image['image_size_info'];
-        let imageSizeId =  imageSizeInfo['section_image_size_id']
+        let imageSizeId = imageSizeInfo['section_image_size_id']
         sectionImageNamesAndSize += `${image['image_full_name']};imageSizeId_${imageSizeId}`;
-        if(i != sectionImages.length-1) {sectionImageNamesAndSize += "|";}
+        if (i != sectionImages.length - 1) { sectionImageNamesAndSize += "|"; }
     }
-    
+
     SelectedSectionData['quote_name'] = CurrentQuoteName;
     SelectedSectionData['section_image_full_names'] = sectionImageNamesAndSize;
     let data_to_post = SelectedSectionData;
