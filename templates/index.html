@@ -29,7 +29,7 @@
                                 <th scope="col" class="border-top-0">Created on</th>
                                 <th scope="col" class="border-top-0">Date modified</th>
                                 <th scope="col" class="border-top-0">Customer name</th>
-                                <th colspan="5" class="border-top-0 "></th>
+                                <th colspan="5" class="border-0 "></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,11 +47,11 @@
                                 <td>{{ quote['date_quote_created'] }}</td>
                                 <td> {{ quote['rev_date']}}</td>
                                 <td>{{ quote['customer_name'] }}</td>
-                                <td><a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Modify</small></a></td>
-                                <td><a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
-                                <td><a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}" type="button" class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
-                                <td><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}" data-quote_id="{{quote['quote_id']}}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
-                                <td><button type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}" data-quote_id="{{quote['quote_id']}}" data-is_template="{{quote['is_template']}}" onclick="deleteQuote(this)"><small
+                                <td class="border-0"><a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 visible-off "><small class=" pl-1 pr-1">Modify</small></a></td>
+                                <td class="border-0"><a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
+                                <td class="border-0"><a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}" type="button" class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
+                                <td class="border-0"><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}" data-quote_id="{{quote['quote_id']}}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
+                                <td class="border-0"><button type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}" data-quote_id="{{quote['quote_id']}}" data-is_template="{{quote['is_template']}}" onclick="deleteQuote(this)"><small
                                             class=" pl-1 pr-1">Delete</small></button></td>
                                 <!-- <td><a href="{{url_for('update_quote_status',quote_id = quote['quote_id'] )}}" type="button" class="btn btn-sm btn-warning full-width p-0 m-0"><small class=" pl-1 pr-1">Update status</small></a></td> -->
                             </tr>
@@ -76,7 +76,7 @@
                                 <th scope="col" class="border-top-0">Template name</th>
                                 <th scope="col" class="border-top-0">Saved by</th>
                                 <th scope="col" class="border-top-0">Created on</th>
-                                <th colspan="5" class="border-top-0 "></th>
+                                <th colspan="5" class="border-0"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,11 +91,11 @@
                                 </td>
                                 <td>{{ quote['quoted_by'] }}</td>
                                 <td>{{ quote['date_quote_created'] }}</td>
-                                <td><a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Modify</small></a></td>
-                                <td><a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
-                                <td><a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}" type="button" class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
-                                <td><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}" data-quote_id="{{quote['quote_id']}}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
-                                <td><button type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name=" {{quote['quote_name']}} " data-quote_id="{{quote['quote_id']}}" data-is_template="{{quote['is_template']}}" onclick="deleteQuote(this)"><small
+                                <td class="border-0"><a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Modify</small></a></td>
+                                <td class="border-0"><a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}" type="button" class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
+                                <td class="border-0"><a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}" type="button" class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
+                                <td class="border-0"><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}" data-quote_id="{{quote['quote_id']}}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
+                                <td class="border-0"><button type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name=" {{quote['quote_name']}} " data-quote_id="{{quote['quote_id']}}" data-is_template="{{quote['is_template']}}" onclick="deleteQuote(this)"><small
                                             class=" pl-1 pr-1">Delete</small></button></td>
                             </tr>
                             {% endif %}
