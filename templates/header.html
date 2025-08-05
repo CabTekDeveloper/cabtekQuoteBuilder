@@ -14,10 +14,11 @@
     <title>{{ quote_info['quote_name'] }}</title>
     {% endif %}
     {% else %}
-    <title>CabTek Quote Builder</title>
+    <title>Quote Builder</title>
     {% endif %}
 
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'images/favicons/favicon-cabtek.ico') }}">
+    <!-- <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'images/favicons/favicon-cabtek.ico') }}"> -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'images/favicons/QB.png') }}">
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='vendor/bootstrap4/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -25,19 +26,20 @@
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='mycss/styles.css')}}" rel="stylesheet">
     <link href="{{ url_for('static', filename='mycss/view_quote_style.css')}}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mycss/disble_printing.css')}}" media="print" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mycss/disble_printing.css')}}"
+        media="print" />
 
 </head>
 
 <body>
     <!-- {% set active_page = page_name %} -->
 
-     <!-- Modals -->
+    <!-- Modals -->
     {% include "modal_show_message.html" %}
     {% include "modal_reorder_sections.html" %}
     {% include "modal_pick_section_name.html" %}
     {% include "modal_copy_external_section.html" %}
-    
+
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-dark sticky-top p-0">
@@ -49,22 +51,31 @@
 
                 {% if active_page == 'add_quote_details' or active_page == 'view_quote' %}
                 <div class="dropdown mr-5 ml-5">
-                    <button class="btn btn-warning dropdown-toggle btn-sm pl-3 pr-3 bold ml-5 mr-5" type="button" data-toggle="dropdown"><span id="quote_name">{{ quote_info['quote_name'] }} </span> <span class="caret"></span></button>
+                    <button class="btn btn-warning dropdown-toggle btn-sm pl-3 pr-3 bold ml-5 mr-5" type="button"
+                        data-toggle="dropdown"><span id="quote_name">{{ quote_info['quote_name'] }} </span> <span
+                            class="caret"></span></button>
                     <ul class="dropdown-menu bg-warning p-0 ml-5  mr-5 ">
-                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Quoted by : </small> {{ quote_info['quoted_by'] }}</span></li>
-                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Date created : </small> {{ quote_info['date_quote_created'] }}</span></li>
-                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Date modified : </small> {{ quote_info['rev_date'] }}</span></li>
+                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Quoted by : </small> {{
+                                quote_info['quoted_by'] }}</span></li>
+                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Date created : </small> {{
+                                quote_info['date_quote_created'] }}</span></li>
+                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Date modified : </small> {{
+                                quote_info['rev_date'] }}</span></li>
                         {% if quote_info['customer_name'] != '' %}
-                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Customer name : </small> {{ quote_info['customer_name'] }}</span></li>
+                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Customer name : </small> {{
+                                quote_info['customer_name'] }}</span></li>
                         {% endif %}
                         {% if quote_info['customer_email'] != '' %}
-                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Email : </small> {{ quote_info['customer_email'] }}</span></li>
+                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Email : </small> {{
+                                quote_info['customer_email'] }}</span></li>
                         {% endif %}
                         {% if quote_info['customer_phone_no'] != '' %}
-                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Phone : </small> {{ quote_info['customer_phone_no'] }}</span></li>
+                        <li><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Phone : </small> {{
+                                quote_info['customer_phone_no'] }}</span></li>
                         {% endif %}
                         {% if quote_info['delivery_info'] != '' %}
-                        <li class=""><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Deliver to : </small> {{ quote_info['delivery_info'] }}</span></li>
+                        <li class=""><span class="dropdown-item bold p-0 pl-2 pr-2"><small>Deliver to : </small> {{
+                                quote_info['delivery_info'] }}</span></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -72,18 +83,26 @@
 
                 {% if active_page == 'add_quote_details' %}
                 <!-- <li><a class="nav-link btn btn-sm btn-info p-0 pl-2  pr-2 mt-1 mr-2 ml-5" type="button"  href="{{url_for('view_quote',quote_name = quote_info['quote_name'] )}}" onclick="autoSaveSectionDetails(true,false)" ><span class="text-white"> View Quote </span></a></li> -->
-                <li><a class="nav-link btn btn-sm btn-info p-0 pl-2  pr-2 mt-1 mr-2 ml-5" type="button" href="#" onclick="autoSaveSectionDetails(true,false)"><span class="text-white"> View Quote </span></a></li>
+                <li><a class="nav-link btn btn-sm btn-info p-0 pl-2  pr-2 mt-1 mr-2 ml-5" type="button" href="#"
+                        onclick="autoSaveSectionDetails(true,false)"><span class="text-white"> View Quote </span></a>
+                </li>
 
-                <li><a class="nav-link btn btn-sm btn-secondary text-white mt-1 p-0 pl-3 pr-3 mr-2" type="button" href="#" onclick="autoSaveSectionDetails(false,true)">Close</a></li>
+                <li><a class="nav-link btn btn-sm btn-secondary text-white mt-1 p-0 pl-3 pr-3 mr-2" type="button"
+                        href="#" onclick="autoSaveSectionDetails(false,true)">Close</a></li>
 
                 {% elif active_page == 'view_quote' %}
-                <li><a class="nav-link btn btn-sm btn-primary p-0 pl-1  pr-1 mt-1 mr-2 ml-5" type="button" href="{{url_for('add_quote_details',quote_name = quote_info['quote_name'] )}}"><span class="text-white"> Modify Quote </span></a></li>
-                <li><a href="{{url_for('index')}}" type="button" class="btn btn-sm btn-secondary text-white p-0 pl-3  pr-3 mt-1 mr-2">Close</a></li>
+                <li><a class="nav-link btn btn-sm btn-primary p-0 pl-1  pr-1 mt-1 mr-2 ml-5" type="button"
+                        href="{{url_for('add_quote_details',quote_name = quote_info['quote_name'] )}}"><span
+                            class="text-white"> Modify Quote </span></a></li>
+                <li><a href="{{url_for('index')}}" type="button"
+                        class="btn btn-sm btn-secondary text-white p-0 pl-3  pr-3 mt-1 mr-2">Close</a></li>
                 <li>
-                    <btn type="button" class="btn btn-sm bg-purple text-white p-0 pl-3  pr-3 mt-1 mr-2 " data-quote_id="{{quote_info['quote_id']}}" onclick="addRevDate(this)">Add rev date</btn>
+                    <btn type="button" class="btn btn-sm bg-purple text-white p-0 pl-3  pr-3 mt-1 mr-2 "
+                        data-quote_id="{{quote_info['quote_id']}}" onclick="addRevDate(this)">Add rev date</btn>
                 </li>
                 <li>
-                    <btn type="button" class="btn btn-sm btn-light   p-0 pl-3  pr-3 mt-1 mr-2 " onclick="printQuote()">Print quote</btn>
+                    <btn type="button" class="btn btn-sm btn-light   p-0 pl-3  pr-3 mt-1 mr-2 " onclick="printQuote()">
+                        Print quote</btn>
                 </li>
                 {% endif %}
 
@@ -92,12 +111,18 @@
 
             <div class="dropdown nav navbar-nav navbar-right   p-0">
                 {% if 'user_info' in session %}
-                <button class="btn btn-sm btn-dark dropdown-toggle bold" type="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ session['user_info']['full_name'] }}</button>
+                <button class="btn btn-sm btn-dark dropdown-toggle bold" type="button" id="dropdownMenuUser"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{
+                    session['user_info']['full_name'] }}</button>
                 <div class="dropdown-menu border-0  p-0 rounded-0 bg-lightgray w-100 ">
-                    <a class="dropdown-item  bold  pl-3" href="{{ url_for('logout')}}" onclick="autoSaveSectionDetails()">Logout</a>
-                    <a class="dropdown-item  bold small pl-3" href="{{ url_for('edit_user', user_id = session['user_info']['user_id'])}}" onclick="autoSaveSectionDetails()"> Edit profile</a>
+                    <a class="dropdown-item  bold  pl-3" href="{{ url_for('logout')}}"
+                        onclick="autoSaveSectionDetails()">Logout</a>
+                    <a class="dropdown-item  bold small pl-3"
+                        href="{{ url_for('edit_user', user_id = session['user_info']['user_id'])}}"
+                        onclick="autoSaveSectionDetails()"> Edit profile</a>
                     {% if session['user_info']['user_type_id'] == 1 %}
-                    <a class="dropdown-item  bold small pl-3" href="{{ url_for('add_user')}}" onclick="autoSaveSectionDetails()"> Add User</a>
+                    <a class="dropdown-item  bold small pl-3" href="{{ url_for('add_user')}}"
+                        onclick="autoSaveSectionDetails()"> Add User</a>
                     {% endif %}
 
                 </div>
