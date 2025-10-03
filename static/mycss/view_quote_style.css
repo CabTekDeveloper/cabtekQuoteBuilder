@@ -27,7 +27,7 @@ table td{
 
 #condition_of_supply_table td{
     font-size: 13px;
-    font-style: italic;
+    /* font-style: italic; */
     color: black;
 }
 

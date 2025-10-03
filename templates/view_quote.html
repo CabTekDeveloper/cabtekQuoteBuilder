@@ -24,9 +24,8 @@
                         <img src="{{url_for('static', filename= company_info['logo_path'])}}" height="100px">
                     </div>
 
-                    <div class="col-sm-4 " id="cabtek_info_div">
-                        <center>
-                            <table class="">
+                    <div class="col-sm-4 d-flex justify-content-center" id="cabtek_info_div">
+                            <table >
                                 <tbody>
                                     <tr>
                                         <td colspan="2">
@@ -49,7 +48,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </center>
                     </div>
 
                     <div class="col-sm-4  p-0 m-0 bg-warni" id="quote_date_div">
@@ -253,44 +251,25 @@
 
                         <!-- Total cost -->
                         <tr class=" border-all-3 ">
-                            <td colspan="2" rowspan="7" class="border-right-3   align-text-top pl-2 pt-1">
+                            <td colspan="2" rowspan="4" class="border-right-3   align-text-top pl-2 pt-1">
                                 <table id="condition_of_supply_table">
                                     <tbody>
-                                        <tr>
-                                            <td class="bold">Conditions of supply: </td>
+                                        <tr >
+                                            <td class="pb-1"><span class="bold h6 under">Conditions of supply</span></td>
                                         </tr>
-                                        {% for condition in company_info['conditions_of_supply'] %}
-                                        <tr>
-                                            <td>* {{condition}}</td>
-                                        </tr>
+
+                                        {% for item in company_info['conditions_of_supply'] %}
+                                            <tr >
+                                                <td class="pb-1">
+                                                    <span class="bold">{{loop.index}}. {{item.title}}</span>
+                                                    {% for condition in item.conditions %}
+                                                        <span class=" pl-3 d-block">• {{condition}}</span>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                            
                                         {% endfor %}
-                                        <!-- <tr>
-                                            <td>* All goods remain the property of Cabtek until final invoice paid.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>* Any amendments to job after commencement are at customers cost.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>* Cabtek are not responsible for incorrect measurements or information supplied by customer.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>* Payment methods: Cash, Cheque, Credit Card, EFTPOS or EFT (Cheques made payable to CabTek Industries). </td>
-                                        </tr>
-                                        <tr>
-                                            <td>* Credit card payments incur 1.5% surcharge ex gst.  (not greater than the charge to us.)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>* The purchaser must accept delivery during business hours whenever possible.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>* Payment is 50% deposit 50% on Pickup.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>* 20-30 day lead times, 30-40 day lead times for full assemble and install.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>* Full terms and conditions will be included in final quote contract</td>
-                                        </tr> -->
+                                            
                                     </tbody>
                                 </table>
                             </td>
@@ -301,15 +280,13 @@
                         </tr>
 
                         <tr class="border-top-3  ">
-                            <!-- <td colspan="2" class="border-right-3  "></td> -->
                             <td colspan="2" class="border-left-3 border-right-3   text-right pr-1 bold">GST</td>
                             <td class="text-right bold">
                                 <span>$</span> <span>{{ "{:,.2f}".format(quote_data['total_gst']) }}</span>
                             </td>
                         </tr>
 
-                        <tr class="border-top-3  ">
-                            <!-- <td colspan="2" class="border-right-3  "></td> -->
+                        <tr class="border-top-3 ">
                             <td colspan="2" class="border-left-3 border-right-3   text-right pr-1 bold"> Total inc. GST</td>
                             <td class="text-right bold">
                                 <span>$ </span> <span>{{ "{:,.2f}".format(quote_data['total_cost_inc_gst']) }}</span>
@@ -317,18 +294,17 @@
                         </tr>
 
                         <!-- Bank details -->
-                        <tr class="border-top-3  ">
-                            <td colspan="3" class="text-right   text-center pt-1 ">Bank Details : {{ company_info['bank_details']['acc_name'] }} </td>
+                        <tr class="border-top-3 ">
+                            <td colspan="3" class="text-right   text-center py-5">
+                                <div class="my-5">
+                                    <span class="d-block">Bank Details : {{ company_info['bank_details']['acc_name'] }} </span>
+                                    <span class="d-block">Bank : {{ company_info['bank_details']['bank'] }}</span>
+                                    <span class="d-block">BSB : {{ company_info['bank_details']['bsb'] }}</span>
+                                </div>
+                            </td>
                         </tr>
-                        <tr>
-                            <td colspan="3" class="text-right text-center">Bank : {{ company_info['bank_details']['bank'] }} </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-right  text-center">BSB : {{ company_info['bank_details']['bsb'] }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-right  text-center pb-1">Acc : {{ company_info['bank_details']['acc_no'] }}</td>
-                        </tr>
+
+
 
                         <!-- customer sign -->
                         <tr class="border-top-3   ">

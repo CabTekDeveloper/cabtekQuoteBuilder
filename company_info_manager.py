@@ -32,17 +32,57 @@ COMPANY_INFO = [
         "abn"           : "35 621 778 630" ,
         "logo_path"     : "images/logo/cabtek.jpg" ,
         "gst"           : 10.0 ,
-        "conditions_of_supply"    : [
-                                        "All goods remain the property of Cabtek until the final invoice is paid.",
-                                        "Any amendments to jobs after commencement are at customers' cost.",
-                                        "Changes to original design may incur extra charges.",
-                                        "Cabtek is not responsible for incorrect measurements or information supplied by customers.",
-                                        "Payment methods: Cash (subject to quote), Credit Card, EFTPOS or EFT",
-                                        "Please reference either the quote number or invoice number via payment",
-                                        "Credit card payments incur 1.5% surcharge ex gst. (not greater than the charge to us.)",
-                                        "The purchaser must accept delivery during business hours whenever possible.",
-                                        "A 50% deposit is required prior to commencement of the job and full payment is required prior to dispatch.",
-                                        "Full terms and conditions will be included in the final quote contract."
+        "conditions_of_supply"  : [
+                                        {
+                                            "title" : "Ownership of Goods",
+                                            "conditions" :[
+                                                "All goods remain the property of Cab-Tek Industries until full payment of the final invoice has been received and cleared."
+                                            ]
+                                        },
+                                        
+                                        {
+                                            "title" : "Amendments & Variations",
+                                            "conditions" :[
+                                                "Any amendments to a job after commencement will be at the customer’s cost.",
+                                                "Changes to the original design or scope may incur additional charges, which will be quoted and approved prior to proceeding."
+                                            ]
+                                        },
+                                        
+                                        {
+                                            "title" : "Customer Responsibility",
+                                            "conditions" :[
+                                                "Cab-Tek Industries is not responsible for incorrect measurements, specifications, or information supplied by the customer."
+                                            ]
+                                        },
+                                        
+                                        {
+                                            "title" : "Payment Terms",
+                                            "conditions" :[
+                                               "A 50% deposit is required within 48 hours of receiving the order confirmation.",
+                                               "The final balance must be paid in full prior to the completion of production.",
+                                               "Accepted payment methods: Cash, Credit Card, EFTPOS, or EFT.",
+                                               "Customers should reference their invoice number when making payment.",
+                                               "Credit card payments incur a surcharge of 1.5% (exclusive of GST)"
+                                            ]
+                                        },
+                                        
+                                        {
+                                            "title" : "Delivery & Risk",
+                                            "conditions" :[
+                                               "The purchaser must accept delivery during standard business hours whenever reasonably possible.",
+                                               "Risk in the goods passes to the purchaser upon delivery, regardless of whether full payment has been made."
+                                            ]
+                                        },
+                                        
+                                        {
+                                            "title" : "Refunds & Cancellations",
+                                            "conditions" :[
+                                               "Deposits are non-refundable once an order has been confirmed and production has commenced.",
+                                               "Orders may only be cancelled or postponed with the written consent of Cab-Tek Industries. Any costs incurred up to the date of cancellation (including materials, labour, and administration fees) will be charged to the customer.",
+                                               "Custom-made, special-order, or modified goods cannot be returned or refunded unless required under the Australian Consumer Law."
+                                            ]
+                                        }
+                                        
                                     ] ,
         "quote_footer" :  "Custom cabinet solutions for the trade" ,
         "bank_details"  : BANK_DETAILS["cabtek_bank_details"]  
