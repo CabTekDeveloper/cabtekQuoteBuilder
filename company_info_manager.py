@@ -2,7 +2,7 @@
 BANK_DETAILS = {
     
     "cabtek_bank_details"   :   {
-                                    "acc_name"  : "Cabtek Industries" ,
+                                    "acc_name"  : "G & J Industries" ,
                                     "bank"      : "ANZ" ,
                                     "bsb"       : "012 812" ,
                                     "acc_no"    : "466953874"  
