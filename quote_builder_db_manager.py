@@ -17,6 +17,7 @@ def create_db_connection():
     return connection
 
 # Backup database-------------------------------------------------------------------------------###
+
 def backup_db(current_user):
     try: 
         # Delete old backups
@@ -40,7 +41,6 @@ def backup_db(current_user):
         
     except Exception as ex:
         print(f'{ex} - backup_db')
-
 
 # Alter table -------------------------------------------------------------------------------###
 
@@ -1362,6 +1362,8 @@ def get_all_images():
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         return all_images
+
+# print(get_all_images()[0])
 
 def get_all_images_by_tag_id(image_tag_id):
     all_images_by_tag_id = []

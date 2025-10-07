@@ -37,20 +37,19 @@ def index(showSavedTemplate = 'no'):
                 # find quote_status using the quote_status_id of each quote and append it to the record
                 quote_status_id = quotes_by_user_id[i]['quote_status_id']
                 quotes_by_user_id[i]['quote_status'] = quote_builder_db.get_quote_status_name(quote_status_id)
-            
+
             # check if user has saved quotes (we are not looking for quotes saved as template)
             has_saved_quotes = True if any(row['is_template'] == 'no' for row in quotes_by_user_id) else False
             has_saved_template_quotes = True if any(row['is_template'] == 'yes' for row in quotes_by_user_id) else False
             # print("Loading Index Page")
             return render_template('index.html', quotes_by_user_id = quotes_by_user_id, has_saved_quotes = has_saved_quotes, has_saved_template_quotes = has_saved_template_quotes, showSavedTemplate = showSavedTemplate)
-        
+
         else:
             return render_template('login_error.html')
-    
+
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 #----------------------------------------------------------------------------------------------#
-
 
 
 @app.route('/', methods=["POST", "GET"])
@@ -239,7 +238,6 @@ def add_quote_details(quote_name, section_name = "none", add_new_section = "no")
                     return render_template('add_quote_details.html', all_images=all_images, quote_info=quote_info, texts_by_user_id=texts_by_user_id, all_section_names=all_section_names , quote_data =quote_data, selected_section_name = selected_section_name , page_name = 'add_quote_details' , eo_excel_text = eo_excel_text, all_image_tags = all_image_tags , all_section_image_size = all_section_image_size, frequently_used_texts_by_user_id = frequently_used_texts_by_user_id)
                 else:
                     return render_template('add_quote_details.html', all_images=all_images, quote_info=quote_info, texts_by_user_id=texts_by_user_id, all_section_names=all_section_names , quote_data =quote_data, page_name = 'add_quote_details' , eo_excel_text = eo_excel_text , all_image_tags = all_image_tags, frequently_used_texts_by_user_id = frequently_used_texts_by_user_id)
-            
             
         else:
             return render_template('login_error.html')
