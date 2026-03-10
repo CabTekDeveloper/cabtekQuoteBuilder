@@ -62,7 +62,8 @@ COMPANY_INFO = [
                                                "The final balance must be paid in full prior to the completion of production.",
                                                "Accepted payment methods: Cash, Credit Card, EFTPOS, or EFT.",
                                                "Customers should reference their invoice number when making payment.",
-                                               "Credit card payments incur a surcharge of 1.5% (exclusive of GST)"
+                                               "Mastercard and Visa payments incur a surcharge of 1.5% (exclusive of GST)",
+                                               "American Express payments incur a surcharge of 2.5% (exclusive of GST)"
                                             ]
                                         },
                                         

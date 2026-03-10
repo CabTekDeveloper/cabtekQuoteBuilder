@@ -713,7 +713,6 @@ def view_quote(quote_name):
         company_info = company_info_manager.get_company_info_by_id(company_id)
         
         # print("Loading View Quote Page")
-
         return render_template('view_quote.html',quote_info=quote_info, quote_data=quote_data, company_info=company_info, quoted_by_info=quoted_by_info, page_name='view_quote' )
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')

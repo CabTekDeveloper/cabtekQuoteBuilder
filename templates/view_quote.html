@@ -261,13 +261,18 @@
                                         {% for item in company_info['conditions_of_supply'] %}
                                             <tr >
                                                 <td class="pb-1">
+                                                {% if company_info['id'] == 1 %}
                                                     <span class="bold">{{loop.index}}. {{item.title}}</span>
                                                     {% for condition in item.conditions %}
                                                         <span class=" pl-3 d-block">• {{condition}}</span>
                                                     {% endfor %}
+                                                {% elif  company_info['id'] == 2 %}
+                                                    <span class=" pl-3 d-block">• {{item}}</span>
+                                                {% else %}
+                                                   <span></span>
+                                                {% endif %}
                                                 </td>
                                             </tr>
-                                            
                                         {% endfor %}
                                             
                                     </tbody>

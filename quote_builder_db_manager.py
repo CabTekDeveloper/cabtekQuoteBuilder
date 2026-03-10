@@ -10,8 +10,8 @@ import company_info_manager
 ###-------------------------------------------------------------------------------###
 
 def create_db_connection():
-    QUOTING_DB_PATH = file_folder_paths.TEST_QUOTING_DB_PATH    # For Testing
-    # QUOTING_DB_PATH = file_folder_paths.LIVE_QUOTING_DB_PATH    # For deployment
+    # QUOTING_DB_PATH = file_folder_paths.TEST_QUOTING_DB_PATH    # For Testing
+    QUOTING_DB_PATH = file_folder_paths.LIVE_QUOTING_DB_PATH    # For deployment
     connection = sqlite3.connect(QUOTING_DB_PATH)
     connection.row_factory = sqlite3.Row
     return connection
