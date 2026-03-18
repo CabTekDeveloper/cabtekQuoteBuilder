@@ -1,0 +1,20 @@
+{% include "header.html" %}
+
+<div class="main-div">
+    {% if "user_info" in session %}
+     <div class="row justify-content-center">
+        <div class="col-md-6  mt-2 ">
+            <h6 class="mb-3 px-0">Connected Clients: <span id="count" class=""></span></h6>
+            <div id="client_list_div" class=""><div>
+        </div>
+    </div>
+    {% else %}
+    <!-- display the message below if the user is not logged in -->
+    <center>
+        <p class=" text-red">Ooopss.. Seems like you are logged out..</p>
+        <a href="{{url_for('login')}}"> Click here to login again </a>
+    </center>
+
+    {% endif %}
+</div>
+{% include "footer.html" %}
