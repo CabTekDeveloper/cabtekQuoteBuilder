@@ -48,6 +48,8 @@ let saveSectionBtn = document.getElementById('save_section_btn')
 let copyCurrentSectionBtn = document.getElementById('copy_current_section_btn')
 let reorderSectionsBtn = document.getElementById('reorder_section_btn')
 
+let filterTextsByCurrentUserDIV = document.getElementById("filter_text_by_current_user_div");
+let filterTextsByCurrentUserINP = document.getElementById("filter_text_by_current_user_inp");
 
 
 function getSectionNameButtonsFromDiv() {
@@ -113,7 +115,7 @@ async function deleteSelectedSection() {
     let sectionName = getActiveSectionNameFromDiv();
     let quoteName = quoteNameElement.innerText;
 
-    
+
     if (sectionName == null || sectionName.trim().length == 0) return
 
     if (confirm(`Are you sure you want to delete ''${sectionName}?`)) {
@@ -492,11 +494,13 @@ async function deleteTextDb(deleteTextTag) {
 }
 
 
-
 async function refreshTextResultDiv() {
     textULblock.innerHTML = '';
     frequentlyUsedTextUlBlock.innerHTML = ''
     textSearchInput.value = ''
+
+    // hide the filter searched texts by current use checkbox
+    filterTextsByCurrentUserDIV.classList.add("hide");
 
     // Get texts by current user from db
     let data1 = await getTextsByCurrentUserFromDB();
@@ -531,11 +535,30 @@ async function refreshTextResultDiv() {
 
 // search texts using enter key
 if (textSearchInput != null) {
-    textSearchInput.onkeyup = (e) => getSearchedTextsFromDb();
+    textSearchInput.onkeyup = (e) => {
+        // Unhide the filter searched texts by user checkbox
+        (e.target.value.trim().length > 0) ? filterTextsByCurrentUserDIV.classList.remove("hide") : filterTextsByCurrentUserDIV.classList.add("hide");
+        getSearchedTextsFromDb();
+    }
 }
+
+
+// Filter texts by current user check box
+if (filterTextsByCurrentUserINP !== null) {
+    // Whenever the page is loaded, get the value from locaStorage and set the value of checkbox.
+    filterTextsByCurrentUserINP.checked = JSON.parse(localStorage.getItem(filterTextsByCurrentUserINP.id) || false);
+    // Save the value of checkbox in localStorage
+    filterTextsByCurrentUserINP.onchange = (e) => {
+        localStorage.setItem(filterTextsByCurrentUserINP.id, e.target.checked);
+        getSearchedTextsFromDb();
+    }
+    
+}
+
 
 async function getSearchedTextsFromDb() {
     let filter_str = textSearchInput.value
+    let filterTextsByCurrentUser = filterTextsByCurrentUserINP.checked;
 
     // exit if the search_str is empty
     if (filter_str.trim().length == 0) {
@@ -546,16 +569,16 @@ async function getSearchedTextsFromDb() {
         return
     }
 
-    let data = await getFilteredTextsFromDB(filter_str);
+    let data = await getFilteredTextsFromDB(filter_str,filterTextsByCurrentUser);
 
     textULblock.innerHTML = '<small class="bold">Searched texts</small>';
     frequentlyUsedTextUlBlock.innerHTML = ''
     if (data.length > 0) {
         data.forEach(text => {
             let textLi = `<li class="mb-1" id="text_li_id_${text['text_id']}">
-                                    <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="text_id_${text['text_id']}">${text['text']}</span> 
-                                    <small class="bold text-danger  p-1 rounded"  id="delete_text" data-text_li_id ="text_li_id_${text['text_id']}" data-text_id="${text['text_id']}" onclick="deleteTextDb(this)">Delete</small>
-                                </li>`
+                                <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="text_id_${text['text_id']}">${text['text']}</span> 
+                                <small class="bold text-danger  p-1 rounded"  id="delete_text" data-text_li_id ="text_li_id_${text['text_id']}" data-text_id="${text['text_id']}" onclick="deleteTextDb(this)">Delete</small>
+                            </li>`
 
             textULblock.insertAdjacentHTML('beforeend', textLi);
         })

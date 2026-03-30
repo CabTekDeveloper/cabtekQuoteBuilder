@@ -171,9 +171,9 @@ async function getFrequentlyUsedTextsByCurrentUserFromDB() {
     return data
 }
 
-async function getFilteredTextsFromDB(search_str) {
+async function getFilteredTextsFromDB(search_str, filterByCurrentUser) {
     let data = []
-    const url = `/get_searched_texts_db/${search_str}`
+    const url = `/get_searched_texts_db/${search_str}/${filterByCurrentUser}`
     const res = await fetch(url, OPTIONS_GET);
     if (res.status == 200) { data = await res.json(); }
     return data

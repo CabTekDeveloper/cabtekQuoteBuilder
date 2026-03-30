@@ -1525,15 +1525,22 @@ def check_text_exists(text):
         return False
 
 
-def get_searched_texts(search_str):
+def get_searched_texts(search_str,user_id=None):
     texts_by_user_id = []
     try:
         search_str = '%' + search_str.strip().lower() + '%'
-  
-        sql = ''' SELECT * FROM texts_table WHERE text_lower_case LIKE  ? ORDER BY time_stamp DESC '''
+        sql_parameters = []
+
+        if user_id is None:
+            sql = ''' SELECT * FROM texts_table WHERE text_lower_case LIKE  ? ORDER BY time_stamp DESC '''
+            sql_parameters = [search_str]
+        else:
+            sql = ''' SELECT * FROM texts_table WHERE text_lower_case LIKE  ? AND  user_id = ? ORDER BY time_stamp DESC '''
+            sql_parameters = [search_str, user_id]
+    
         connection = create_db_connection()
         cursor = connection.cursor()
-        cursor.execute(sql, [search_str])
+        cursor.execute(sql, sql_parameters)
         rows = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -1545,6 +1552,8 @@ def get_searched_texts(search_str):
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         return texts_by_user_id
+    
+# print(get_searched_texts("i"))
 
 def delete_text_by_text_id(text_id, user_id):
     user_id =  int(user_id)

@@ -456,12 +456,12 @@ def get_texts_by_user_id_db():
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         
-@app.route('/get_searched_texts_db/<search_str>', methods=["GET"])
-def get_searched_texts_db(search_str):
+@app.route('/get_searched_texts_db/<search_str>/<filter_searched_texts_by_current_user>', methods=["GET"])
+def get_searched_texts_db(search_str,filter_searched_texts_by_current_user):
     try:
         if "user_info" in session:
             user_id = session['user_info']['user_id']
-            searched_texts = quote_builder_db.get_searched_texts(search_str)
+            searched_texts = quote_builder_db.get_searched_texts(search_str, user_id) if filter_searched_texts_by_current_user =="true" else quote_builder_db.get_searched_texts(search_str)
             return jsonify(searched_texts)
 
         else:

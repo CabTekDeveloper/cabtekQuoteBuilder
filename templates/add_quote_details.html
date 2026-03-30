@@ -150,9 +150,10 @@
 
             <!--  ADD TEXT DIV -->
             <div id="addTextDiv" class=" color-border">
+
                 <!-- Search Text Div-->
-                <div class="row mb-2">
-                    <div class="col-md-12 ">
+                <div class="row mb-2 ">
+                    <div class="col-md-6 ">
                         <div class="input-group" id="text_serach_div">
                             <div class="form-outline mr-1">
                                 <input type="text" id="text_search_input" name="text_search_word" placeholder="Search Texts ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
@@ -160,6 +161,12 @@
                             <button type="button" class="btn btn-sm btn-primary  mr-1" onclick="getSearchedTextsFromDb()"> &#128270; </button>
                             <button type="button" class="btn btn-sm text-blue bold  " onclick="refreshTextResultDiv()"> &#8634; </button>
                         </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center hide" id="filter_text_by_current_user_div">
+                        <input class="form-check-input" style="accent-color: green;" type="checkbox" id="filter_text_by_current_user_inp" >
+                        <label class="form-check-label text-success" for="filter_text_by_current_user_inp">
+                            Filter searched texts by current user
+                        </label>
                     </div>
                 </div>
 
