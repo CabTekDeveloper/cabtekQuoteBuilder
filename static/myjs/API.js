@@ -41,6 +41,17 @@ async function saveEOexcelFileInDB(uploadedFile, user_id) {
 }
 
 //POST JSON Data -----------------------------------------------------------------------------------------------------------//
+
+async function createNewQuote(data_to_post) {
+    let data = {}
+    OPTIONS_POST_JSON_DATA.body = JSON.stringify(data_to_post)
+    const url = `/create_quote/create_new_quote`;
+    const res = await fetch(url, OPTIONS_POST_JSON_DATA);
+    if (res.status == 200) { data = await res.json(); }
+    return data;
+}
+
+
 async function saveNewSectionNameInDB(data_to_post) {
     let data = {}
     OPTIONS_POST_JSON_DATA.body = JSON.stringify(data_to_post)
@@ -145,6 +156,15 @@ async function reorderSectionNamesInDB(data_to_post) {
 
 
 //GET -----------------------------------------------------------------------------------------------------------//
+
+
+async function checkQuoteNameExistsDB(data_to_post){
+    let data = {}
+    const url = `/create_quote/check_quote_name_exists_db/${data_to_post}`;
+    const res = await fetch(url, OPTIONS_GET);
+    if (res.status == 200) { data = await res.json(); }
+    return data
+}
 
 async function getQuoteDataFromDB(quote_name) {
     let data = {}

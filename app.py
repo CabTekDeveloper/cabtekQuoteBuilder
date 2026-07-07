@@ -94,54 +94,37 @@ def logout():
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 # ----------------------------------------------------------------------------------------------#
 
-@app.route('/create_quote', methods=['POST', 'GET'])
+@app.route('/create_quote', methods=['GET'])
 def create_quote():
     try:
         if 'user_info' in session:
-            date_today = f"{helper.get_cur_datetime()['date_today']}"
             all_company_info = company_info_manager.get_all_company_info()
-            
-            # POST method
-            if request.method == "POST":
-                new_quote_info = {
-                    'quote_name'            : request.form['quote_name'].strip(),
-                    'quoted_by'             : request.form['quoted_by'].strip().title(),
-                    'date_quote_created'    : request.form['date_quote_created'].strip(),
-                    'customer_name'         : request.form['customer_name'].strip(),
-                    'customer_email'        : request.form['customer_email'].strip(),
-                    'customer_phone_no'     : request.form['customer_phone_no'].strip(),
-                    'delivery_info'         : request.form['delivery_info'].strip(),
-                    'is_template'           : request.form['is_template'].strip() ,
-                    'company_id'            : int(request.form['company_id'])
-                }
-                
-                if "/" in new_quote_info['quote_name']:
-                    flash(f'Quote name ( {new_quote_info["quote_name"]} ) cannot contain "/"')
-                    return render_template('create_quote.html', date_today=date_today, new_quote_info = new_quote_info , all_company_info=all_company_info)
-                
-                if quote_builder_db.check_quote_name_exists(new_quote_info['quote_name']):
-                    user_id = quote_builder_db.get_quote_info_by_quote_name(new_quote_info['quote_name'])['user_id']
-                    full_name = quote_builder_db.get_user_info_by_id(user_id)['full_name']
-                    flash(f'The quote name "{new_quote_info["quote_name"]}" is used by {full_name}.')
-                    flash('Use a different quote name.')
-                    return render_template('create_quote.html', date_today=date_today, new_quote_info = new_quote_info , all_company_info=all_company_info)
-                else:
-                    # store quote info in the db
-                    user_id = quote_builder_db.get_user_info_by_full_name(new_quote_info['quoted_by'])['user_id']
-                    quote_builder_db.insert_into_quotes_table(
-                        new_quote_info['quote_name'], user_id, new_quote_info['date_quote_created'], new_quote_info['customer_name'], new_quote_info['customer_email'], 
-                        new_quote_info['customer_phone_no'], new_quote_info['delivery_info'],new_quote_info['is_template'], new_quote_info['company_id'] )
-                    return redirect(url_for('add_quote_details', quote_name=new_quote_info['quote_name']))
-            
-            # GET method
-            if request.method == "GET":  
-                return render_template('create_quote.html', date_today=date_today, all_company_info=all_company_info)
-        
+            return render_template('create_quote.html',  all_company_info=all_company_info)
         else:
             return render_template('login_error.html')
     
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
+@app.route('/create_quote/create_new_quote', methods=["POST"])
+def create_new_quote():
+    try:
+        date_today = f"{helper.get_cur_datetime()['date_today']}"
+        data = request.get_json()       
+        user_id = quote_builder_db.get_user_info_by_full_name(data['quoted_by'])['user_id']
+
+        quote_builder_db.insert_into_quotes_table(data['quote_name'], user_id, date_today, data['customer_name'], data['customer_email'], 
+                                                data['customer_phone_no'], data['delivery_info'],data['is_template'], data['company_id'] )
+        
+        return jsonify({"success": True})
+    except:
+        return jsonify({"success": False})
+    
+@app.route('/create_quote/check_quote_name_exists_db/<quote_name>')
+def check_quote_name_exists_db(quote_name):
+    exists = quote_builder_db.check_quote_name_exists(quote_name)
+    return jsonify({"exists": exists})
+
 # ----------------------------------------------------------------------------------------------#
 
 @app.route('/edit_quote/<quote_id>', methods=['POST', 'GET'])
