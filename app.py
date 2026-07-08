@@ -96,6 +96,7 @@ def logout():
 
 @app.route('/create_quote', methods=['GET'])
 def create_quote():
+
     try:
         if 'user_info' in session:
             all_company_info = company_info_manager.get_all_company_info()

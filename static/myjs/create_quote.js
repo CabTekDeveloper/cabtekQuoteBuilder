@@ -88,7 +88,7 @@ async function getCreateQuoteFormData() {
     let quoteNameInp = createQuoteForm.querySelector('[name="quote_name"]');
 
     //check required validation field first
-    quoteNameInp.setCustomValidity(""); // Clear previous custom validation message
+    quoteNameInp.setCustomValidity(""); // Clear previous quote name inp custom validation message
 
     if (!createQuoteForm.checkValidity()) {
         createQuoteForm.reportValidity();

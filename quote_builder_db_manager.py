@@ -6,7 +6,7 @@ import helper
 import inspect
 import file_folder_paths
 import company_info_manager
-
+import clickup_data_manager as clickup_manager
 ###-------------------------------------------------------------------------------###
 
 def create_db_connection():
@@ -688,7 +688,6 @@ def create_quotes_table():
     connection = create_db_connection()
     connection.execute(sql)
     connection.close()
-
 
 
 def update_quote_info_by_quote_id(new_quote_info):
@@ -1956,8 +1955,93 @@ def delete_quote_section_info_by_quote_id(quote_id):
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 
-### --------------------------------- Other Functions -----------------------------------###
 
+### --------------------------- Clients db manager -----------------------------------###
+
+def create_clickup_clients_table():
+    # Use ClickUp's task ID (e.g., '86ay8bx23') as primary key
+    sql = ''' CREATE TABLE IF NOT EXISTS clickup_clients_table (
+            id TEXT PRIMARY KEY,   
+            name TEXT ,
+            company TEXT ,
+            email TEXT ,
+            phone TEXT 
+        )'''
+    connection = create_db_connection()
+    connection.execute(sql)
+    connection.close()
+
+# Initialzied clickup clients table
+def init_clickup_clients_table():
+    connection = None
+
+    # Named placeholders match dictionary keys: :id, :name, :company, :email, :phone
+    sql = ''' 
+            INSERT INTO clickup_clients_table (id, name, company, email, phone) 
+            VALUES (:id, :name, :company, :email, :phone);
+        '''
+    try:
+        # If the last init is under 60 seconds, skip init.
+        if not helper.check_require_init_clickup_client_table(): 
+            return
+
+        # If failed or there's no clickup contact data, skip init.
+        clickup_client_data = clickup_manager.get_clickup_trade_contacts()
+        if not clickup_client_data:
+            print("No Clickup client data provided to populate table 'clickup_clients_table'!")
+            return
+        
+        connection = create_db_connection()
+        cursor = connection.cursor()
+
+        # Wipe the table clean
+        cursor.execute("DELETE FROM clickup_clients_table;")
+        print("Cleared all existing records from clickup_clients_table.")
+        
+        # Pass the dictionary list directly
+        cursor.executemany(sql, clickup_client_data)
+        
+        connection.commit()
+        cursor.close()
+        print(f"Successfully synced {len(clickup_client_data)} records to clickup_clients_table.")
+        
+        # update last init in the json file
+        helper.update_clickup_client_table_last_init()
+
+    except Exception as ex:
+        if connection:
+            connection.rollback()
+        print(f'Error: "{ex}" [In function {inspect.stack()[0][3]}]')
+    finally:
+        if connection:
+            connection.close()
+
+def get_all_clickup_clients():
+    connection = None
+    all_clients = []
+    sql = ''' SELECT * FROM clickup_clients_table ORDER BY company ASC'''
+
+    try:
+        connection = create_db_connection()
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        cursor.close()
+
+        for row in rows:
+            all_clients.append({key: row[key] for key in row.keys()})
+
+        return all_clients
+
+    except Exception as ex:
+        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+        return all_clients
+    finally:
+        if connection:
+            connection.close()
+
+
+### --------------------------------- Other Functions -----------------------------------###
 
 # save section data to quote_details_table and quote_section_info_table
 # section_data_to_save will come from the website when users click on save while creating a quote
