@@ -96,3 +96,7 @@ function indexOfMatchingTextInSelectTag(optionSelectTag, text) {
     return index;
 }
 
+// Quick helper to stop company names with spaces/quotes/symbols from breaking your HTML
+function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}

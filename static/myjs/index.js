@@ -134,7 +134,6 @@ async function deleteQuote(quoteDeleteBtn) {
 }
 
 
-
 // COPY AND ADD THE COPIED QUOTE IN THE TOP ROW OF THE TABLE
 async function copyQuoteAndDetails(copyBtn) {
     let quoteId = copyBtn.getAttribute('data-quote_id')

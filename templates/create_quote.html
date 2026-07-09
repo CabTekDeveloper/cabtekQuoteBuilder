@@ -2,24 +2,30 @@
 <div class="main-div" id="create_quote_div">
   {% if 'user_info' in session %}
     <div class="row ">
-      <div class="col-md-3 offset-4">
+      <div class="col-md-4 offset-4">
         <h5 class="bold bg-warning text-dark text-center p-2 mt-4">
-          Create New Quote
+          New Quote
         </h5>
+
+        {# New Quote Form #}
         <form class="m-2" id="create_quote_form">
-          <!-- Quote by Company -->
-          <div class="mb-2">
-            <div class="form-group">
-              <label for="company_id" class="bold mb-1">Company</label>
+          <div class="form-group row align-items-center mb-2">
+            <label
+              for="company_id"
+              class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Company</label
+            >
+            <div class="col-sm-9">
               <select
                 class="form-control form-control-sm"
+                id="company_id"
                 name="company_id"
                 required
               >
                 {% for row in all_company_info %}
                   <option
                     value="{{ row['id'] }}"
-                    {{ 'selected' if row['id']==1 else '' }}
+                    {{ 'selected' if row['id'] == 1 else '' }}
                   >
                     {{ row['company_name'] }}
                   </option>
@@ -27,40 +33,53 @@
               </select>
             </div>
           </div>
-          <!-- End Quote by company -->
+          {# Quote name #}
+          <div class="form-group row mb-2">
+            <label
+              for="quote_name_inp"
+              class="col-sm-3 col-form-label-sm bold text-sm-right mb-0 pt-2"
+              >Quote name</label
+            >
+            <div class="col-sm-9">
+              <div class="bg-lightgray p-3 rounded">
+                <input
+                  type="file"
+                  name="eo_file"
+                  id="eo_file_input"
+                  data-user_id="{{ session['user_info']['user_id'] }}"
+                  onchange="uploadEoExcelFileToDb(this)"
+                  class="form-control form-control-sm mb-2"
+                />
 
-          <!-- Quote name -->
-          <div class="mb-2">
-            <label for="quote_name" class="bold mb-1">Quote name</label>
-            <div class="form-group bg-lightgray p-3 mb-2">
-              <input
-                type="file"
-                name="eo_file"
-                id="eo_file_input"
-                data-user_id="{{ session['user_info']['user_id'] }}"
-                onchange="uploadEoExcelFileToDb(this) "
-                class="form-control form-control-sm "
-              />
+                <div class="mb-2">
+                  <small
+                    id="upload_msg"
+                    class="text-center text-danger d-block"
+                  >
+                  </small>
+                </div>
 
-              <div class="mb-2">
-                <small id="upload_msg" class="text-center text-danger">
-                  <!-- to show file upload message -->
-                </small>
+                {# quote_name #}
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  name="quote_name"
+                  id="quote_name_inp"
+                  autocomplete="off"
+                  placeholder="Or type a quote name"
+                  required
+                  autofocus
+                />
               </div>
-              {# quote_name #}
-              <input
-                type="text"
-                class="form-control form-control-sm "
-                name="quote_name"
-                id="quote_name_inp"
-                autocomplete="off"
-                placeholder="Or type a quote name"
-                required
-                autofocus
-              />
             </div>
+          </div>
 
-            <div class="form-group mb-2">
+          {# Quoted By #}
+          <div class="form-group row align-items-center mb-2">
+            <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Quoted by</label
+            >
+            <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control form-control-sm"
@@ -73,108 +92,199 @@
               />
             </div>
           </div>
-          <!-- End Quote name -->
 
-          <!-- Customer details -->
-          <div class="mb-2">
-            <label for="customer_name" class="bold mb-1">
-              Customer details</label
+          {# Is Trade Client #}
+          <div class="form-group row align-items-center mb-2">
+            <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Trade client?</label
             >
-            {# customer_name #}
-            <div class="form-group mb-2">
+            <div class="col-sm-9 d-flex align-items-center">
+              {# Is Trade : Yes check #}
+              <div class="form-check form-check-inline mb-0">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="is_trade_client"
+                  id="is_trade_client_yes"
+                  value="yes"
+                  checked
+                />
+                <label class="form-check-label" for="is_trade_client_yes"
+                  >Yes</label
+                >
+              </div>
+              {# Is Trade : No check #}
+              <div class="form-check form-check-inline mb-0">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="is_trade_client"
+                  id="is_trade_client_no"
+                  value="no"
+                />
+                <label class="form-check-label" for="is_trade_client_no"
+                  >No</label
+                >
+              </div>
+            </div>
+          </div>
+
+          {# Customer company #}
+          <div class="form-group row align-items-center mb-2">
+            <label
+              for="customer_company"
+              class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Company</label
+            >
+            <div class="col-sm-9">
+              <select
+                class="form-control form-control-sm pl-1"
+                id="customer_company"
+                name="customer_company"
+                required
+              >
+                <option></option>
+                {% for row in all_clients %}
+                  <option value="{{ row['company'] }}">
+                    {{ row['company'] }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          {# Customer_name #}
+          <div class="form-group row align-items-center mb-2">
+            <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Name</label
+            >
+            <div class="col-sm-9">
+              <select
+                class="form-control form-control-sm pl-1"
+                id="customer_name_select"
+                name="customer_name"
+                required
+              >
+                <option></option>
+                {# JS will fill data #}
+              </select>
               <input
                 type="text"
-                class="form-control form-control-sm"
+                class="form-control form-control-sm hide"
                 name="customer_name"
+                id="customer_name_inp"
                 autocomplete="off"
-                placeholder="Customer Name"
-                required
+                disabled
               />
             </div>
+          </div>
 
-            {#  customer_email #}
-            <div class="form-group mb-2">
+          {# Customer_email #}
+          <div class="form-group row align-items-center mb-2">
+            <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Email</label
+            >
+            <div class="col-sm-9">
               <input
                 type="email"
                 class="form-control form-control-sm"
                 name="customer_email"
+                id="customer_email"
                 autocomplete="off"
-                placeholder="Customer Email"
+                readonly
                 required
               />
             </div>
+          </div>
 
-            {# customer_phone_no #}
-            <div class="form-group mb-2">
+          {# Customer Phone no #}
+          <div class="form-group row align-items-center mb-2">
+            <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Contact no</label
+            >
+            <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control form-control-sm"
                 name="customer_phone_no"
+                id="customer_phone"
                 autocomplete="off"
-                placeholder="Customer Phone No"
                 required
+                readonly
               />
             </div>
+          </div>
 
-            {#  delivery_info#}
-            <div class="form-group ">
+          {# Delivery #}
+          <div class="form-group row align-items-center mb-4">
+            <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Delivery info</label
+            >
+            <div class="col-sm-9">
               <input
                 type="text"
                 class="form-control form-control-sm"
                 name="delivery_info"
                 autocomplete="off"
-                placeholder="Delivery address or Pickup"
                 required
               />
             </div>
           </div>
-          <!-- End Customer details -->
 
-          <!-- Save as Template -->
-          <div>
-            <label for="is_template" class="bold mr-3">Save as template</label>
-
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="is_template"
-                id="is_template_yes"
-                value="yes"
-              />
-              <label class="form-check-label" for="is_template_yes">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="is_template"
-                id="is_template_no"
-                value="no"
-                checked
-              />
-              <label class="form-check-label" for="is_template_no">No</label>
+          <div class="form-group row align-items-center mb-4">
+            <label
+              for="is_template_yes"
+              class="col-sm-3 col-form-label-sm bold text-sm-right mb-0"
+              >Save as template</label
+            >
+            <div class="col-sm-9 d-flex align-items-center">
+              <div class="form-check form-check-inline mb-0">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="is_template"
+                  id="is_template_yes"
+                  value="yes"
+                />
+                <label class="form-check-label" for="is_template_yes"
+                  >Yes</label
+                >
+              </div>
+              <div class="form-check form-check-inline mb-0">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="is_template"
+                  id="is_template_no"
+                  value="no"
+                  checked
+                />
+                <label class="form-check-label " for="is_template_no">No</label>
+              </div>
             </div>
           </div>
-          <!-- End Save as Template -->
-
-          <div class="row m-4">
-            <div class="col-md-6">
-              <button
-                type="submit"
-                class="btn btn-sm btn-warning  bold full-width"
-                onclick="creatQuote(event)"
-              >
-                Create
-              </button>
-            </div>
-            <div class="col-md-6">
-              <a
-                href="{{ url_for('index') }}"
-                type="button"
-                class="btn btn-sm btn-dark  bold full-width"
-                >Cancel</a
-              >
+          <div class="form-group row mt-4">
+            <div class="offset-sm-3 col-sm-9">
+              <div class="row">
+                <div class="col-6">
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-warning bold full-width"
+                    onclick="creatQuote(event)"
+                  >
+                    Create
+                  </button>
+                </div>
+                <div class="col-6">
+                  <a
+                    href="{{ url_for('index') }}"
+                    type="button"
+                    class="btn btn-sm btn-dark bold full-width"
+                  >
+                    Cancel
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </form>

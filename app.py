@@ -20,6 +20,18 @@ import inspect
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 socketio = SocketIO(app)
+
+#----------------------------------------------------------------------------------------------#
+# API end points for fetching data
+
+@app.route('/get_all_clickup_clients_db', methods=["GET"])
+def get_all_clickup_clients_db():
+    try:
+        data = quote_builder_db.get_all_clickup_clients()
+        return jsonify(data)
+    except Exception as ex:
+        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
 #----------------------------------------------------------------------------------------------#
 @app.route('/index')
 @app.route('/index/<showSavedTemplate>')
@@ -70,6 +82,9 @@ def login():
                 # Wangchuk, 18-03-2025,
                 quote_builder_db.backup_db(user_info['user_name'])
                 
+                # Initialize clickup clients table once when user logs in.
+                quote_builder_db.init_clickup_clients_table()
+
                 return redirect(url_for('index'))
             else:
                 flash("The username or password you entered is incorrect.")
@@ -94,13 +109,16 @@ def logout():
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 # ----------------------------------------------------------------------------------------------#
 
+
+
 @app.route('/create_quote', methods=['GET'])
 def create_quote():
 
     try:
         if 'user_info' in session:
             all_company_info = company_info_manager.get_all_company_info()
-            return render_template('create_quote.html',  all_company_info=all_company_info)
+            all_clients = quote_builder_db.get_all_clickup_clients()
+            return render_template('create_quote.html',  all_company_info=all_company_info , all_clients = all_clients)
         else:
             return render_template('login_error.html')
     
@@ -111,11 +129,11 @@ def create_quote():
 def create_new_quote():
     try:
         date_today = f"{helper.get_cur_datetime()['date_today']}"
-        data = request.get_json()       
+        data = request.get_json()  
         user_id = quote_builder_db.get_user_info_by_full_name(data['quoted_by'])['user_id']
 
         quote_builder_db.insert_into_quotes_table(data['quote_name'], user_id, date_today, data['customer_name'], data['customer_email'], 
-                                                data['customer_phone_no'], data['delivery_info'],data['is_template'], data['company_id'] )
+                                                data['customer_phone_no'], data['delivery_info'],data['is_template'], data['company_id'], data['is_trade_client'], data['customer_company'] )
         
         return jsonify({"success": True})
     except:

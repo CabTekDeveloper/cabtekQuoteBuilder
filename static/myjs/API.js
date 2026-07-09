@@ -72,7 +72,7 @@ async function deleteSectionFromDB(data_to_post) {
 
 async function saveSectionDetailsInDB(data_to_post) {
     // console.log(data_to_post);
-    
+
     let data = {}
     OPTIONS_POST_JSON_DATA.body = JSON.stringify(data_to_post)
     const url = `/save_quote_section_detials_db`;
@@ -157,8 +157,16 @@ async function reorderSectionNamesInDB(data_to_post) {
 
 //GET -----------------------------------------------------------------------------------------------------------//
 
+async function getClickupClientsDB() {
+    let data = []
+    const url = `/get_all_clickup_clients_db`;
+    const res = await fetch(url, OPTIONS_GET);
+    if (res.status == 200) { data = await res.json(); }
 
-async function checkQuoteNameExistsDB(data_to_post){
+    return data
+}
+
+async function checkQuoteNameExistsDB(data_to_post) {
     let data = {}
     const url = `/create_quote/check_quote_name_exists_db/${data_to_post}`;
     const res = await fetch(url, OPTIONS_GET);
