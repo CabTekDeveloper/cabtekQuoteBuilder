@@ -174,6 +174,14 @@ async function checkQuoteNameExistsDB(data_to_post) {
     return data
 }
 
+async function getQuoteInfoDB(quote_name) {
+    let data = {}
+    const url = `/get_quote_info_db/${quote_name}`;
+    const res = await fetch(url, OPTIONS_GET);
+    if (res.status == 200) { data = await res.json(); }
+    return data
+}
+
 async function getQuoteDataFromDB(quote_name) {
     let data = {}
     const url = `/get_quote_data_db/${quote_name}`;

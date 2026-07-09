@@ -116,7 +116,7 @@ async function deleteQuote(quoteDeleteBtn) {
 
         let data_to_post = { "quote_id": quoteId };
         let data = await deleteQuoteFromDB(data_to_post);
-        
+
         if (data && data["deleted"]) {
             if (isTemplate == 'yes') {
                 savedTemplateTable.querySelector("#quote_id_" + quoteId).remove()
@@ -129,8 +129,19 @@ async function deleteQuote(quoteDeleteBtn) {
             alert("Quote not deleted!")
         }
 
-        toggleMessageModal("",false)        ;
+        toggleMessageModal("", false);
     }
+}
+
+
+async function isOldQuote(quoteName) {
+    let resData = await getQuoteInfoDB(quoteName);
+    if (!isEmpty(resData)) {
+        if (isEmpty(resData.customer_company) ) {
+            return true
+        }
+    }
+    return false
 }
 
 
@@ -138,6 +149,14 @@ async function deleteQuote(quoteDeleteBtn) {
 async function copyQuoteAndDetails(copyBtn) {
     let quoteId = copyBtn.getAttribute('data-quote_id')
     let quoteName = copyBtn.getAttribute('data-quote_name')
+
+    let isOld =  await isOldQuote(quoteName);
+
+    if (isOld){
+        alert("Cannot make a copy!\n\nThis is an old quote.\nThe Quoting tool has been updated and has new fields required.\n\nPlease create a new quote.\nThen you can copy individual sections!")
+        return;
+    }
+
 
     if (confirm(`Are you sure you make a copy of "${quoteName}"?`) == true) {
         toggleMessageModal("Copying quote!", true);

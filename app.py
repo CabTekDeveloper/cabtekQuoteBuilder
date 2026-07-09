@@ -32,6 +32,14 @@ def get_all_clickup_clients_db():
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 
+@app.route('/get_quote_info_db/<quote_name>', methods=["GET"])
+def get_quote_info_db(quote_name):
+    try:
+        data = quote_builder_db.get_quote_info_by_quote_name(quote_name)
+        return jsonify(data)
+    except Exception as ex:
+        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
 #----------------------------------------------------------------------------------------------#
 @app.route('/index')
 @app.route('/index/<showSavedTemplate>')
@@ -602,9 +610,11 @@ def copy_quote():
                 customer_phone_no = original_quote_info['customer_phone_no']
                 delivery_info = original_quote_info['delivery_info']
                 company_id = original_quote_info['company_id']
-                
-                quote_builder_db.insert_into_quotes_table(new_quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, is_template=is_template, 
-                                                        company_id=company_id)
+                customer_company = original_quote_info['customer_company']
+                is_trade_client = original_quote_info['is_trade_client']
+
+                quote_builder_db.insert_into_quotes_table(new_quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, 
+                                                          is_template=is_template, company_id=company_id, customer_company=customer_company, is_trade_client=is_trade_client)
                 # get info of copied quote and add quoted_by and quote_status
                 copied_quote_info = quote_builder_db.get_quote_info_by_quote_name(new_quote_name)
                 copied_quote_info['quoted_by'] = quote_builder_db.get_user_info_by_id(user_id)['full_name']
