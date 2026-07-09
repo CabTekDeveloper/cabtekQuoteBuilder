@@ -1988,7 +1988,6 @@ def init_clickup_clients_table():
         # If failed or there's no clickup contact data, skip init.
         clickup_client_data = clickup_manager.get_clickup_trade_contacts()
         if not clickup_client_data:
-            print("No Clickup client data provided to populate table 'clickup_clients_table'!")
             return
         
         connection = create_db_connection()
@@ -1996,14 +1995,12 @@ def init_clickup_clients_table():
 
         # Wipe the table clean
         cursor.execute("DELETE FROM clickup_clients_table;")
-        print("Cleared all existing records from clickup_clients_table.")
         
         # Pass the dictionary list directly
         cursor.executemany(sql, clickup_client_data)
         
         connection.commit()
         cursor.close()
-        print(f"Successfully synced {len(clickup_client_data)} records to clickup_clients_table.")
         
         # update last init in the json file
         helper.update_clickup_client_table_last_init()
