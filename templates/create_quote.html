@@ -9,19 +9,18 @@
       </h5>
 
       {# New Quote Form #}
-      <form class="m-2"
-        id="create_quote_form">
+      <form class="m-2" id="create_quote_form">
+
+        {# Quoting company #}
         <div class="form-group row align-items-center mb-2">
-          <label for="company_id"
-            class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
+          <label for="company_id" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
           <div class="col-sm-9">
             <select class="form-control form-control-sm"
               id="company_id"
               name="company_id"
               required>
               {% for row in all_company_info %}
-              <option value="{{ row['id'] }}"
-                {{'selected' if row['id']==1 else ''}}>
+              <option value="{{ row['id'] }}" {{'selected' if row['id']==1 else ''}}>
                 {{ row['company_name'] }}
               </option>
               {% endfor %}
