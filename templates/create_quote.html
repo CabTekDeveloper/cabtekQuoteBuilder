@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="main-div"
-  id="create_quote_div">
+<div class="main-div" id="create_quote_div">
   {% if 'user_info' in session %}
   <div class="row ">
     <div class="col-md-4 offset-4">
@@ -11,7 +10,7 @@
       </h5>
 
       {# New Quote Form #}
-      <form class="m-2" id="create_quote_form">
+      <form class="m-2" id="quote_form">
 
         {# Quoting company #}
         <div class="form-group row align-items-center mb-2">
@@ -31,8 +30,7 @@
         </div>
         {# Quote name #}
         <div class="form-group row mb-2">
-          <label for="quote_name_inp"
-            class="col-sm-3 col-form-label-sm bold text-sm-right mb-0 pt-2">Quote name</label>
+          <label for="quote_name_inp" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0 pt-2">Quote name</label>
           <div class="col-sm-9">
             <div class="bg-lightgray p-3 rounded">
               <input type="file"
@@ -43,14 +41,14 @@
                 class="form-control form-control-sm mb-2" />
 
               <div class="mb-2">
-                <small id="upload_msg"
-                  class="text-center text-danger d-block">
+                <small id="upload_msg" class="text-center text-danger d-block">
+                  {# file upload message #}
                 </small>
               </div>
 
               {# quote_name #}
-              <input type="text"
-                class="form-control form-control-sm"
+              <input class="form-control form-control-sm"
+                type="text"
                 name="quote_name"
                 id="quote_name_inp"
                 autocomplete="off"
@@ -65,8 +63,8 @@
         <div class="form-group row align-items-center mb-2">
           <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Quoted by</label>
           <div class="col-sm-9">
-            <input type="text"
-              class="form-control form-control-sm"
+            <input class="form-control form-control-sm"
+              type="text"
               name="quoted_by"
               autocomplete="off"
               placeholder="Quoted By"
@@ -106,8 +104,7 @@
 
         {# Customer company #}
         <div class="form-group row align-items-center mb-2">
-          <label for="customer_company"
-            class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
+          <label for="customer_company" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
           <div class="col-sm-9">
             <select class="form-control form-control-sm pl-1"
               id="customer_company"
@@ -134,8 +131,8 @@
               <option></option>
               {# JS will fill data #}
             </select>
-            <input type="text"
-              class="form-control form-control-sm hide"
+            <input class="form-control form-control-sm hide"
+              type="text"
               name="customer_name"
               id="customer_name_inp"
               autocomplete="off"
@@ -147,8 +144,8 @@
         <div class="form-group row align-items-center mb-2">
           <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Email</label>
           <div class="col-sm-9">
-            <input type="email"
-              class="form-control form-control-sm"
+            <input class="form-control form-control-sm"
+              type="email"
               name="customer_email"
               id="customer_email"
               autocomplete="off"
@@ -161,10 +158,10 @@
         <div class="form-group row align-items-center mb-2">
           <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Contact no</label>
           <div class="col-sm-9">
-            <input type="text"
-              class="form-control form-control-sm"
+            <input class="form-control form-control-sm"
+              type="text"
               name="customer_phone_no"
-              id="customer_phone"
+              id="customer_phone_no"
               autocomplete="off"
               required
               readonly />
@@ -175,8 +172,8 @@
         <div class="form-group row align-items-center mb-4">
           <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Delivery info</label>
           <div class="col-sm-9">
-            <input type="text"
-              class="form-control form-control-sm"
+            <input class="form-control form-control-sm"
+              type="text"
               name="delivery_info"
               autocomplete="off"
               required />
@@ -184,8 +181,7 @@
         </div>
 
         <div class="form-group row align-items-center mb-4">
-          <label for="is_template_yes"
-            class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Save as
+          <label for="is_template_yes" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Save as
             template</label>
           <div class="col-sm-9 d-flex align-items-center">
             <div class="form-check form-check-inline mb-0">
@@ -194,8 +190,7 @@
                 name="is_template"
                 id="is_template_yes"
                 value="yes" />
-              <label class="form-check-label"
-                for="is_template_yes">Yes</label>
+              <label class="form-check-label" for="is_template_yes">Yes</label>
             </div>
             <div class="form-check form-check-inline mb-0">
               <input class="form-check-input"
@@ -204,8 +199,7 @@
                 id="is_template_no"
                 value="no"
                 checked />
-              <label class="form-check-label "
-                for="is_template_no">No</label>
+              <label class="form-check-label " for="is_template_no">No</label>
             </div>
           </div>
         </div>
@@ -213,9 +207,9 @@
           <div class="offset-sm-3 col-sm-9">
             <div class="row">
               <div class="col-6">
-                <button type="submit"
-                  class="btn btn-sm btn-warning bold full-width"
-                  onclick="creatQuote(event)">
+                <button class="btn btn-sm btn-warning bold full-width"
+                  type="submit"
+                  id="form_submit_btn">
                   Create
                 </button>
               </div>

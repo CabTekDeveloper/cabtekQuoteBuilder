@@ -8,11 +8,10 @@ let createQuoteDiv = document.getElementById("create_quote_div")
 let uploadFileMsg = document.getElementById('upload_msg')
 let eoFileInput = document.getElementById('eo_file_input')
 
-let createQuoteForm = document.getElementById("create_quote_form")
+let quoteForm = document.getElementById("quote_form")
 let quoteNameInp = document.getElementById('quote_name_inp')
 let isTradeYesTag = document.getElementById("is_trade_client_yes")
 let isTradeNoTag = document.getElementById("is_trade_client_no")
-
 let customerCompanySelect = document.getElementById('customer_company');
 
 // Customer name 
@@ -23,8 +22,9 @@ let customerNameSelect = document.getElementById("customer_name_select")
 let customerEmailInp = document.getElementById("customer_email")
 
 // Customer phone no 
-let customerPhoneInp = document.getElementById("customer_phone")
+let customerPhoneInp = document.getElementById("customer_phone_no")
 
+let formSubmitBtn = document.getElementById("form_submit_btn")
 //------------------------------------------------------------------------------------------------------------------------------------------------------- 
 // Wait for the browser to load the page completely
 document.addEventListener('DOMContentLoaded', async function () {
@@ -43,8 +43,6 @@ async function setClickupClientsDB() {
         }
     }
 }
-
-
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -227,10 +225,13 @@ function populateCustomerPhoneTag(filteredClient) {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------//
 // Create quote
-async function creatQuote(event) {
+
+formSubmitBtn.addEventListener("click", onFormSubmit)
+
+async function onFormSubmit(event) {
     event.preventDefault();     //Stop form from refreshing
 
-    let data = await getCreateQuoteFormData()
+    let data = await getquoteFormData()
 
     if (!isEmpty(data)) {
         let response = await createNewQuote(data)
@@ -246,9 +247,7 @@ async function creatQuote(event) {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------//
 // Get form data and validate
-async function getCreateQuoteFormData() {
-    let quoteNameInp = createQuoteForm.querySelector('[name="quote_name"]');
-
+async function getquoteFormData() {
     // check required validation field first. Clear previous message
     quoteNameInp.setCustomValidity("");
 
@@ -267,8 +266,8 @@ async function getCreateQuoteFormData() {
     }
 
     // Validation for required Values
-    if (!createQuoteForm.checkValidity()) {
-        createQuoteForm.reportValidity();
+    if (!quoteForm.checkValidity()) {
+        quoteForm.reportValidity();
         return null;
     }
 
@@ -288,13 +287,13 @@ async function getCreateQuoteFormData() {
     }
 
     // check custom error validation
-    if (!createQuoteForm.checkValidity()) {
-        createQuoteForm.reportValidity();
+    if (!quoteForm.checkValidity()) {
+        quoteForm.reportValidity();
         return null;
     }
 
     // Get form data
-    let formData = new FormData(createQuoteForm);
+    let formData = new FormData(quoteForm);
     let data = Object.fromEntries(formData.entries());
 
     // Trim whitespaces

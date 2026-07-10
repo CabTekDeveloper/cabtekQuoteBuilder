@@ -168,7 +168,7 @@ async function getClickupClientsDB() {
 
 async function checkQuoteNameExistsDB(data_to_post) {
     let data = {}
-    const url = `/create_quote/check_quote_name_exists_db/${data_to_post}`;
+    const url = `/check_quote_name_exists_db/${data_to_post}`;
     const res = await fetch(url, OPTIONS_GET);
     if (res.status == 200) { data = await res.json(); }
     return data

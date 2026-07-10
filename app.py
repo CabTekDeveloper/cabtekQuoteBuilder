@@ -40,6 +40,11 @@ def get_quote_info_db(quote_name):
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 
+@app.route('/check_quote_name_exists_db/<quote_name>')
+def check_quote_name_exists_db(quote_name):
+    exists = quote_builder_db.check_quote_name_exists(quote_name)
+    return jsonify({"exists": exists})
+
 #----------------------------------------------------------------------------------------------#
 @app.route('/index')
 @app.route('/index/<showSavedTemplate>')
@@ -147,11 +152,6 @@ def create_new_quote():
     except:
         return jsonify({"success": False})
     
-@app.route('/create_quote/check_quote_name_exists_db/<quote_name>')
-def check_quote_name_exists_db(quote_name):
-    exists = quote_builder_db.check_quote_name_exists(quote_name)
-    return jsonify({"exists": exists})
-
 # ----------------------------------------------------------------------------------------------#
 
 @app.route('/edit_quote/<quote_id>', methods=['POST', 'GET'])

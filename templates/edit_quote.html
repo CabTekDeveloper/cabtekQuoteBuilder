@@ -10,7 +10,7 @@
       </h5>
 
       {# Edit Form #}
-      <form method="POST" action="{{ url_for('edit_quote', quote_id = (quote_info['quote_id'] if quote_info else new_quote_info['quote_id'] ) ) }}" class="m-2">
+      <form method="POST" id="quote_form" action="{{ url_for('edit_quote', quote_id = (quote_info['quote_id'] if quote_info else new_quote_info['quote_id'] ) ) }}" class="m-2">
         {# Quoting Company name #}
         <div class="form-group row align-items-center mb-3">
           <label for="company_id" class="col-sm-3 col-form-label-sm bold p-0 m-0 text-sm-right">Company</label>
@@ -245,7 +245,8 @@
             <div class="row">
               <div class="col-6">
                 <button type="submit"
-                  class="btn btn-sm btn-success pl-5 pr-5 bold full-width">
+                  class="btn btn-sm btn-success pl-5 pr-5 bold full-width"
+                  id="form_submit_btn">
                   Save
                 </button>
               </div>
