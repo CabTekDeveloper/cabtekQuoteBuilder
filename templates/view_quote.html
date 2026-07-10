@@ -1,4 +1,6 @@
-{% include "header.html" %}
+{% extends "base.html" %}
+
+{% block content %}
 
 <div class="main-div">
 
@@ -398,4 +400,8 @@
     <!-- end - check if the use is logged in -->
 
 </div>
-{% include "footer.html" %}
+
+{% endblock %}
+
+{% block page_js %}
+{% endblock %}

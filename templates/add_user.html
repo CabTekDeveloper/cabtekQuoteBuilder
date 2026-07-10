@@ -1,4 +1,6 @@
-{% include "header.html" %}
+{% extends "base.html" %}
+
+{% block content %}
 <div class="main-div">
     {% if session and session['user_info']['user_type_id'] == 1 %}
 
@@ -146,4 +148,7 @@
     </div>
     {% endif %}
 </div>
-{% include "footer.html" %}
+{% endblock %}
+
+{% block page_js %}
+{% endblock %}

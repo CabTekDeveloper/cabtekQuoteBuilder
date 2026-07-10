@@ -1,4 +1,6 @@
-{% include "header.html" %}
+{% extends "base.html" %}
+
+{% block content %}
 <div class="main-div">
     {% if 'user_info' in session %}
     <!-- to add a spacing between navbar and the next div below -->
@@ -31,7 +33,8 @@
                         </div>
 
                         <div class="col-md-2 d-flex justify-content-end px-0">
-                            <button type="button" class="btn btn-link btn-sm" data-user_id="{{ session['user_info']['user_id'] }}"  id="copy_external_section_btn" onclick="loadModalCopyExternalSection(this)"> <small>Copy external section</small></button>
+                            <button type="button" class="btn btn-link btn-sm" data-user_id="{{ session['user_info']['user_id'] }}" id="copy_external_section_btn"
+                                onclick="loadModalCopyExternalSection(this)"> <small>Copy external section</small></button>
                         </div>
                     </div>
                 </div>
@@ -41,10 +44,14 @@
             <!-- Modify buttons -->
             <div class="form-row mt-3 mb-1">
                 <div class="col-md-12 d-flex justify-content-end">
-                    <button type="button" class="btn btn-sm   btn-info      d-inline-block      {{ '' if quote_data['section_names']|length > 1 else 'hide' }}" id="reorder_section_btn" onclick="loadModalReorderSections(this)"> <small>Reorder section</small></button>
-                    <button type="button" class="btn btn-sm   btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn" onclick="copyCurrentSection()"> <small>Copy current section</small></button>
-                    <button type="button" class="btn btn-sm  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="save_section_btn" onclick="saveCurrentSectionDetailsToDB()"><small>Save section</small></button>
-                    <button type="button" class="btn btn-sm  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="delete_section_btn" onclick="deleteSelectedSection()"> <small class="">Delete section</small></button>
+                    <button type="button" class="btn btn-sm   btn-info      d-inline-block      {{ '' if quote_data['section_names']|length > 1 else 'hide' }}" id="reorder_section_btn"
+                        onclick="loadModalReorderSections(this)"> <small>Reorder section</small></button>
+                    <button type="button" class="btn btn-sm   btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn"
+                        onclick="copyCurrentSection()"> <small>Copy current section</small></button>
+                    <button type="button" class="btn btn-sm  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="save_section_btn"
+                        onclick="saveCurrentSectionDetailsToDB()"><small>Save section</small></button>
+                    <button type="button" class="btn btn-sm  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="delete_section_btn" onclick="deleteSelectedSection()">
+                        <small class="">Delete section</small></button>
                 </div>
             </div>
 
@@ -75,7 +82,8 @@
                         </div>
 
                         <div class="col-md-1">
-                            <input type="text" class="form-control form-control-sm" name="section_image_row_{{loop.index}}" autocomplete="off" value="{{row['section_image_row']}}" readonly tabindex="-1">
+                            <input type="text" class="form-control form-control-sm" name="section_image_row_{{loop.index}}" autocomplete="off" value="{{row['section_image_row']}}" readonly
+                                tabindex="-1">
                         </div>
 
                         <div class="col-md-6">
@@ -83,20 +91,26 @@
                         </div>
 
                         <div class="col-md-1">
-                            <input type="number" class="form-control form-control-sm" name="section_qty_row_{{loop.index}}" autocomplete="off" value="{{ '' if row['section_qty_row'] == 0 else row['section_qty_row'] }}">
+                            <input type="number" class="form-control form-control-sm" name="section_qty_row_{{loop.index}}" autocomplete="off"
+                                value="{{ '' if row['section_qty_row'] == 0 else row['section_qty_row'] }}">
                         </div>
 
                         <div class="col-md-1">
-                            <input type="number" class="form-control form-control-sm" name="unit_cost_row_{{loop.index}}" autocomplete="off" value="{{ '' if row['section_unit_cost_row'] == 0 else row['section_unit_cost_row']}}">
+                            <input type="number" class="form-control form-control-sm" name="unit_cost_row_{{loop.index}}" autocomplete="off"
+                                value="{{ '' if row['section_unit_cost_row'] == 0 else row['section_unit_cost_row']}}">
                         </div>
 
                         <div class="col-md-2 bg-light d-flex justify-content-center px-0">
-                            <button type="button" class="btn btn-sm btn-link  px-1" name="add_remove_row_image_btn_{{loop.index}}" data-img_inp_name="section_image_row_{{loop.index}}" onclick="addRemoveRowImage(this)" tabindex="-1">
+                            <button type="button" class="btn btn-sm btn-link  px-1" name="add_remove_row_image_btn_{{loop.index}}" data-img_inp_name="section_image_row_{{loop.index}}"
+                                onclick="addRemoveRowImage(this)" tabindex="-1">
                                 {% if row['section_image_row']|length > 0 %} <small class="text-red">-Image</small> {% else %} <small>+Image</small> {% endif %}
                             </button>
-                            <button type="button" class="btn btn-sm btn-link px-1" onclick="saveTextToDb('section_detail_row_{{loop.index}}' , 'section_text_row_{{loop.index}}')" tabindex="-1"><small>Save text</small></button>
-                            <button type="button" class="btn btn-sm btn-link px-1" onclick="addNewSectionDetailsRowBelow('section_detail_row_{{loop.index}}')" tabindex="-1"><small>+Row</small></button>
-                            <button type="button" class="btn btn-sm btn-link px-1 text-red" onclick="removeSectionDetailsRow('section_detail_row_{{loop.index}}')" tabindex="-1"><small>-Row</small></button>
+                            <button type="button" class="btn btn-sm btn-link px-1" onclick="saveTextToDb('section_detail_row_{{loop.index}}' , 'section_text_row_{{loop.index}}')"
+                                tabindex="-1"><small>Save text</small></button>
+                            <button type="button" class="btn btn-sm btn-link px-1" onclick="addNewSectionDetailsRowBelow('section_detail_row_{{loop.index}}')"
+                                tabindex="-1"><small>+Row</small></button>
+                            <button type="button" class="btn btn-sm btn-link px-1 text-red" onclick="removeSectionDetailsRow('section_detail_row_{{loop.index}}')"
+                                tabindex="-1"><small>-Row</small></button>
 
                         </div>
                     </div>
@@ -163,7 +177,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 d-flex align-items-center hide" id="filter_text_by_current_user_div">
-                        <input class="form-check-input" style="accent-color: green;" type="checkbox" id="filter_text_by_current_user_inp" >
+                        <input class="form-check-input" style="accent-color: green;" type="checkbox" id="filter_text_by_current_user_inp">
                         <label class="form-check-label text-success" for="filter_text_by_current_user_inp">
                             Filter searched texts by current user
                         </label>
@@ -179,7 +193,8 @@
                         {% for text in frequently_used_texts_by_user_id %}
                         <li class="mb-1" id="frequently_used_text_li_id_{{text['id']}}">
                             <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="frequently_used_text_id_{{text['id']}}">{{text['text']}}</span>
-                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="frequently_used_text_li_id_{{ text['id'] }}" data-text_id="{{ text['id'] }}" onclick="deleteFrequentlyUsedText(this)">Remove</small>
+                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="frequently_used_text_li_id_{{ text['id'] }}" data-text_id="{{ text['id'] }}"
+                                onclick="deleteFrequentlyUsedText(this)">Remove</small>
                         </li>
                         {% endfor %}
                         {% endif %}
@@ -192,7 +207,8 @@
                         {% for text in texts_by_user_id %}
                         <li class="mb-1" id="text_li_id_{{ text['text_id'] }}">
                             <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="text_id_{{text['text_id']}}">{{text['text']}}</span>
-                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="text_li_id_{{ text['text_id'] }}" data-text_id="{{text['text_id']}}" onclick="deleteTextDb(this)">Delete</small>
+                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="text_li_id_{{ text['text_id'] }}" data-text_id="{{text['text_id']}}"
+                                onclick="deleteTextDb(this)">Delete</small>
                         </li>
                         {% endfor %}
                         {% endif %}
@@ -210,7 +226,8 @@
                     <div class="col-md-8">
                         <div class="input-group" id="image_serach_div">
                             <div class="form-outline mr-1 ">
-                                <input type="text" id="image_search_input" name="image_search_word" placeholder="Search Images ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
+                                <input type="text" id="image_search_input" name="image_search_word" placeholder="Search Images ..." class="form-control form-control-sm" autocomplete="off"
+                                    tabindex="0" />
                             </div>
                             <button type="button" class="btn btn-sm btn-primary mr-1" onclick="getSearchedImagesFromDb()"> &#128270; </button>
                             <button type="button" class="btn btn-sm text-blue bold  " onclick="refreshImageResultDiv()"> &#8634; </button>
@@ -251,7 +268,8 @@
                     <div class="m-1 mb-2 d-inline-block img-container" id="image_div_id_{{image['image_id']}}">
                         <img src="{{url_for('static', filename= image['image_path'])}}" class="equal-size-imgage" alt="{{image['image_full_name']}}">
                         <button type="button" class="img-container-btn" data-image_path="{{ image['image_path'] }}" onclick="addToQuoteImageDiv(this)">+</button>
-                        <button type="button" class="img-container-btn-delete" data-image_div_id="image_div_id_{{image['image_id']}}" data-image_id="{{ image['image_id'] }}" onclick="deleteImage(this)">-</button>
+                        <button type="button" class="img-container-btn-delete" data-image_div_id="image_div_id_{{image['image_id']}}" data-image_id="{{ image['image_id'] }}"
+                            onclick="deleteImage(this)">-</button>
                         <p class="img-container-text">{{image['image_name_lower_no_ext']}}</p>
                     </div>
                     {% endfor %}
@@ -299,14 +317,16 @@
                     <div class="col-md-8 mb-1">
                         <div class="input-group" id="eo_excel_text_serach_div">
                             <div class="form-outline mr-1">
-                                <input type="text" id="eo_excel_text_search_input" data-user_id="{{ session['user_info']['user_id'] }}" name="eo_excel_text_search_word" placeholder="Search EO text ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
+                                <input type="text" id="eo_excel_text_search_input" data-user_id="{{ session['user_info']['user_id'] }}" name="eo_excel_text_search_word"
+                                    placeholder="Search EO text ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
                             </div>
                             <button type="button" class="btn btn-sm btn-primary mr-1" onclick="getSearchedEoExcelTextFromDb()"> &#128270; </button>
                             <button type="button" class="btn btn-sm text-blue bold " onclick="refreshEoExcelTextResultDiv()"> &#8634; </button>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-sm btn-primary bold mb-2 float-right" id="showUploadEoExcelBtn" onclick="showUploadEoExcelDiv()"> <small>*Upload Excel file</small> </button>
+                        <button type="button" class="btn btn-sm btn-primary bold mb-2 float-right" id="showUploadEoExcelBtn" onclick="showUploadEoExcelDiv()"> <small>*Upload Excel file</small>
+                        </button>
                     </div>
                 </div>
 
@@ -359,4 +379,7 @@
 
     {% endif %}
 </div>
-{% include "footer.html" %}
+{% endblock %}
+
+{% block page_js %}
+{% endblock %}

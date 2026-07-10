@@ -1,4 +1,6 @@
-{% include "header.html" %}
+{% extends "base.html" %}
+
+{% block content %}
 <div class="main-div"
   id="create_quote_div">
   {% if 'user_info' in session %}
@@ -238,5 +240,7 @@
   </center>
   {% endif %}
 </div>
+{% endblock %}
 
-{% include "footer.html" %}
+{% block page_js %}
+{% endblock %}
