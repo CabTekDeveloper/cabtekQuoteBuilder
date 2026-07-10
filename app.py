@@ -1,5 +1,6 @@
 # Wangchuk added
 # Wangchuk modified 01-08-2025
+# Wangchuk modifed 10-07-2026
 
 # from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify, Markup
 from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify
@@ -122,16 +123,13 @@ def logout():
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 # ----------------------------------------------------------------------------------------------#
 
-
-
 @app.route('/create_quote', methods=['GET'])
 def create_quote():
-
     try:
         if 'user_info' in session:
             all_company_info = company_info_manager.get_all_company_info()
             all_clients = quote_builder_db.get_all_clickup_clients()
-            return render_template('create_quote.html',  all_company_info=all_company_info , all_clients = all_clients)
+            return render_template('quote_form.html',  all_company_info=all_company_info , all_clients = all_clients)
         else:
             return render_template('login_error.html')
     
