@@ -1,7 +1,8 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
-let CLICKUP_CLIENTS_DATA_DB = null;
-
+// windows variable set in quote_form.html
+let CLICKUP_CLIENTS_DATA_DB = window.all_clients || [];
+let IS_EDIT = JSON.parse(window.is_edit || "false");
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 let createQuoteDiv = document.getElementById("create_quote_div")
@@ -27,22 +28,23 @@ let customerPhoneInp = document.getElementById("customer_phone_no")
 let formSubmitBtn = document.getElementById("form_submit_btn")
 //------------------------------------------------------------------------------------------------------------------------------------------------------- 
 // Wait for the browser to load the page completely
-document.addEventListener('DOMContentLoaded', async function () {
-    if (window.location.pathname.includes('create_quote')) {
-        await setClickupClientsDB();
-    }
-});
+// document.addEventListener('DOMContentLoaded', async function () {
+//     if (window.location.pathname.includes('create_quote') || window.location.pathname.includes('edit_quote')) {
+//         await setClickupClientsDB();
+//     }
+// });
 
-async function setClickupClientsDB() {
-    // Only fetch if it hasn't been loaded
-    if (CLICKUP_CLIENTS_DATA_DB === null) {
-        try {
-            CLICKUP_CLIENTS_DATA_DB = await getClickupClientsDB();
-        } catch (error) {
-            console.error("Failed to load ClickUp Clients database:", error);
-        }
-    }
-}
+// async function setClickupClientsDB() {
+//     // Only fetch if it hasn't been loaded
+//     if (CLICKUP_CLIENTS_DATA_DB === null) {
+//         try {
+//             CLICKUP_CLIENTS_DATA_DB = await getClickupClientsDB();
+//         } catch (error) {
+//             console.error("Failed to load ClickUp Clients database:", error);
+//         }
+//     }
+// }
+
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -36,8 +36,10 @@ def get_all_clickup_clients_db():
 @app.route('/get_quote_info_db/<quote_name>', methods=["GET"])
 def get_quote_info_db(quote_name):
     try:
-        data = quote_builder_db.get_quote_info_by_quote_name(quote_name)
-        return jsonify(data)
+        quote_info = quote_builder_db.get_quote_info_by_quote_name(quote_name)
+        quote_info['quoted_by'] = quote_builder_db.get_user_info_by_id(quote_info['user_id'])['full_name']
+        return jsonify(quote_info)
+
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 
@@ -157,6 +159,7 @@ def edit_quote(quote_id):
     try:
         if 'user_info' in session:
             all_company_info = company_info_manager.get_all_company_info()
+            all_clients = quote_builder_db.get_all_clickup_clients()
             # POST method
             if request.method == "POST":
                 new_quote_info = {
@@ -194,7 +197,7 @@ def edit_quote(quote_id):
                 user_id = quote_info['user_id']
                 quoted_by = quote_builder_db.get_user_info_by_id(user_id)['full_name']
                 quote_info['quoted_by'] = quoted_by
-                return render_template('edit_quote.html', quote_info = quote_info , all_company_info=all_company_info)
+                return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients, is_edit = True)
         
         else:
             return render_template('login_error.html')
