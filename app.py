@@ -153,9 +153,37 @@ def create_new_quote():
         return jsonify({"success": False})
     
 # ----------------------------------------------------------------------------------------------#
+# Edit Quote routes
 
-@app.route('/edit_quote/<quote_id>', methods=['POST', 'GET'])
+@app.route('/edit_quote/<quote_id>')
 def edit_quote(quote_id):
+    try:
+        if 'user_info' in session:
+            all_company_info = company_info_manager.get_all_company_info()
+            all_clients = quote_builder_db.get_all_clickup_clients()
+
+            quote_info = quote_builder_db.get_quote_info_by_quote_id(quote_id)
+            quote_info['quoted_by'] = quote_builder_db.get_user_info_by_id(quote_info['user_id'])['full_name']
+
+            return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients)
+        else:
+            return render_template('login_error.html')
+    
+    except Exception as ex:
+        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
+
+@app.route('/edit_quote/save_edited_quote', methods=["POST"])
+def save_edited_quote():
+    try:
+        return jsonify({"success": True})
+    except:
+        return jsonify({"success": False})
+    
+
+
+@app.route('/edit_quoteXXX/<quote_id>', methods=['POST', 'GET'])
+def edit_quoteXXX(quote_id):
     try:
         if 'user_info' in session:
             all_company_info = company_info_manager.get_all_company_info()
@@ -197,7 +225,7 @@ def edit_quote(quote_id):
                 user_id = quote_info['user_id']
                 quoted_by = quote_builder_db.get_user_info_by_id(user_id)['full_name']
                 quote_info['quoted_by'] = quoted_by
-                return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients, is_edit = True)
+                return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients)
         
         else:
             return render_template('login_error.html')

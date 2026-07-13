@@ -2,8 +2,10 @@
 
 // windows variable set in quote_form.html
 let CLICKUP_CLIENTS_DATA_DB = window.all_clients || [];
-let IS_EDIT = JSON.parse(window.is_edit || "false");
+let QUOTE_INFO = window.quote_info || null;
+let IS_EDIT = QUOTE_INFO !== null; // Dynamically sets your edit state flag
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
+console.log(QUOTE_INFO);
 
 let createQuoteDiv = document.getElementById("create_quote_div")
 let uploadFileMsg = document.getElementById('upload_msg')

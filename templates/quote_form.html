@@ -5,18 +5,19 @@
   {% if 'user_info' in session %}
   <div class="row ">
     <div class="col-md-4 offset-4">
-      <h5 class="bold {{ 'bg-success text-white' if is_edit else 'bg-warning text-dark' }} text-center p-2 mt-4">
+      <h5 class="bold {{ 'bg-success text-white' if quote_info else 'bg-warning text-dark' }} text-center p-2 mt-4">
         {# Dynamic Heading #}
-        {{ 'Edit Quote' if is_edit else 'New Quote' }}
+        {{ 'Edit Quote' if quote_info else 'New Quote' }}
       </h5>
 
       <form class="m-2" id="quote_form">
-        {# Hidden ID field so JavaScript knows if we are editing #}
-        {% if is_edit %}
-          <input type="hidden" name="quote_id" id="quote_id" value="{{ quote_info['id'] }}">
+        {# Hidden ID field so JavaScript and backend know if we are editing #}
+        {% if quote_info %}
+        <input type="hidden" name="quote_id" id="quote_id" value="{{ quote_info['id'] }}">
         {% endif %}
 
         {# Quoting company #}
+        {# If quote_info, set option to selected quoting company #}
         <div class="form-group row align-items-center mb-2">
           <label for="company_id" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
           <div class="col-sm-9">
@@ -25,8 +26,8 @@
               name="company_id"
               required>
               {% for row in all_company_info %}
-              <option value="{{ row['id'] }}" 
-                {{ 'selected' if (is_edit and quote_info['company_id']|int == row['id']|int) or (not is_edit and row['id'] == 1) else '' }}>
+              <option value="{{ row['id'] }}"
+                {{ 'selected' if (quote_info and quote_info['company_id']|int == row['id']|int) or (not quote_info and row['id'] == 1) else '' }}>
                 {{ row['company_name'] }}
               </option>
               {% endfor %}
@@ -39,8 +40,7 @@
           <label for="quote_name_inp" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0 pt-2">Quote name</label>
           <div class="col-sm-9">
             <div class="bg-lightgray p-3 rounded">
-              {# Only show file uploader for brand new quotes #}
-              {% if not is_edit %}
+
               <input type="file"
                 name="eo_file"
                 id="eo_file_input"
@@ -50,8 +50,7 @@
               <div class="mb-2">
                 <small id="upload_msg" class="text-center text-danger d-block"></small>
               </div>
-              {% endif %}
-              
+
               {# quote_name field populated on edit #}
               <input class="form-control form-control-sm"
                 type="text"
@@ -59,9 +58,9 @@
                 id="quote_name_inp"
                 autocomplete="off"
                 placeholder="Or type a quote name"
-                value="{{ quote_info['quote_name'] if is_edit else '' }}"
+                value="{{ quote_info['quote_name'] if quote_info else '' }}"
                 required
-                {{ 'autofocus' if not is_edit else '' }} />
+                {{ 'autofocus' if not quote_info else '' }} />
             </div>
           </div>
         </div>
@@ -75,7 +74,7 @@
               name="quoted_by"
               autocomplete="off"
               placeholder="Quoted By"
-              value="{{ quote_info['quoted_by'] if is_edit else session['user_info']['full_name'] }}"
+              value="{{ quote_info['quoted_by'] if quote_info else session['user_info']['full_name'] }}"
               readonly
               required />
           </div>
@@ -91,8 +90,8 @@
                 name="is_trade_client"
                 id="is_trade_client_yes"
                 value="yes"
-                {{ 'checked' if not is_edit or quote_info['is_trade_client'] == 'yes' else '' }} />
-              <label class="form-check-label" for="is_trade_client_yes">Yes</label>
+                checked
+                <label class="form-check-label" for="is_trade_client_yes">Yes</label>
             </div>
             <div class="form-check form-check-inline mb-0">
               <input class="form-check-input"
@@ -100,16 +99,12 @@
                 name="is_trade_client"
                 id="is_trade_client_no"
                 value="no"
-                {{ 'checked' if is_edit and (quote_info['is_trade_client'] == 'no' or not quote_info['is_trade_client']) else '' }} />
-              <label class="form-check-label" for="is_trade_client_no">No</label>
+                <label class="form-check-label" for="is_trade_client_no">No</label>
             </div>
           </div>
         </div>
 
         {# Customer company #}
-        {# if is_edit and is_trade_client is none or "", then set option to Cash Sale option only #}
-        {# if is_edit and is_trade_client is "no", then set option to Cash Sale option only #}
-        {# else if not is_edit, set option to client company options #}
         <div class="form-group row align-items-center mb-2">
           <label for="customer_company" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
           <div class="col-sm-9">
@@ -117,21 +112,12 @@
               id="customer_company"
               name="customer_company"
               required>
-              
-              {% if is_edit and (not quote_info['is_trade_client'] or quote_info['is_trade_client'] == 'no') %}
-                {# Non-trade clients in edit mode get Cash Sale only #}
-                <option value="Cash Sale" selected>Cash Sale</option>
-              
-              {% else %}
-                {# Trade clients in edit mode, or brand new quotes get all options #}
-                <option></option>
-                {% for row in all_clients %}
-                <option value="{{ row['company'] }}"
-                  {{ 'selected' if quote_info and quote_info['customer_company'] == row['company'] else '' }}>
-                  {{ row['company'] }}
-                </option>
-                {% endfor %}
-              {% endif %}
+              <option value=""></option>
+              {% for row in all_clients %}
+              <option value="{{ row['company'] }}">
+                {{ row['company'] }}
+              </option>
+              {% endfor %}
 
             </select>
           </div>
@@ -165,7 +151,7 @@
               name="customer_email"
               id="customer_email"
               autocomplete="off"
-              value="{{ quote_info['customer_email'] if is_edit else '' }}"
+              value="{{ quote_info['customer_email'] if quote_info else '' }}"
               readonly
               required />
           </div>
@@ -180,7 +166,7 @@
               name="customer_phone_no"
               id="customer_phone_no"
               autocomplete="off"
-              value="{{ quote_info['customer_phone_no'] if is_edit else '' }}"
+              value="{{ quote_info['customer_phone_no'] if quote_info else '' }}"
               required
               readonly />
           </div>
@@ -194,7 +180,7 @@
               type="text"
               name="delivery_info"
               autocomplete="off"
-              value="{{ quote_info['delivery_info'] if is_edit else '' }}"
+              value="{{ quote_info['delivery_info'] if quote_info else '' }}"
               required />
           </div>
         </div>
@@ -209,7 +195,7 @@
                 name="is_template"
                 id="is_template_yes"
                 value="yes"
-                {{ 'checked' if is_edit and quote_info['is_template'] == 'yes' else '' }} />
+                {{ 'checked' if quote_info and quote_info['is_template'] == 'yes' else '' }} />
               <label class="form-check-label" for="is_template_yes">Yes</label>
             </div>
             <div class="form-check form-check-inline mb-0">
@@ -218,7 +204,7 @@
                 name="is_template"
                 id="is_template_no"
                 value="no"
-                {{ 'checked' if not is_edit or quote_info['is_template'] == 'no' else '' }} />
+                {{ 'checked' if not quote_info or quote_info['is_template'] == 'no' else '' }} />
               <label class="form-check-label" for="is_template_no">No</label>
             </div>
           </div>
@@ -228,10 +214,10 @@
           <div class="offset-sm-3 col-sm-9">
             <div class="row">
               <div class="col-6">
-                <button class="btn btn-sm bold full-width {{ 'btn-success' if is_edit else 'btn-warning' }}"
+                <button class="btn btn-sm bold full-width {{ 'btn-success' if quote_info else 'btn-warning' }}"
                   type="submit"
                   id="form_submit_btn">
-                  {{ 'Save Changes' if is_edit else 'Create' }}
+                  {{ 'Save Changes' if quote_info else 'Create' }}
                 </button>
               </div>
               <div class="col-6">
@@ -248,13 +234,13 @@
 
       {# Debug helper area #}
       {% if quote_info %}
-        <div class="mt-3 small text-muted text-center">{{ quote_info }}</div>
+      <div class="mt-3 small text-muted text-center">{{ quote_info }}</div>
       {% endif %}
     </div>
   </div>
   {% else %}
   <center>
-    <p class=" text-red">Ooopss.. Seems like you are logged out..</p>
+    <p class="text-red">Ooopss.. Seems like you are logged out..</p>
     <a href="{{ url_for('login') }}"> Click here to login again </a>
   </center>
   {% endif %}
@@ -263,9 +249,9 @@
 
 {% block page_js %}
 <script type="text/javascript">
-  // Making state and database fields accessible to quote_form.js on page initialization
-  window.is_edit = "{{ 'true' if is_edit else 'false' }}";
-  window.all_clients = {{all_clients | tojson}};
+  // Safely inject JSON objects and null definitions directly into window scope
+  window.all_clients = {{ all_clients | tojson | safe }};
+  window.quote_info = {{ (quote_info | tojson | safe) if quote_info else 'null' }};
 </script>
 <script src="{{ url_for('static', filename='myjs/quote_form.js')}}" type="text/javascript"></script>
 {% endblock %}
