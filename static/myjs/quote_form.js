@@ -28,8 +28,8 @@ let customerEmailInp = document.getElementById("customer_email")
 let customerPhoneInp = document.getElementById("customer_phone_no")
 
 let formSubmitBtn = document.getElementById("form_submit_btn")
-//------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Event listeners
 
 if (isTradeYesTag !== null) {

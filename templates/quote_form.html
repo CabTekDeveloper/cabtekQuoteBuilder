@@ -4,17 +4,90 @@
 <div class="main-div" id="create_quote_div">
   {% if 'user_info' in session %}
   <div class="row ">
-    <div class="col-md-4 offset-4">
+
+    {# Show Quote info  -------------------------------------------------------------------------------------------------------------- #}
+    <div class="col-md-4 px-3">
+      {% if quote_info %}
+      <div class="card bg-light mt-4 shadow-sm">
+        <div class="card-header bg-secondary text-white text-center p-2">
+          <h6 class="mb-0 bold">Quote Details</h6>
+        </div>
+        <div class="card-body p-3 text-sm">
+
+          {# Quoting Company #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Quoting Co:</div>
+            <div class="col-sm-8 text-left text-dark">
+              {% for company in all_company_info %}
+              {% if company['id']|int == quote_info['company_id']|int %}
+              {{ company['company_name'] }}
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          {# Quote Name #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Quote Name:</div>
+            <div class="col-sm-8 text-left text-dark">{{ quote_info['quote_name'] }}</div>
+          </div>
+
+          {# Quoted By #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Quoted By:</div>
+            <div class="col-sm-8 text-left text-dark">{{ quote_info['quoted_by'] }}</div>
+          </div>
+
+          <hr class="my-2 border-gray">
+
+          {# Is Trade Client #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Trade Client:</div>
+            <div class="col-sm-8 text-left text-dark">{{ quote_info['is_trade_client']|capitalize if quote_info['is_trade_client'] else "-" }}</div>
+          </div>
+
+          {# Client Company #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Client Co:</div>
+            <div class="col-sm-8 text-left text-dark">{{ quote_info['customer_company'] if quote_info['customer_company'] else "-" }}</div>
+          </div>
+
+          {# Client Name #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Client Name:</div>
+            <div class="col-sm-8 text-left text-dark">{{ quote_info['customer_name'] if quote_info['customer_name'] else "-" }}</div>
+          </div>
+
+          {# Client Email #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Email:</div>
+            <div class="col-sm-8 text-left text-dark text-break">{{ quote_info['customer_email'] if quote_info['customer_email'] else "-" }}</div>
+          </div>
+
+          {# Client Contact #}
+          <div class="row mb-2 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Contact No:</div>
+            <div class="col-sm-8 text-left text-dark">{{ quote_info['customer_phone_no'] if quote_info['customer_phone_no'] else "-" }}</div>
+          </div>
+
+          {# Delivery info #}
+          <div class="row mb-0 align-items-baseline">
+            <div class="col-sm-4 text-right text-muted small">Delivery Info:</div>
+            <div class="col-sm-8 text-left text-dark">{{ quote_info['delivery_info'] if quote_info['delivery_info'] else "-" }}</div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    {# Edit Quote column -------------------------------------------------------------------------------------------------------------- #}
+    <div class="col-md-4 ">
       <h5 class="bold {{ 'bg-success text-white' if quote_info else 'bg-warning text-dark' }} text-center p-2 mt-4">
         {# Dynamic Heading #}
         {{ 'Edit Quote' if quote_info else 'New Quote' }}
       </h5>
 
       <form class="m-2" id="quote_form">
-        {# Hidden ID field so JavaScript and backend know if we are editing #}
-        {% if quote_info %}
-        <input type="hidden" name="quote_id" id="quote_id" value="{{ quote_info['id'] }}">
-        {% endif %}
 
         {# Quoting company #}
         <div class="form-group row align-items-center mb-2">
@@ -89,7 +162,7 @@
                 name="is_trade_client"
                 id="is_trade_client_yes"
                 value="yes"
-                checked /> 
+                checked />
               <label class="form-check-label" for="is_trade_client_yes">Yes</label>
             </div>
             <div class="form-check form-check-inline mb-0">
