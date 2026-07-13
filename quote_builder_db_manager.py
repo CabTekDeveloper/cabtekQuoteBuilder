@@ -692,7 +692,6 @@ def create_quotes_table():
 
 def update_quote_info_by_quote_id(new_quote_info):
     try:
-
         quote_id = int(new_quote_info['quote_id'])
         quote_name = new_quote_info['quote_name']
         customer_name = new_quote_info['customer_name'].strip().title()
@@ -707,7 +706,6 @@ def update_quote_info_by_quote_id(new_quote_info):
         is_trade_client = new_quote_info['is_trade_client']
         customer_company = new_quote_info['customer_company']
 
-        print(new_quote_info)
         sql = ''' UPDATE quotes_table 
                 SET quote_name = ?,
                 customer_name = ?,
