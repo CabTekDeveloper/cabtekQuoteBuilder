@@ -149,8 +149,12 @@ def create_new_quote():
                                                 data['customer_phone_no'], data['delivery_info'],data['is_template'], data['company_id'], data['is_trade_client'], data['customer_company'] )
         
         return jsonify({"success": True})
-    except:
-        return jsonify({"success": False})
+    except Exception as e:
+        print(f"Database error during quote edit save: {e}") 
+        return jsonify({
+            "success": False, 
+            "message": "Internal database error occurred while saving."
+        }), 500
     
 # ----------------------------------------------------------------------------------------------#
 # Edit Quote routes
@@ -176,61 +180,67 @@ def edit_quote(quote_id):
 @app.route('/edit_quote/save_edited_quote', methods=["POST"])
 def save_edited_quote():
     try:
+        data = request.get_json()  
+        quote_builder_db.update_quote_info_by_quote_id(data)
         return jsonify({"success": True})
-    except:
-        return jsonify({"success": False})
+    except Exception as e:
+        print(f"Database error during quote edit save: {e}") 
+
+        return jsonify({
+            "success": False, 
+            "message": "Internal database error occurred while saving."
+        }), 500
     
 
-
-@app.route('/edit_quoteXXX/<quote_id>', methods=['POST', 'GET'])
-def edit_quoteXXX(quote_id):
-    try:
-        if 'user_info' in session:
-            all_company_info = company_info_manager.get_all_company_info()
-            all_clients = quote_builder_db.get_all_clickup_clients()
-            # POST method
-            if request.method == "POST":
-                new_quote_info = {
-                    'quote_id' :quote_id,
-                    'quote_name' : request.form['quote_name'].strip(),
-                    'quoted_by' : request.form['quoted_by'].strip().title(),
-                    'date_quote_created' : request.form['date_quote_created'].strip(),
-                    'customer_name' : request.form['customer_name'].strip(),
-                    'customer_email' : request.form['customer_email'].strip(),
-                    'customer_phone_no' : request.form['customer_phone_no'].strip(),
-                    'delivery_info' : request.form['delivery_info'].strip(),
-                    'is_template' : request.form['is_template'].strip(),
-                    'company_id' : int(request.form['company_id'])
-                }
+# @app.route('/edit_quoteXXX/<quote_id>', methods=['POST', 'GET'])
+# def edit_quoteXXX(quote_id):
+#     try:
+#         if 'user_info' in session:
+#             all_company_info = company_info_manager.get_all_company_info()
+#             all_clients = quote_builder_db.get_all_clickup_clients()
+#             # POST method
+#             if request.method == "POST":
+#                 new_quote_info = {
+#                     'quote_id' :quote_id,
+#                     'quote_name' : request.form['quote_name'].strip(),
+#                     'quoted_by' : request.form['quoted_by'].strip().title(),
+#                     'date_quote_created' : request.form['date_quote_created'].strip(),
+#                     'customer_name' : request.form['customer_name'].strip(),
+#                     'customer_email' : request.form['customer_email'].strip(),
+#                     'customer_phone_no' : request.form['customer_phone_no'].strip(),
+#                     'delivery_info' : request.form['delivery_info'].strip(),
+#                     'is_template' : request.form['is_template'].strip(),
+#                     'company_id' : int(request.form['company_id'])
+#                 }
                 
-                if "/" in new_quote_info['quote_name']:
-                    flash(f'Quote name ( {new_quote_info["quote_name"]} ) cannot contain "/"')
-                    return render_template('edit_quote.html', new_quote_info = new_quote_info , all_company_info=all_company_info)
+#                 if "/" in new_quote_info['quote_name']:
+#                     flash(f'Quote name ( {new_quote_info["quote_name"]} ) cannot contain "/"')
+#                     return render_template('edit_quote.html', new_quote_info = new_quote_info , all_company_info=all_company_info)
                 
-                quote_info = quote_builder_db.get_quote_info_by_quote_id(quote_id)
-                quote_name = quote_info['quote_name']
-                if quote_name.lower() == new_quote_info['quote_name'].lower() or (quote_builder_db.check_quote_name_exists(new_quote_info['quote_name']) == False):
-                    quote_builder_db.update_quote_info_by_quote_id(new_quote_info)
-                    return redirect(url_for('index', showSavedTemplate = new_quote_info['is_template']))
-                else:
-                    user_id = quote_builder_db.get_quote_info_by_quote_name(quote_name)['user_id']
-                    full_name = quote_builder_db.get_user_info_by_id(user_id)['full_name']
-                    flash(f'The quote name "{new_quote_info["quote_name"]}" is already used by {full_name}.')
-                    flash('Use a different quote name.')
-                    return render_template('edit_quote.html', new_quote_info = new_quote_info , all_company_info=all_company_info)
+#                 quote_info = quote_builder_db.get_quote_info_by_quote_id(quote_id)
+#                 quote_name = quote_info['quote_name']
+#                 if quote_name.lower() == new_quote_info['quote_name'].lower() or (quote_builder_db.check_quote_name_exists(new_quote_info['quote_name']) == False):
+#                     quote_builder_db.update_quote_info_by_quote_id(new_quote_info)
+#                     return redirect(url_for('index', showSavedTemplate = new_quote_info['is_template']))
+#                 else:
+#                     user_id = quote_builder_db.get_quote_info_by_quote_name(quote_name)['user_id']
+#                     full_name = quote_builder_db.get_user_info_by_id(user_id)['full_name']
+#                     flash(f'The quote name "{new_quote_info["quote_name"]}" is already used by {full_name}.')
+#                     flash('Use a different quote name.')
+#                     return render_template('edit_quote.html', new_quote_info = new_quote_info , all_company_info=all_company_info)
                 
-            # GET method
-            if request.method == "GET":  
-                quote_info = quote_builder_db.get_quote_info_by_quote_id(quote_id)
-                user_id = quote_info['user_id']
-                quoted_by = quote_builder_db.get_user_info_by_id(user_id)['full_name']
-                quote_info['quoted_by'] = quoted_by
-                return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients)
+#             # GET method
+#             if request.method == "GET":  
+#                 quote_info = quote_builder_db.get_quote_info_by_quote_id(quote_id)
+#                 user_id = quote_info['user_id']
+#                 quoted_by = quote_builder_db.get_user_info_by_id(user_id)['full_name']
+#                 quote_info['quoted_by'] = quoted_by
+#                 return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients)
         
-        else:
-            return render_template('login_error.html')
-    except Exception as ex:
-        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+#         else:
+#             return render_template('login_error.html')
+#     except Exception as ex:
+#         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 # ----------------------------------------------------------------------------------------------#
 @app.route('/add_quote_details/<quote_name>', methods=['GET'])
 @app.route('/add_quote_details/<quote_name>/<add_new_section>/<section_name>', methods=['GET'])

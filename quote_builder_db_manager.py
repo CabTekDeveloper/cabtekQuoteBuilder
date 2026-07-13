@@ -692,6 +692,7 @@ def create_quotes_table():
 
 def update_quote_info_by_quote_id(new_quote_info):
     try:
+
         quote_id = int(new_quote_info['quote_id'])
         quote_name = new_quote_info['quote_name']
         customer_name = new_quote_info['customer_name'].strip().title()
@@ -703,7 +704,10 @@ def update_quote_info_by_quote_id(new_quote_info):
         time_stamp = helper.get_cur_datetime()['timestamp']
         rev_date = f"{helper.get_cur_datetime()['date_today']} {helper.get_cur_datetime()['time_now']}"
         company_id = int(new_quote_info['company_id'])
-        
+        is_trade_client = new_quote_info['is_trade_client']
+        customer_company = new_quote_info['customer_company']
+
+        print(new_quote_info)
         sql = ''' UPDATE quotes_table 
                 SET quote_name = ?,
                 customer_name = ?,
@@ -714,12 +718,14 @@ def update_quote_info_by_quote_id(new_quote_info):
                 is_template = ?,
                 time_stamp = ?,
                 rev_date = ?,
-                company_id = ?
+                company_id = ?,
+                is_trade_client = ?,
+                customer_company =?
                 
                 WHERE quote_id = ? '''
         connection = create_db_connection()
         cursor = connection.cursor()
-        cursor.execute(sql, [quote_name, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case , is_template, time_stamp, rev_date, company_id, quote_id])
+        cursor.execute(sql, [quote_name, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case , is_template, time_stamp, rev_date, company_id,is_trade_client,customer_company, quote_id])
         connection.commit()
         cursor.close()
         connection.close()

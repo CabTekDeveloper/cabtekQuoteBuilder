@@ -5,7 +5,6 @@ let CLICKUP_CLIENTS_DATA_DB = window.all_clients || [];
 let QUOTE_INFO = window.quote_info || null;
 let IS_EDIT = QUOTE_INFO !== null; // Dynamically sets your edit state flag
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-console.log(QUOTE_INFO);
 
 let createQuoteDiv = document.getElementById("create_quote_div")
 let uploadFileMsg = document.getElementById('upload_msg')
@@ -209,23 +208,35 @@ function populateCustomerPhoneTag(filteredClient) {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------//
 // Create quote
-
+// 
 formSubmitBtn.addEventListener("click", onFormSubmit)
 
 async function onFormSubmit(event) {
-    event.preventDefault();     //Stop form from refreshing
+    event.preventDefault(); // Stop form from refreshing
 
-    let data = await getquoteFormData()
+    let data = await getquoteFormData();
 
-    if (!isEmpty(data)) {
-        let response = await createNewQuote(data)
+    // Check if data is valid and not empty (assuming getquoteFormData returns null on validation failure)
+    if (data && !isEmpty(data)) {
+        
+        if (IS_EDIT){
+            data.quote_id = QUOTE_INFO.quote_id
+        }
+
+        let response = await (IS_EDIT ? saveEditedQuote(data) : createNewQuote(data));
 
         if (response && response.success) {
-            window.location.href = (`/add_quote_details/${data.quote_name}`)
+            if (IS_EDIT) {
+                // Safely route back using the template type flag
+                window.location.href = `/index/${QUOTE_INFO?.is_template || 'no'}`;
+            } else {
+                window.location.href = `/add_quote_details/${encodeURIComponent(data.quote_name)}`;
+            }
         }
         else {
-            alert("Failed to create quote!")
-            window.location.reload();
+            // Extract a specific error message from the backend if it exists, fallback to a default
+            let errorMsg = response?.message || "Failed to save quote!";
+            alert(`Error: ${errorMsg}\n\nPlease check your connection and try again.`);
         }
     }
 }
@@ -265,7 +276,13 @@ async function getquoteFormData() {
     else if (quoteName !== "") {
         // Check if the quote name exists already in the database
         let response = await checkQuoteNameExistsDB(quoteName);
-        if (response && response.exists) {
+        let quoteNameExists = response?.exists ?? false;
+
+        // Determine if the enterned quote name matches the original name
+        let isOrignalName = IS_EDIT ? quoteName.toLowerCase() === QUOTE_INFO.quote_name.toLowerCase() : false;
+        
+        // Set error, if the name is a duplicate and not the orginal name
+        if (quoteNameExists && !isOrignalName) {
             quoteNameInp.setCustomValidity(`The quote name '${quoteName}' exists already!`);
         }
     }

@@ -16,6 +16,8 @@ let OPTIONS_POST_FORM_DATA = {
 }
 
 //POST FormData -----------------------------------------------------------------------------------------------------------//
+
+
 async function saveImageInfoInDB(uploadedFile, imageTagName) {
     let data = {}
     const formData = new FormData()
@@ -41,6 +43,15 @@ async function saveEOexcelFileInDB(uploadedFile, user_id) {
 }
 
 //POST JSON Data -----------------------------------------------------------------------------------------------------------//
+
+async function saveEditedQuote(data_to_post) {
+    let data = {}
+    OPTIONS_POST_JSON_DATA.body = JSON.stringify(data_to_post)
+    const url = `/edit_quote/save_edited_quote`;
+    const res = await fetch(url, OPTIONS_POST_JSON_DATA);
+    if (res.status == 200) { data = await res.json(); }
+    return data;
+}
 
 async function createNewQuote(data_to_post) {
     let data = {}
