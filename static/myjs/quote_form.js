@@ -29,26 +29,6 @@ let customerPhoneInp = document.getElementById("customer_phone_no")
 
 let formSubmitBtn = document.getElementById("form_submit_btn")
 //------------------------------------------------------------------------------------------------------------------------------------------------------- 
-// Wait for the browser to load the page completely
-// document.addEventListener('DOMContentLoaded', async function () {
-//     if (window.location.pathname.includes('create_quote') || window.location.pathname.includes('edit_quote')) {
-//         await setClickupClientsDB();
-//     }
-// });
-
-// async function setClickupClientsDB() {
-//     // Only fetch if it hasn't been loaded
-//     if (CLICKUP_CLIENTS_DATA_DB === null) {
-//         try {
-//             CLICKUP_CLIENTS_DATA_DB = await getClickupClientsDB();
-//         } catch (error) {
-//             console.error("Failed to load ClickUp Clients database:", error);
-//         }
-//     }
-// }
-
-
-//-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Event listeners
 
