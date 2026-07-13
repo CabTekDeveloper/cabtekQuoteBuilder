@@ -8,22 +8,32 @@
         <!-- Buttons -->
         <div class="col-md-2 " id="index_buttons_div">
             <div class="mr-5">
-                <button type="button" class="btn btn-sm {{'btn-dark' if showSavedTemplate == 'no' else 'btn-light '}} full-width  mt-1 mb-1 bold text-left pl-3" id="saved_quote_btn"
-                    onclick="showSavedQuotesDiv()">Saved Quotes</button>
-                <button type="button" class="btn btn-sm {{'btn-dark' if showSavedTemplate == 'yes' else 'btn-light '}} full-width  mb-5 bold text-left pl-3" id="saved_template_btn"
-                    onclick="showSavedTemplateDiv()">Saved Templates</button>
-                <a type="button" class="btn btn-sm btn-warning full-width  bold mb-4   pt-4 pb-4" id="create_quote_btn" onclick="" href="{{url_for('create_quote')}}">Create Quote </a>
+                <button type="button" class="btn btn-sm {{'btn-dark' if showSavedTemplate == 'no' else 'btn-light '}} full-width  mt-1 mb-1 bold text-left pl-3"
+                    id="saved_quote_btn"
+                    onclick="showSavedQuotesDiv()">
+                    Saved Quotes
+                </button>
+                <button type="button" class="btn btn-sm {{'btn-dark' if showSavedTemplate == 'yes' else 'btn-light '}} full-width  mb-5 bold text-left pl-3"
+                    id="saved_template_btn"
+                    onclick="showSavedTemplateDiv()">
+                    Saved Templates
+                </button>
+                <a type="button" class="btn btn-sm btn-warning full-width  bold mb-4   pt-4 pb-4"
+                    id="create_quote_btn"
+                    onclick="" href="{{url_for('create_quote')}}">
+                    Create Quote
+                </a>
             </div>
-
         </div>
         <!-- End Buttons -->
 
         <div class="col-md-10">
-
             <div class="row">
-
                 <!-- Saved quotes table -->
-                <div class="col-md-12 {{ 'hide' if showSavedTemplate == 'yes' else '' }}" id="saved_quote_div" style="overflow-x: hidden; overflow-y: auto; height: 85vh;">
+                <div class="col-md-12 {{ 'hide' if showSavedTemplate == 'yes' else '' }}"
+                    id="saved_quote_div"
+                    style="overflow-x: hidden; overflow-y: auto; height: 85vh;">
+
                     {% if quotes_by_user_id and has_saved_quotes == true %}
                     <table class="table table-sm table-hover" id="saved_quote_table">
                         <thead>
@@ -52,17 +62,56 @@
                                 <td>{{ quote['date_quote_created'] }}</td>
                                 <td> {{ quote['rev_date']}}</td>
                                 <td>{{ quote['customer_name'] }}</td>
-                                <td class="border-0"><a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}" type="button"
-                                        class="btn btn-sm btn-primary full-width p-0 m-0 visible-off "><small class=" pl-1 pr-1">Modify</small></a></td>
-                                <td class="border-0"><a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}" type="button"
-                                        class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
-                                <td class="border-0"><a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}" type="button"
-                                        class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
-                                <td class="border-0"><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}"
-                                        data-quote_id="{{quote['quote_id']}}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
-                                <td class="border-0"><button type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}"
-                                        data-quote_id="{{quote['quote_id']}}" data-is_template="{{quote['is_template']}}" onclick="deleteQuote(this)"><small
-                                            class=" pl-1 pr-1">Delete</small></button></td>
+                                <td class="border-0">
+                                    <a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}"
+                                        type="button"
+                                        class="btn btn-sm btn-primary full-width p-0 m-0 visible-off ">
+                                        <small class=" pl-1 pr-1">
+                                            Modify
+                                        </small>
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}"
+                                        type="button"
+                                        class="btn btn-sm btn-info full-width p-0 m-0 visible-off">
+                                        <small class=" pl-1 pr-1">
+                                            View
+                                        </small>
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}"
+                                        type="button"
+                                        class="btn btn-sm btn-success full-width p-0 m-0 visible-off">
+                                        <small class=" pl-1 pr-1">
+                                            Edit
+                                        </small>
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <button type="button"
+                                        class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off"
+                                        data-quote_name="{{quote['quote_name']}}"
+                                        data-quote_id="{{quote['quote_id']}}"
+                                        onclick="copyQuoteAndDetails(this)">
+                                        <small class=" pl-1 pr-1">
+                                            Copy
+                                        </small>
+                                    </button>
+                                </td>
+                                <td class="border-0">
+                                    <button type="button"
+                                        class="btn btn-sm btn-danger full-width p-0 m-0 visible-off"
+                                        data-quote_name="{{quote['quote_name']}}"
+                                        data-quote_id="{{quote['quote_id']}}"
+                                        data-is_template="{{quote['is_template']}}"
+                                        onclick="deleteQuote(this)">
+                                        <small class=" pl-1 pr-1">
+                                            Delete
+                                        </small>
+                                        /button>
+                                </td>
                                 <!-- <td><a href="{{url_for('update_quote_status',quote_id = quote['quote_id'] )}}" type="button" class="btn btn-sm btn-warning full-width p-0 m-0"><small class=" pl-1 pr-1">Update status</small></a></td> -->
                             </tr>
                             {% endif %}
@@ -70,10 +119,9 @@
                         </tbody>
                     </table>
                     {% else %}
-
                     <h6 class="text-danger mt-5 ">No quotes added yet!</h6>
-
                     {% endif %}
+
                 </div>
                 <!-- End Saved quotes table -->
 
@@ -96,22 +144,63 @@
                                 <td>
                                     {{ quote['quote_name'] }}
                                     {% if quote['company_id'] == 2 %}
-                                    <span class="badge badge-pill badge-danger ml-2 ">DIY</span>
+                                    <span class="badge badge-pill badge-danger ml-2 ">
+                                        DIY
+                                    </span>
                                     {% endif %}
                                 </td>
                                 <td>{{ quote['quoted_by'] }}</td>
                                 <td>{{ quote['date_quote_created'] }}</td>
-                                <td class="border-0"><a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}" type="button"
-                                        class="btn btn-sm btn-primary full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Modify</small></a></td>
-                                <td class="border-0"><a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}" type="button"
-                                        class="btn btn-sm btn-info full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">View</small></a></td>
-                                <td class="border-0"><a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}" type="button"
-                                        class="btn btn-sm btn-success full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Edit</small></a></td>
-                                <td class="border-0"><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name="{{quote['quote_name']}}"
-                                        data-quote_id="{{quote['quote_id']}}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
-                                <td class="border-0"><button type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name=" {{quote['quote_name']}} "
-                                        data-quote_id="{{quote['quote_id']}}" data-is_template="{{quote['is_template']}}" onclick="deleteQuote(this)"><small
-                                            class=" pl-1 pr-1">Delete</small></button></td>
+                                <td class="border-0">
+                                    <a href="{{url_for('add_quote_details',quote_name = quote['quote_name'] )}}"
+                                        type="button"
+                                        class="btn btn-sm btn-primary full-width p-0 m-0 visible-off">
+                                        <small class="pl-1 pr-1">
+                                            Modify
+                                        </small>
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="{{url_for('view_quote',quote_name = quote['quote_name'] )}}"
+                                        type="button"
+                                        class="btn btn-sm btn-info full-width p-0 m-0 visible-off">
+                                        <small class=" pl-1 pr-1">
+                                            View
+                                        </small>
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="{{url_for('edit_quote',quote_id = quote['quote_id'] )}}"
+                                        type="button"
+                                        class="btn btn-sm btn-success full-width p-0 m-0 visible-off">
+                                        <small class=" pl-1 pr-1">
+                                            Edit
+                                        </small>
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <button type="button"
+                                        class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off"
+                                        data-quote_name="{{quote['quote_name']}}"
+                                        data-quote_id="{{quote['quote_id']}}"
+                                        onclick="copyQuoteAndDetails(this)">
+                                        <small class=" pl-1 pr-1">
+                                            Copy
+                                        </small>
+                                    </button>
+                                </td>
+                                <td class="border-0">
+                                    <button type="button"
+                                        class="btn btn-sm btn-danger full-width p-0 m-0 visible-off"
+                                        data-quote_name=" {{quote['quote_name']}} "
+                                        data-quote_id="{{quote['quote_id']}}"
+                                        data-is_template="{{quote['is_template']}}"
+                                        onclick="deleteQuote(this)">
+                                        <small class=" pl-1 pr-1">
+                                            Delete
+                                        </small>
+                                    </button>
+                                </td>
                             </tr>
                             {% endif %}
                             {% endfor %}

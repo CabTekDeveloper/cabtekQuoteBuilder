@@ -17,24 +17,44 @@
                     <div class="form-row bg-light p-2">
                         <!-- + New section -->
                         <div class="col-md-1">
-                            <button class="btn btn-light bold btn-sm  " onclick="AddNewSection()">+ Section</button>
+                            <button class="btn btn-light bold btn-sm  "
+                                onclick="AddNewSection()">
+                                + Section
+                            </button>
                         </div>
                         <!-- Setion names -->
                         <div class="col-md-9 " id="section_names_div">
                             {% if quote_data['section_names']|length > 0 %}
                             {% for section_name in quote_data['section_names'] %}
                             {% if section_name == selected_section_name %}
-                            <a href="#" onclick="sectionNameOnClick(this)" type="button" class="btn btn-sm  d-inline-block bold btn-dark">{{section_name}}</a>
+                            <a href="#"
+                                onclick="sectionNameOnClick(this)"
+                                type="button"
+                                class="btn btn-sm  d-inline-block bold btn-dark">
+                                {{section_name}}
+                            </a>
                             {% else %}
-                            <a href="#" onclick="sectionNameOnClick(this)" type="button" class="btn btn-sm  d-inline-block bold text-dark underline">{{section_name}}</a>
+                            <a href="#"
+                                onclick="sectionNameOnClick(this)"
+                                type="button"
+                                class="btn btn-sm  d-inline-block bold text-dark underline">
+                                {{section_name}}
+                            </a>
                             {% endif %}
                             {% endfor %}
                             {% endif %}
                         </div>
 
                         <div class="col-md-2 d-flex justify-content-end px-0">
-                            <button type="button" class="btn btn-link btn-sm" data-user_id="{{ session['user_info']['user_id'] }}" id="copy_external_section_btn"
-                                onclick="loadModalCopyExternalSection(this)"> <small>Copy external section</small></button>
+                            <button type="button"
+                                class="btn btn-link btn-sm"
+                                data-user_id="{{ session['user_info']['user_id'] }}"
+                                id="copy_external_section_btn"
+                                onclick="loadModalCopyExternalSection(this)">
+                                <small>
+                                    Copy external section
+                                </small>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -44,20 +64,46 @@
             <!-- Modify buttons -->
             <div class="form-row mt-3 mb-1">
                 <div class="col-md-12 d-flex justify-content-end">
-                    <button type="button" class="btn btn-sm   btn-info      d-inline-block      {{ '' if quote_data['section_names']|length > 1 else 'hide' }}" id="reorder_section_btn"
-                        onclick="loadModalReorderSections(this)"> <small>Reorder section</small></button>
-                    <button type="button" class="btn btn-sm   btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="copy_current_section_btn"
-                        onclick="copyCurrentSection()"> <small>Copy current section</small></button>
-                    <button type="button" class="btn btn-sm  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="save_section_btn"
-                        onclick="saveCurrentSectionDetailsToDB()"><small>Save section</small></button>
-                    <button type="button" class="btn btn-sm  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}" id="delete_section_btn" onclick="deleteSelectedSection()">
-                        <small class="">Delete section</small></button>
+                    <button type="button"
+                        class="btn btn-sm btn-info d-inline-block {{ '' if quote_data['section_names']|length > 1 else 'hide' }}"
+                        id="reorder_section_btn"
+                        onclick="loadModalReorderSections(this)">
+                        <small>
+                            Reorder section
+                        </small>
+                    </button>
+                    <button type="button"
+                        class="btn btn-sm   btn-success   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}"
+                        id="copy_current_section_btn"
+                        onclick="copyCurrentSection()">
+                        <small>
+                            Copy current section
+                        </small>
+                    </button>
+                    <button type="button"
+                        class="btn btn-sm  btn-primary   d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}"
+                        id="save_section_btn"
+                        onclick="saveCurrentSectionDetailsToDB()">
+                        <small>
+                            Save section
+                        </small>
+                    </button>
+                    <button type="button"
+                        class="btn btn-sm  btn-danger    d-inline-block ml-2 {{ '' if selected_section_name else 'hide' }}"
+                        id="delete_section_btn"
+                        onclick="deleteSelectedSection()">
+                        <small class="">
+                            Delete section
+                        </small>
+                    </button>
                 </div>
             </div>
 
 
             <!-- Form: Add details -->
-            <div class="border  p-3 {{ '' if quote_data['section_names']|length > 0 else 'hide' }}" id="quote_detail_div" style="overflow-x: hidden; overflow-y: auto; height: 78vh;">
+            <div class="border  p-3 {{ '' if quote_data['section_names']|length > 0 else 'hide' }}"
+                id="quote_detail_div"
+                style="overflow-x: hidden; overflow-y: auto; height: 78vh;">
                 {% if selected_section_name %}
                 <div class="form-row">
                     <div class="col-md-1 mb-1 text-primary "><small class="bold">Sub-heading</small></div>
@@ -78,39 +124,77 @@
                     {% for row in section_detail_rows %}
                     <div class="form-row section_detail_row mb-2" id="section_detail_row_{{loop.index}}">
                         <div class="col-md-1">
-                            <input type="text" class="form-control form-control-sm" name="section_sub_heading_{{loop.index}}" autocomplete="off" value="{{row['section_sub_heading']}}">
+                            <input type="text"
+                                class="form-control form-control-sm"
+                                name="section_sub_heading_{{loop.index}}"
+                                autocomplete="off"
+                                value="{{row['section_sub_heading']}}">
                         </div>
 
                         <div class="col-md-1">
-                            <input type="text" class="form-control form-control-sm" name="section_image_row_{{loop.index}}" autocomplete="off" value="{{row['section_image_row']}}" readonly
+                            <input type="text"
+                                class="form-control form-control-sm" name="section_image_row_{{loop.index}}"
+                                autocomplete="off"
+                                value="{{row['section_image_row']}}"
+                                readonly
                                 tabindex="-1">
                         </div>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control form-control-sm " name="section_text_row_{{loop.index}}" autocomplete="off" value="{{row['section_text']}}">
+                            <input type="text"
+                                class="form-control form-control-sm "
+                                name="section_text_row_{{loop.index}}"
+                                autocomplete="off"
+                                value="{{row['section_text']}}">
                         </div>
 
                         <div class="col-md-1">
-                            <input type="number" class="form-control form-control-sm" name="section_qty_row_{{loop.index}}" autocomplete="off"
+                            <input type="number"
+                                class="form-control form-control-sm"
+                                name="section_qty_row_{{loop.index}}"
+                                autocomplete="off"
                                 value="{{ '' if row['section_qty_row'] == 0 else row['section_qty_row'] }}">
                         </div>
 
                         <div class="col-md-1">
-                            <input type="number" class="form-control form-control-sm" name="unit_cost_row_{{loop.index}}" autocomplete="off"
+                            <input type="number"
+                                class="form-control form-control-sm"
+                                name="unit_cost_row_{{loop.index}}"
+                                autocomplete="off"
                                 value="{{ '' if row['section_unit_cost_row'] == 0 else row['section_unit_cost_row']}}">
                         </div>
 
                         <div class="col-md-2 bg-light d-flex justify-content-center px-0">
-                            <button type="button" class="btn btn-sm btn-link  px-1" name="add_remove_row_image_btn_{{loop.index}}" data-img_inp_name="section_image_row_{{loop.index}}"
-                                onclick="addRemoveRowImage(this)" tabindex="-1">
-                                {% if row['section_image_row']|length > 0 %} <small class="text-red">-Image</small> {% else %} <small>+Image</small> {% endif %}
+                            <button type="button"
+                                class="btn btn-sm btn-link  px-1"
+                                name="add_remove_row_image_btn_{{loop.index}}"
+                                data-img_inp_name="section_image_row_{{loop.index}}"
+                                onclick="addRemoveRowImage(this)"
+                                tabindex="-1">
+                                {% if row['section_image_row']|length > 0 %}
+                                <small class="text-red"> -Image </small>
+                                {% else %}
+                                <small> +Image </small>
+                                {% endif %}
                             </button>
-                            <button type="button" class="btn btn-sm btn-link px-1" onclick="saveTextToDb('section_detail_row_{{loop.index}}' , 'section_text_row_{{loop.index}}')"
-                                tabindex="-1"><small>Save text</small></button>
-                            <button type="button" class="btn btn-sm btn-link px-1" onclick="addNewSectionDetailsRowBelow('section_detail_row_{{loop.index}}')"
-                                tabindex="-1"><small>+Row</small></button>
-                            <button type="button" class="btn btn-sm btn-link px-1 text-red" onclick="removeSectionDetailsRow('section_detail_row_{{loop.index}}')"
-                                tabindex="-1"><small>-Row</small></button>
+                            <button type="button"
+                                class="btn btn-sm btn-link px-1"
+                                onclick="saveTextToDb('section_detail_row_{{loop.index}}' , 'section_text_row_{{loop.index}}')"
+                                tabindex="-1">
+                                <small> Save text </small>
+                            </button>
+                            <button type="button"
+                                class="btn btn-sm btn-link px-1"
+                                onclick="addNewSectionDetailsRowBelow('section_detail_row_{{loop.index}}')"
+                                tabindex="-1">
+                                <small> +Row </small>
+                            </button>
+                            <button type="button"
+                                class="btn btn-sm btn-link px-1 text-red"
+                                onclick="removeSectionDetailsRow('section_detail_row_{{loop.index}}')"
+                                tabindex="-1">
+                                <small>-Row</small>
+                            </button>
 
                         </div>
                     </div>
@@ -126,17 +210,33 @@
                     {% for image_info in section_image_full_names %}
                     {% set image_name = image_info['image_full_name'].split('.')[0] %}
                     {% set image_path ="images/uploads/" + image_info['image_full_name'] %}
-                    <div class="m-1 mb-2 d-inline-block img-container" id="{{ image_name }}">
-                        <img src="{{url_for('static', filename= image_path)}}" max-width="100%" height="120px" alt="{{image_name}}">
-                        <p class="img-container-text">{{image_name}}</p>
-                        <button type="button" class="img-container-btn-delete" data-div_id="{{image_name}}" onclick="removeFromQuoteImageDiv(this)">x</button>
+                    <div class="m-1 mb-2 d-inline-block img-container"
+                        id="{{ image_name }}">
+                        <img src="{{url_for('static', filename= image_path)}}"
+                            max-width="100%"
+                            height="120px"
+                            alt="{{image_name}}">
+                        <p class="img-container-text">
+                            {{image_name}}
+                        </p>
+                        <button type="button"
+                            class="img-container-btn-delete"
+                            data-div_id="{{image_name}}"
+                            onclick="removeFromQuoteImageDiv(this)">
+                            x
+                        </button>
                         <div id="section_image_size_div">
                             <select class="border border-0 bold bg-lightgray pl-1 pt-1 pb-1 pr-0">
                                 {% for item in all_section_image_size %}
                                 {% if item['section_image_size_id'] == image_info['image_size_info']['section_image_size_id'] %}
-                                <option value="{{item['section_image_size_id']}}" selected>{{item['section_image_size_name']}}</option>
+                                <option value="{{item['section_image_size_id']}}"
+                                    selected>
+                                    {{item['section_image_size_name']}}
+                                </option>
                                 {% else %}
-                                <option value="{{item['section_image_size_id']}}">{{item['section_image_size_name']}}</option>
+                                <option value="{{item['section_image_size_id']}}">
+                                    {{item['section_image_size_name']}}
+                                </option>
                                 {% endif %}
                                 {% endfor %}
                             </select>
@@ -157,9 +257,24 @@
         <div class="col-md-4 pl-0 pt-1 {{ '' if quote_data['section_names']|length > 0 else 'hide' }}" id="add_resources_div">
             <!-- Buttons: Text, Image, EO Text -->
             <div class="mb-2">
-                <button type="button" id="addTextBtn" class="btn btn-sm btn-dark  bold pl-3 pr-3 mr-2" onclick="showAddTextDiv()">Text</button>
-                <button type="button" id="addImageBtn" class="btn btn-sm  bold pl-3 pr-3 mr-2" onclick="showAddImageDiv()">Image</button>
-                <button type="button" id="addEoTextBtn" class="btn btn-sm   bold pl-3 pr-3" onclick="showAddEoTextDiv()">EO Text</button>
+                <button type="button"
+                    id="addTextBtn"
+                    class="btn btn-sm btn-dark  bold pl-3 pr-3 mr-2"
+                    onclick="showAddTextDiv()">
+                    Text
+                </button>
+                <button type="button"
+                    id="addImageBtn"
+                    class="btn btn-sm  bold pl-3 pr-3 mr-2"
+                    onclick="showAddImageDiv()">
+                    Image
+                </button>
+                <button type="button"
+                    id="addEoTextBtn"
+                    class="btn btn-sm   bold pl-3 pr-3"
+                    onclick="showAddEoTextDiv()">
+                    EO Text
+                </button>
             </div>
 
             <!--  ADD TEXT DIV -->
@@ -170,14 +285,31 @@
                     <div class="col-md-6 ">
                         <div class="input-group" id="text_serach_div">
                             <div class="form-outline mr-1">
-                                <input type="text" id="text_search_input" name="text_search_word" placeholder="Search Texts ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
+                                <input type="text"
+                                    id="text_search_input"
+                                    name="text_search_word"
+                                    placeholder="Search Texts ..."
+                                    class="form-control form-control-sm"
+                                    autocomplete="off"
+                                    tabindex="0" />
                             </div>
-                            <button type="button" class="btn btn-sm btn-primary  mr-1" onclick="getSearchedTextsFromDb()"> &#128270; </button>
-                            <button type="button" class="btn btn-sm text-blue bold  " onclick="refreshTextResultDiv()"> &#8634; </button>
+                            <button type="button"
+                                class="btn btn-sm btn-primary  mr-1"
+                                onclick="getSearchedTextsFromDb()">
+                                &#128270;
+                            </button>
+                            <button type="button"
+                                class="btn btn-sm text-blue bold  "
+                                onclick="refreshTextResultDiv()">
+                                &#8634;
+                            </button>
                         </div>
                     </div>
                     <div class="col-md-6 d-flex align-items-center hide" id="filter_text_by_current_user_div">
-                        <input class="form-check-input" style="accent-color: green;" type="checkbox" id="filter_text_by_current_user_inp">
+                        <input class="form-check-input"
+                            style="accent-color: green;"
+                            type="checkbox"
+                            id="filter_text_by_current_user_inp">
                         <label class="form-check-label text-success" for="filter_text_by_current_user_inp">
                             Filter searched texts by current user
                         </label>
@@ -192,9 +324,18 @@
                         <small class="bold">Frequently used texts</small>
                         {% for text in frequently_used_texts_by_user_id %}
                         <li class="mb-1" id="frequently_used_text_li_id_{{text['id']}}">
-                            <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="frequently_used_text_id_{{text['id']}}">{{text['text']}}</span>
-                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="frequently_used_text_li_id_{{ text['id'] }}" data-text_id="{{ text['id'] }}"
-                                onclick="deleteFrequentlyUsedText(this)">Remove</small>
+                            <span class="pr-1"
+                                onclick="addTextToQuoteDetail(this.id)"
+                                id="frequently_used_text_id_{{text['id']}}">
+                                {{text['text']}}
+                            </span>
+                            <small class="bold text-danger  p-1 rounded"
+                                id="delete_text"
+                                data-text_li_id="frequently_used_text_li_id_{{ text['id'] }}"
+                                data-text_id="{{ text['id'] }}"
+                                onclick="deleteFrequentlyUsedText(this)">
+                                Remove
+                            </small>
                         </li>
                         {% endfor %}
                         {% endif %}
@@ -206,9 +347,18 @@
                         <small class="bold">Saved texts</small>
                         {% for text in texts_by_user_id %}
                         <li class="mb-1" id="text_li_id_{{ text['text_id'] }}">
-                            <span class="pr-1" onclick="addTextToQuoteDetail(this.id)" id="text_id_{{text['text_id']}}">{{text['text']}}</span>
-                            <small class="bold text-danger  p-1 rounded" id="delete_text" data-text_li_id="text_li_id_{{ text['text_id'] }}" data-text_id="{{text['text_id']}}"
-                                onclick="deleteTextDb(this)">Delete</small>
+                            <span class="pr-1"
+                                onclick="addTextToQuoteDetail(this.id)"
+                                id="text_id_{{text['text_id']}}">
+                                {{text['text']}}
+                            </span>
+                            <small class="bold text-danger  p-1 rounded"
+                                id="delete_text"
+                                data-text_li_id="text_li_id_{{ text['text_id'] }}"
+                                data-text_id="{{text['text_id']}}"
+                                onclick="deleteTextDb(this)">
+                                Delete
+                            </small>
                         </li>
                         {% endfor %}
                         {% endif %}
@@ -226,16 +376,34 @@
                     <div class="col-md-8">
                         <div class="input-group" id="image_serach_div">
                             <div class="form-outline mr-1 ">
-                                <input type="text" id="image_search_input" name="image_search_word" placeholder="Search Images ..." class="form-control form-control-sm" autocomplete="off"
+                                <input type="text"
+                                    id="image_search_input"
+                                    name="image_search_word"
+                                    placeholder="Search Images ..."
+                                    class="form-control form-control-sm"
+                                    autocomplete="off"
                                     tabindex="0" />
                             </div>
-                            <button type="button" class="btn btn-sm btn-primary mr-1" onclick="getSearchedImagesFromDb()"> &#128270; </button>
-                            <button type="button" class="btn btn-sm text-blue bold  " onclick="refreshImageResultDiv()"> &#8634; </button>
+                            <button type="button"
+                                class="btn btn-sm btn-primary mr-1"
+                                onclick="getSearchedImagesFromDb()">
+                                &#128270;
+                            </button>
+                            <button type="button"
+                                class="btn btn-sm text-blue bold  "
+                                onclick="refreshImageResultDiv()">
+                                &#8634;
+                            </button>
                         </div>
 
                     </div>
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-sm bold text-red float-right" id="showUploadImageBtn" onclick="showUploadImageDiv()"> <small>*Upload new image</small> </button>
+                        <button type="button"
+                            class="btn btn-sm bold text-red float-right"
+                            id="showUploadImageBtn"
+                            onclick="showUploadImageDiv()">
+                            <small>*Upload new image</small>
+                        </button>
                     </div>
                 </div>
 
@@ -245,7 +413,11 @@
 
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input  mr-0" type="radio" name="image_tag_name" id="image_tag_id_0" onclick="showImageByTagName(this)" checked>
+                                <input class="form-check-input  mr-0"
+                                    type="radio"
+                                    name="image_tag_name"
+                                    id="image_tag_id_0"
+                                    onclick="showImageByTagName(this)" checked>
                                 <small>All</small>
                             </label>
                         </div>
@@ -253,7 +425,11 @@
                         {% for image_tag in all_image_tags %}
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input mr-0" type="radio" name="image_tag_name" id="image_tag_id_{{ image_tag['image_tag_id'] }}" onclick="showImageByTagName(this)">
+                                <input class="form-check-input mr-0"
+                                    type="radio"
+                                    name="image_tag_name"
+                                    id="image_tag_id_{{ image_tag['image_tag_id'] }}"
+                                    onclick="showImageByTagName(this)">
                                 <small>{{ image_tag['image_tag_name'] }}</small>
                             </label>
                         </div>
@@ -266,10 +442,22 @@
                     {% if all_images %}
                     {% for image in all_images %}
                     <div class="m-1 mb-2 d-inline-block img-container" id="image_div_id_{{image['image_id']}}">
-                        <img src="{{url_for('static', filename= image['image_path'])}}" class="equal-size-imgage" alt="{{image['image_full_name']}}">
-                        <button type="button" class="img-container-btn" data-image_path="{{ image['image_path'] }}" onclick="addToQuoteImageDiv(this)">+</button>
-                        <button type="button" class="img-container-btn-delete" data-image_div_id="image_div_id_{{image['image_id']}}" data-image_id="{{ image['image_id'] }}"
-                            onclick="deleteImage(this)">-</button>
+                        <img src="{{url_for('static', filename= image['image_path'])}}"
+                            class="equal-size-imgage"
+                            alt="{{image['image_full_name']}}">
+                        <button type="button"
+                            class="img-container-btn"
+                            data-image_path="{{ image['image_path'] }}"
+                            onclick="addToQuoteImageDiv(this)">
+                            +
+                        </button>
+                        <button type="button"
+                            class="img-container-btn-delete"
+                            data-image_div_id="image_div_id_{{image['image_id']}}"
+                            data-image_id="{{ image['image_id'] }}"
+                            onclick="deleteImage(this)">
+                            -
+                        </button>
                         <p class="img-container-text">{{image['image_name_lower_no_ext']}}</p>
                     </div>
                     {% endfor %}
@@ -283,10 +471,16 @@
                     <form enctype="multipart/form-data" id="form_img_upload">
 
                         <div class="form-group mb-2">
-                            <input type="file" name="img_file" id="image_file_input" class="form-control-file" required>
+                            <input type="file"
+                                name="img_file"
+                                id="image_file_input"
+                                class="form-control-file"
+                                required>
                         </div>
                         <div class="form-group">
-                            <select name="image_tag_name" id="image_tag_name_inp" class="border border-dark form-control form-control-sm col-sm-5">
+                            <select name="image_tag_name"
+                                id="image_tag_name_inp"
+                                class="border border-dark form-control form-control-sm col-sm-5">
 
                                 {% for image_tag in all_image_tags %}
                                 <option>{{ image_tag['image_tag_name'] }}</option>
@@ -298,8 +492,16 @@
                         </div>
 
                         <div class="form-group mt-4">
-                            <button type="button" class="btn btn-sm btn-dark pl-3 pr-3 mr-2" onclick="saveImageInfoToDbAndFolder() "><small>Upload</small></button>
-                            <button type="button" class="btn btn-sm  btn-secondary pl-3 pr-3" onclick="hideUploadImageDiv()"><small>Close</small></button>
+                            <button type="button"
+                                class="btn btn-sm btn-dark pl-3 pr-3 mr-2"
+                                onclick="saveImageInfoToDbAndFolder() ">
+                                <small>Upload</small>
+                            </button>
+                            <button type="button"
+                                class="btn btn-sm  btn-secondary pl-3 pr-3"
+                                onclick="hideUploadImageDiv()">
+                                <small>Close</small>
+                            </button>
                         </div>
                         <div class="mt-3 text-red" id="file_Upload_Msg_Div"></div>
                     </form>
@@ -317,15 +519,33 @@
                     <div class="col-md-8 mb-1">
                         <div class="input-group" id="eo_excel_text_serach_div">
                             <div class="form-outline mr-1">
-                                <input type="text" id="eo_excel_text_search_input" data-user_id="{{ session['user_info']['user_id'] }}" name="eo_excel_text_search_word"
-                                    placeholder="Search EO text ..." class="form-control form-control-sm" autocomplete="off" tabindex="0" />
+                                <input type="text"
+                                    id="eo_excel_text_search_input"
+                                    data-user_id="{{ session['user_info']['user_id'] }}"
+                                    name="eo_excel_text_search_word"
+                                    placeholder="Search EO text ..."
+                                    class="form-control form-control-sm"
+                                    autocomplete="off"
+                                    tabindex="0" />
                             </div>
-                            <button type="button" class="btn btn-sm btn-primary mr-1" onclick="getSearchedEoExcelTextFromDb()"> &#128270; </button>
-                            <button type="button" class="btn btn-sm text-blue bold " onclick="refreshEoExcelTextResultDiv()"> &#8634; </button>
+                            <button type="button"
+                                class="btn btn-sm btn-primary mr-1"
+                                onclick="getSearchedEoExcelTextFromDb()">
+                                &#128270;
+                            </button>
+                            <button type="button"
+                                class="btn btn-sm text-blue bold "
+                                onclick="refreshEoExcelTextResultDiv()">
+                                &#8634;
+                            </button>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-sm btn-primary bold mb-2 float-right" id="showUploadEoExcelBtn" onclick="showUploadEoExcelDiv()"> <small>*Upload Excel file</small>
+                        <button type="button"
+                            class="btn btn-sm btn-primary bold mb-2 float-right"
+                            id="showUploadEoExcelBtn"
+                            onclick="showUploadEoExcelDiv()">
+                            <small>*Upload Excel file</small>
                         </button>
                     </div>
                 </div>
@@ -336,13 +556,27 @@
 
                     <form enctype="multipart/form-data" id="form_eo_excel_upload">
                         <div class="form-group mb-5">
-                            <input type="file" name="eo_excel_file" id="eo_excel_file_input" required>
+                            <input type="file"
+                                name="eo_excel_file"
+                                id="eo_excel_file_input"
+                                required>
                         </div>
 
-                        <button type="button" class="btn btn-sm btn-dark" data-user_id="{{session['user_info']['user_id']}}" onclick="saveEoExcelFileToDb(this) ">Upload</button>
+                        <button type="button"
+                            class="btn btn-sm btn-dark"
+                            data-user_id="{{session['user_info']['user_id']}}"
+                            onclick="saveEoExcelFileToDb(this) ">
+                            Upload
+                        </button>
                         &nbsp;
-                        <button type="button" onclick="hideUploadEoExcelDiv()" class="btn btn-sm  btn-secondary ">Close</button>
-                        <div class="mt-3 text-danger" id="eo_excel_file_Upload_Msg_Div"></div>
+                        <button type="button"
+                            onclick="hideUploadEoExcelDiv()"
+                            class="btn btn-sm  btn-secondary ">
+                            Close
+                        </button>
+                        <div class="mt-3 text-danger" id="eo_excel_file_Upload_Msg_Div">
+                            {#  #}
+                        </div>
                     </form>
                 </div>
 
@@ -353,7 +587,11 @@
                         {% if eo_excel_text %}
                         {% for text in eo_excel_text %}
                         <li class="mb-1" id="eo_excel_text_li_id_{{text['id']}}">
-                            <span class="pr-1" onclick="addEoTextToQuoteDetail(this.id)" id="eo_text_id_{{text['id']}}">{{text['text']}}</span>
+                            <span class="pr-1"
+                                onclick="addEoTextToQuoteDetail(this.id)"
+                                id="eo_text_id_{{text['id']}}">
+                                {{text['text']}}
+                            </span>
                         </li>
                         {% endfor %}
                         {% endif %}

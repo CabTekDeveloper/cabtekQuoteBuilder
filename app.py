@@ -80,7 +80,6 @@ def index(showSavedTemplate = 'no'):
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 #----------------------------------------------------------------------------------------------#
 
-
 @app.route('/', methods=["POST", "GET"])
 def login():
     try:

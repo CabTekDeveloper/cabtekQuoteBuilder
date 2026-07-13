@@ -137,7 +137,7 @@ async function deleteQuote(quoteDeleteBtn) {
 async function isOldQuote(quoteName) {
     let resData = await getQuoteInfoDB(quoteName);
     if (!isEmpty(resData)) {
-        if (isEmpty(resData.customer_company) ) {
+        if (isEmpty(resData.is_trade_client)) {
             return true
         }
     }
@@ -150,13 +150,26 @@ async function copyQuoteAndDetails(copyBtn) {
     let quoteId = copyBtn.getAttribute('data-quote_id')
     let quoteName = copyBtn.getAttribute('data-quote_name')
 
-    let isOld =  await isOldQuote(quoteName);
+    // Before duplicating, check if the quote uses the old data structure.
+    // Old quotes lack the 'is_trade_client' field and require updating.
+    // The quote is considered "old" if data exists but the specific field is empty/missing
+    const resData = await getQuoteInfoDB(quoteName);
+    const isOld = !isEmpty(resData) && isEmpty(resData?.is_trade_client);
 
-    if (isOld){
-        alert("Cannot make a copy!\n\nThis is an old quote.\nThe Quoting tool has been updated and has new fields required.\n\nPlease create a new quote.\nThen you can copy individual sections!")
+    if (isOld) {
+        const userChoice = confirm(
+            "Cannot copy this quote.\n\n" +
+            "This is an older quote that requires updated information before it can be duplicated.\n" +
+            "Please update the missing fields first, then try copying it again.\n\n" +
+            "Click 'OK' to edit the quote now."
+        );
+
+        if (userChoice) {
+            window.location.href = `/edit_quote/${quoteId}`;
+        }
         return;
     }
-
+    // End of check for old quote structure
 
     if (confirm(`Are you sure you make a copy of "${quoteName}"?`) == true) {
         toggleMessageModal("Copying quote!", true);

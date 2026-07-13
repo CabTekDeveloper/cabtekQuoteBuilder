@@ -78,13 +78,12 @@
         </div>
       </div>
       {% endif %}
-      {# If quote info is missing is_trade_client, show the message #}
+
+      {# Show this message if quote info is missing is_trade_client #}
       {% if quote_info and not quote_info.get('is_trade_client')%}
-      <div class="mt-3 text-primary"
-        id="missing_trade_value_div">
-        This is an old quote.<br>
-        The new quote has new fields, is-trade and client-company fields.<br>
-        Use the current quote details to update quote information.
+      <div class="mt-3 text-primary" id="missing_trade_value_div">
+        The quote structure has changed to include 'Client Type' and 'Client Company' fields.<br>
+        Please use the current quote details to update the quote detils.
       </div>
       {% endif %}
 
