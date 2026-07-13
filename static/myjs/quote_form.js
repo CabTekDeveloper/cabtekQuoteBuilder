@@ -29,53 +29,48 @@ let customerPhoneInp = document.getElementById("customer_phone_no")
 let formSubmitBtn = document.getElementById("form_submit_btn")
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-// Event listeners
-
-if (isTradeYesTag !== null) {
-    isTradeYesTag.addEventListener('change', updateCustomerCompanyOptions);
-}
-if (isTradeNoTag !== null) {
-    isTradeNoTag.addEventListener('change', updateCustomerCompanyOptions);
+// Populate quote info when in edit mode
+if (IS_EDIT) {
+    initEditMode();
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-// Update options tags of customer company tag
-function updateCustomerCompanyOptions() {
-    let optionHtml = "";
-    const isTradeClient = isTradeYesTag.checked;
-    customerCompanySelect.innerHTML = "";
 
-    toggleFormFieldsByClientType(isTradeClient);
-
-    if (isTradeClient) {
-        optionHtml = `<option></option>`
-
-        if (CLICKUP_CLIENTS_DATA_DB) {
-            // Use a Set to keep track of unique company names
-            const seenCompanies = new Set();
-
-            CLICKUP_CLIENTS_DATA_DB.forEach(item => {
-                let escapedCompany = escapeHtml(item['company']);
-                // Only add if it's a valid string AND we haven't seen it yet
-                if (escapedCompany && escapedCompany.trim().length > 0 && !seenCompanies.has(escapedCompany)) {
-                    seenCompanies.add(escapedCompany);
-                    optionHtml += `<option value="${escapedCompany}">${escapedCompany}</option>`;
-                }
-            });
-        }
-
-        customerNameSelect.innerHTML = `<option></option>`;
-        customerEmailInp.value = "";
-        customerPhoneInp.value = "";
-
-    } else {
-        optionHtml = `<option value="Cash Sale" selected>Cash Sale</option>`;
-        customerNameInp.value = ""
-        customerEmailInp.value = ""
-        customerPhoneInp.value = ""
+function initEditMode() {
+    // Auto populate quote info if valid info exists: is_trade_client
+    if (!QUOTE_INFO || isEmpty(QUOTE_INFO.is_trade_client)) {
+        return;
     }
 
-    customerCompanySelect.insertAdjacentHTML('beforeend', optionHtml);
+    // Determine is_trade_client
+    const isTradeClient = QUOTE_INFO.is_trade_client.toLowerCase() === "yes";
+    isTradeYesTag.checked = isTradeClient;
+    isTradeNoTag.checked = !isTradeClient;
+
+    // Build the initial customer info fields
+    handleClientTypeChange();
+
+    // Populate cutomer info fields
+    if (isTradeClient) {
+        // Populate client company
+        const targetCompany = escapeHtml(QUOTE_INFO.customer_company);
+        customerCompanySelect.value = targetCompany;
+
+        // Filter and build option for client name
+        populateCustomerNameTag(targetCompany);
+
+        // Select client name from client name options
+        const targetName = escapeHtml(QUOTE_INFO.customer_name);
+        customerNameSelect.value = targetName;
+
+        // Populate client details:Emial and phone
+        populateCustomerDetails(targetCompany, targetName);
+
+    } else {
+        if (QUOTE_INFO.customer_name) customerNameInp.value = QUOTE_INFO.customer_name;
+        if (QUOTE_INFO.customer_email) customerEmailInp.value = QUOTE_INFO.customer_email;
+        if (QUOTE_INFO.customer_phone_no) customerPhoneInp.value = QUOTE_INFO.customer_phone_no;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -99,48 +94,100 @@ function toggleFormFieldsByClientType(isTradeClient) {
     customerPhoneInp.readOnly = isTradeClient;
 }
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------//
-// Customer company on change
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+// Client type change Event listeners
+[isTradeYesTag, isTradeNoTag].forEach(tag => {
+    tag.addEventListener('change', handleClientTypeChange);
+});
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 
-if (customerCompanySelect !== null) {
-    customerCompanySelect.addEventListener("change", function () {
-        let customerCompany = this.value.toLowerCase();
-        let filteredClient = [];
+function handleClientTypeChange() {
+    const isTradeClient = isTradeYesTag.checked;
+    toggleFormFieldsByClientType(isTradeClient);
+    populateCompanyDropdown(isTradeClient);
+}
 
-        if (!customerCompany) {
-            customerNameSelect.innerHTML = `<option></option>`;
-            customerEmailInp.value = "";
-            customerPhoneInp.value = "";
-            return;
-        }
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+function populateCompanyDropdown(isTradeClient) {
+    let optionHtml = "";
+    customerCompanySelect.innerHTML = "";
+
+    if (isTradeClient) {
+        optionHtml = `<option></option>`;
 
         if (CLICKUP_CLIENTS_DATA_DB) {
-            filteredClient = CLICKUP_CLIENTS_DATA_DB.filter(item => {
-                // Escape the database company name so it matches the escaped dropdown value
-                const escapedStr = escapeHtml(item['company']).toLowerCase();
-                return escapedStr === customerCompany && item['name'].trim().length > 0;
+            // Use a Set to keep track of unique company names
+            const seenCompanies = new Set();
+
+            CLICKUP_CLIENTS_DATA_DB.forEach(item => {
+                let escapedCompany = escapeHtml(item['company']);
+                // Only add if it's a valid string AND we haven't seen it yet
+                if (escapedCompany && escapedCompany.trim().length > 0 && !seenCompanies.has(escapedCompany)) {
+                    seenCompanies.add(escapedCompany);
+                    optionHtml += `<option value="${escapedCompany}">${escapedCompany}</option>`;
+                }
             });
         }
 
-        if (customerCompany.length > 0 && isEmpty(filteredClient)) {
-            alert(`\n\Company name '${customerCompany}' is missing client's name!\n\nFix it in the Clickup App.`)
-            return
-        }
+        // Reset trade-specific dependent elements
+        customerNameSelect.innerHTML = `<option></option>`;
+        customerEmailInp.value = "";
+        customerPhoneInp.value = "";
 
-        populateCustomerNameTag(filteredClient);
-    });
+    } else {
+        // Fallback option setup for Cash Sales
+        optionHtml = `<option value="Cash Sale" selected>Cash Sale</option>`;
+
+        // Reset plain text input elements
+        customerNameInp.value = "";
+        customerEmailInp.value = "";
+        customerPhoneInp.value = "";
+    }
+
+    customerCompanySelect.insertAdjacentHTML('beforeend', optionHtml);
 }
+
+
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
-function populateCustomerNameTag(filteredClient) {
+// Customer company on change
+customerCompanySelect.addEventListener("change", function () {
+    populateCustomerNameTag(this.value);
+});
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------//
+function populateCustomerNameTag(companyName) {
     let optionHtml = "";
 
-    // Reset options
+    // Reset dependent text inputs immediately
     customerEmailInp.value = "";
     customerPhoneInp.value = "";
 
-    // Build options
+    // Clear dropdown and exit early if the company selection is blank
+    if (!companyName) {
+        customerNameSelect.innerHTML = `<option></option>`;
+        return;
+    }
+
+    // Filter clients
+    let filteredClient = [];
+    if (CLICKUP_CLIENTS_DATA_DB) {
+        let searchCompanyLower = companyName.toLowerCase();
+        filteredClient = CLICKUP_CLIENTS_DATA_DB.filter(item => {
+            const dbEscapedCompany = escapeHtml(item['company']).toLowerCase();
+            return dbEscapedCompany === searchCompanyLower && item['name'].trim().length > 0;
+        });
+    }
+
+    // Handle empty client
+    if (isEmpty(filteredClient)) {
+        customerNameSelect.innerHTML = `<option></option>`;
+        alert(`\nCompany name '${companyName}' is missing client's name!\n\nFix it in the Clickup App.`);
+        return;
+    }
+
+    // Build option tags
     filteredClient.forEach(item => {
-        // Only build option if str is not empty
         let escapedStr = escapeHtml(item['name']);
         if (escapedStr && escapedStr.length > 0) {
             optionHtml += `<option value="${escapedStr}">${escapedStr}</option>`;
@@ -149,60 +196,100 @@ function populateCustomerNameTag(filteredClient) {
 
     if (filteredClient.length > 1) {
         optionHtml = `<option></option>` + optionHtml;
+    } else {
+        // Automatically populate email and phone if there's exactly one client matching this company
+        const singleClientName = escapeHtml(filteredClient[0]['name']);
+        populateCustomerDetails(companyName, singleClientName);
     }
-    else {
-        populateCustomerEmailTag(filteredClient)
-        populateCustomerPhoneTag(filteredClient)
-    }
+
     customerNameSelect.innerHTML = optionHtml;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 // Customer name on change
-if (customerNameSelect !== null) {
-    customerNameSelect.addEventListener("change", function () {
-        let customerCompany = customerCompanySelect.value.toLowerCase();
-        let customerName = this.value.toLowerCase();
-        let filteredClient = [];
-
-        // Clear the inputs if customer name is blank
-        if (!customerName) {
-            customerEmailInp.value = "";
-            customerPhoneInp.value = "";
-            return;
-        }
-
-        if (CLICKUP_CLIENTS_DATA_DB) {
-            filteredClient = CLICKUP_CLIENTS_DATA_DB.filter(item => {
-                const escapedCompany = escapeHtml(item['company']).toLowerCase();
-                const escapedName = escapeHtml(item['name']).toLowerCase();
-                return escapedCompany === customerCompany && escapedName === customerName;
-            });
-        }
-
-        populateCustomerEmailTag(filteredClient);
-        populateCustomerPhoneTag(filteredClient);
-    });
-}
-//-----------------------------------------------------------------------------------------------------------------------------------------------------//
-// Populate customer email
-function populateCustomerEmailTag(filteredClient) {
-    let val = ""
-    if (!isEmpty(filteredClient)) {
-        val = filteredClient[0]['email']
-    }
-    customerEmailInp.value = val
-}
+customerNameSelect.addEventListener("change", function () {
+    populateCustomerDetails(customerCompanySelect.value, this.value);
+});
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
-// Populate customer phone no
-function populateCustomerPhoneTag(filteredClient) {
-    let val = ""
-    if (!isEmpty(filteredClient)) {
-        val = filteredClient[0]['phone']
+// Populate customer email and phone no
+function populateCustomerDetails(companyName, customerName) {
+    // 1. Clear out fields and exit early if either search query string is missing
+    if (!companyName || !customerName) {
+        customerEmailInp.value = "";
+        customerPhoneInp.value = "";
+        return;
     }
-    customerPhoneInp.value = val
+
+    let filteredClient = [];
+    if (CLICKUP_CLIENTS_DATA_DB) {
+        const targetCompanyLower = companyName.toLowerCase();
+        const targetNameLower = customerName.toLowerCase();
+
+        filteredClient = CLICKUP_CLIENTS_DATA_DB.filter(item => {
+            const dbEscapedCompany = escapeHtml(item['company']).toLowerCase();
+            const dbEscapedName = escapeHtml(item['name']).toLowerCase();
+            return dbEscapedCompany === targetCompanyLower && dbEscapedName === targetNameLower;
+        });
+    }
+
+    // 2. Extracted safe assignment values
+    let emailVal = "";
+    let phoneVal = "";
+
+    if (!isEmpty(filteredClient)) {
+        emailVal = filteredClient[0]['email'] || "";
+        phoneVal = filteredClient[0]['phone'] || "";
+    }
+
+    // 3. Assign to DOM elements
+    customerEmailInp.value = emailVal;
+    customerPhoneInp.value = phoneVal;
 }
+// if (customerNameSelect !== null) {
+//     customerNameSelect.addEventListener("change", function () {
+//         let customerCompany = customerCompanySelect.value.toLowerCase();
+//         let customerName = this.value.toLowerCase();
+//         let filteredClient = [];
+
+//         // Clear the inputs if customer name is blank
+//         if (!customerName) {
+//             customerEmailInp.value = "";
+//             customerPhoneInp.value = "";
+//             return;
+//         }
+
+//         if (CLICKUP_CLIENTS_DATA_DB) {
+//             filteredClient = CLICKUP_CLIENTS_DATA_DB.filter(item => {
+//                 const escapedCompany = escapeHtml(item['company']).toLowerCase();
+//                 const escapedName = escapeHtml(item['name']).toLowerCase();
+//                 return escapedCompany === customerCompany && escapedName === customerName;
+//             });
+//         }
+
+//         populateCustomerEmailTag(filteredClient);
+//         populateCustomerPhoneTag(filteredClient);
+//     });
+// }
+// //-----------------------------------------------------------------------------------------------------------------------------------------------------//
+// // Populate customer email
+// function populateCustomerEmailTag(filteredClient) {
+//     let val = ""
+//     if (!isEmpty(filteredClient)) {
+//         val = filteredClient[0]['email']
+//     }
+//     customerEmailInp.value = val
+// }
+
+// //-----------------------------------------------------------------------------------------------------------------------------------------------------//
+// // Populate customer phone no
+// function populateCustomerPhoneTag(filteredClient) {
+//     let val = ""
+//     if (!isEmpty(filteredClient)) {
+//         val = filteredClient[0]['phone']
+//     }
+//     customerPhoneInp.value = val
+// }
 
 
 
@@ -218,8 +305,8 @@ async function onFormSubmit(event) {
 
     // Check if data is valid and not empty (assuming getquoteFormData returns null on validation failure)
     if (data && !isEmpty(data)) {
-        
-        if (IS_EDIT){
+
+        if (IS_EDIT) {
             data.quote_id = QUOTE_INFO.quote_id
         }
 
@@ -280,7 +367,7 @@ async function getquoteFormData() {
 
         // Determine if the enterned quote name matches the original name
         let isOrignalName = IS_EDIT ? quoteName.toLowerCase() === QUOTE_INFO.quote_name.toLowerCase() : false;
-        
+
         // Set error, if the name is a duplicate and not the orginal name
         if (quoteNameExists && !isOrignalName) {
             quoteNameInp.setCustomValidity(`The quote name '${quoteName}' exists already!`);
