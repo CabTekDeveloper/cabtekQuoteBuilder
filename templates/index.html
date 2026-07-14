@@ -53,9 +53,21 @@
                             <tr id="quote_id_{{quote['quote_id']}}">
                                 <td>
                                     {{ quote['quote_name'] }}
+
+                                    {# Trade or public client badge #}
+                                    {% if quote['is_trade_client'] %}
+                                    {% if quote["is_trade_client"]|lower == 'yes' %}
+                                    <span class="badge badge-pill badge-primary ml-2 ">Trade</span>
+                                    {% else %}
+                                    <span class="badge badge-pill badge-success ml-2 ">Public</span>
+                                    {% endif %}
+                                    {% endif %}
+
+                                    {# Diy badge #}
                                     {% if quote['company_id'] == 2 %}
                                     <span class="badge badge-pill badge-danger ml-2 ">DIY</span>
                                     {% endif %}
+
                                 </td>
                                 <td>{{ quote['quoted_by'] }}</td>
                                 <!-- <td>{{ quote['quote_status'] }}</td> -->
@@ -110,7 +122,7 @@
                                         <small class=" pl-1 pr-1">
                                             Delete
                                         </small>
-                                        </button>
+                                    </button>
                                 </td>
                                 <!-- <td><a href="{{url_for('update_quote_status',quote_id = quote['quote_id'] )}}" type="button" class="btn btn-sm btn-warning full-width p-0 m-0"><small class=" pl-1 pr-1">Update status</small></a></td> -->
                             </tr>

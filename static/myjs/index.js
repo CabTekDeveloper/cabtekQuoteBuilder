@@ -179,12 +179,20 @@ async function copyQuoteAndDetails(copyBtn) {
 
         if (data && data['data']) {
             let copied_quote_info = data['data']
+
+            let trade_or_public_badge = "";
+
+            if (copied_quote_info.is_trade_client) {
+                const isTrade = copied_quote_info.is_trade_client.toLowerCase() === "yes";
+                trade_or_public_badge = `<span class="badge badge-pill badge-${isTrade ? 'primary' : 'success'} ml-2">${isTrade ? 'Trade' : 'Public'}</span>`;
+            }
+
             let diy_badge = copied_quote_info['company_id'] == 2 ? `<span class="badge badge-pill badge-danger ml-2 ">DIY</span>` : "";
             if (copied_quote_info['is_template'].toLowerCase().trim() == 'yes') {
 
                 let newRow = `
                         <tr id ="quote_id_${copied_quote_info['quote_id']}" class="text-danger">  
-                            <td>${copied_quote_info['quote_name']}${diy_badge}</td>
+                            <td>${copied_quote_info['quote_name']}${trade_or_public_badge}${diy_badge}</td>
                             <td>${copied_quote_info['quoted_by']}</td>
                             <td>${copied_quote_info['date_quote_created']}</td>
                             <td class="border-0"><a href="/add_quote_details/${copied_quote_info['quote_name']}" type="button" class="btn btn-sm btn-primary full-width p-0 m-0 visible-off"><small class=" pl-1 pr-1">Modify</small></a></td>
@@ -198,7 +206,7 @@ async function copyQuoteAndDetails(copyBtn) {
             else {
                 let newRow = `
                         <tr id ="quote_id_${copied_quote_info['quote_id']}" class="text-danger">  
-                            <td>${copied_quote_info['quote_name']}${diy_badge}</td>
+                            <td>${copied_quote_info['quote_name']}${trade_or_public_badge}${diy_badge}</td>
                             <td>${copied_quote_info['quoted_by']}</td>
                             <td>${copied_quote_info['date_quote_created']}</td>
                             <td >  ${copied_quote_info['rev_date']}</td>

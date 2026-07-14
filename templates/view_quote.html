@@ -27,29 +27,29 @@
                     </div>
 
                     <div class="col-sm-4 d-flex justify-content-center" id="cabtek_info_div">
-                            <table >
-                                <tbody>
-                                    <tr>
-                                        <td colspan="2">
-                                            <h5 class="m-0 p-0 bold">{{ company_info['company_name'] }}</h5>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tel</td>
-                                        <td>: {{ company_info['phone_no'] }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ABN</td>
-                                        <td>: {{ company_info['abn'] }}</td>
-                                    </tr>
-                                    <tr>
-                                        <!-- Quote Only div -->
-                                        <td colspan="2" class="pt-3">
-                                            <h2 class=" bold m-0">QUOTE ONLY</h2>
-                                        </td><!-- end  -->
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">
+                                        <h5 class="m-0 p-0 bold">{{ company_info['company_name'] }}</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tel</td>
+                                    <td>: {{ company_info['phone_no'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>ABN</td>
+                                    <td>: {{ company_info['abn'] }}</td>
+                                </tr>
+                                <tr>
+                                    <!-- Quote Only div -->
+                                    <td colspan="2" class="pt-3">
+                                        <h2 class=" bold m-0">QUOTE ONLY</h2>
+                                    </td><!-- end  -->
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="col-sm-4  p-0 m-0 bg-warni" id="quote_date_div">
@@ -94,18 +94,23 @@
                     <tbody>
                         <tr>
                             <td class="text-right border-left-3 border-top-3  ">Name :</td>
-                            <td class="border-right-3 border-top-3   pl-1"> {{quote_info['customer_name'] if quote_info['customer_name'] != '' else '.......................................................................'}}</td>
+                            <td class="border-right-3 border-top-3   pl-1">
+                                {{quote_info['customer_name'] if quote_info['customer_name'] != '' else '.......................................................................'}}</td>
                             <td class="border-top-0"></td>
-                            <td rowspan="3" class="align-text-top   border-all-3    pl-2">{{quote_info['delivery_info']}}</td>
+                            <td rowspan="3" class="align-text-top border-all-3 pl-2">
+                                {{ "Pick up" if quote_info and quote_info['delivery_type'] and "pick up" in quote_info['delivery_type']|lower else (quote_info['delivery_info'] if quote_info else '') }}
+                            </td>
                         </tr>
                         <tr>
                             <td class="text-right border-left-3  ">Email :</td>
-                            <td class="border-right-3   pl-1"> {{quote_info['customer_email'] if quote_info['customer_email'] != '' else '.......................................................................' }}</td>
+                            <td class="border-right-3   pl-1">
+                                {{quote_info['customer_email'] if quote_info['customer_email'] != '' else '.......................................................................' }}</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td class="text-right border-left-3 border-bottom-3  ">Phone :</td>
-                            <td class="border-right-3 border-bottom-3   pl-1"> {{quote_info['customer_phone_no'] if quote_info['customer_phone_no'] != '' else '.......................................................................' }}</td>
+                            <td class="border-right-3 border-bottom-3   pl-1">
+                                {{quote_info['customer_phone_no'] if quote_info['customer_phone_no'] != '' else '.......................................................................' }}</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -145,7 +150,8 @@
                         <tr class="border-top-1  ">
                             <td colspan="2" class="pl-1">
                                 <!-- <h5 class=" underline bold m-0">{{ section_name }}</h5> -->
-                                <a href="{{url_for('add_quote_details',quote_name =quote_info['quote_name'], add_new_section = 'no', section_name = section_name )}}" type="button" class="btn btn-link p-0 m-0">
+                                <a href="{{url_for('add_quote_details',quote_name =quote_info['quote_name'], add_new_section = 'no', section_name = section_name )}}" type="button"
+                                    class="btn btn-link p-0 m-0">
                                     <h5 class="  black-text bold underline  m-0 p-0">{{ section_name }}</h5>
                                 </a>
                             </td>
@@ -215,7 +221,8 @@
                             <td class="border-right-1  ">
                                 {% for image_info in image_full_names %}
                                 {% set image_path = "images/uploads/" + image_info['image_full_name'] %}
-                                <img src="{{url_for('static', filename = image_path)}}" class="mt-1 mr-1 align-bottom" max-width="100%" height="{{image_info['image_size_info']['section_image_height']}}">
+                                <img src="{{url_for('static', filename = image_path)}}" class="mt-1 mr-1 align-bottom" max-width="100%"
+                                    height="{{image_info['image_size_info']['section_image_height']}}">
                                 <!-- <img src="{{url_for('static', filename = image_path)}}" class="mt-1 mr-1 align-bottom" max-width="100%" height="160px"> -->
                                 <!-- <img src="{{url_for('static', filename = image_path)}}" class="mt-1 mr-1 align-bottom" max-width="100%" height="200px"> -->
                                 {% endfor %}
@@ -256,27 +263,27 @@
                             <td colspan="2" rowspan="4" class="border-right-3   align-text-top pl-2 pt-1">
                                 <table id="condition_of_supply_table">
                                     <tbody>
-                                        <tr >
+                                        <tr>
                                             <td class="pb-1"><span class="bold h6 under">Conditions of supply</span></td>
                                         </tr>
 
                                         {% for item in company_info['conditions_of_supply'] %}
-                                            <tr >
-                                                <td class="pb-1">
+                                        <tr>
+                                            <td class="pb-1">
                                                 {% if company_info['id'] == 1 %}
-                                                    <span class="bold">{{loop.index}}. {{item.title}}</span>
-                                                    {% for condition in item.conditions %}
-                                                        <span class=" pl-3 d-block">• {{condition}}</span>
-                                                    {% endfor %}
+                                                <span class="bold">{{loop.index}}. {{item.title}}</span>
+                                                {% for condition in item.conditions %}
+                                                <span class=" pl-3 d-block">• {{condition}}</span>
+                                                {% endfor %}
                                                 {% elif  company_info['id'] == 2 %}
-                                                    <span class=" pl-3 d-block">• {{item}}</span>
+                                                <span class=" pl-3 d-block">• {{item}}</span>
                                                 {% else %}
-                                                   <span></span>
+                                                <span></span>
                                                 {% endif %}
-                                                </td>
-                                            </tr>
+                                            </td>
+                                        </tr>
                                         {% endfor %}
-                                            
+
                                     </tbody>
                                 </table>
                             </td>
@@ -306,15 +313,15 @@
                                 <div class="my-5">
                                     <!-- 18-03-2026 Shian didn't want to show the bank detials for the Cabtek quotes, hence we will not show it -->
                                     {% if company_info['id'] == 1 %}
-                                        <span class="d-block"> &nbsp; </span>
-                                        <span class="d-block"> &nbsp; </span>
-                                        <span class="d-block"> &nbsp;</span>
-                                        <span class="d-block"> &nbsp;  </span> 
+                                    <span class="d-block"> &nbsp; </span>
+                                    <span class="d-block"> &nbsp; </span>
+                                    <span class="d-block"> &nbsp;</span>
+                                    <span class="d-block"> &nbsp; </span>
                                     {% else %}
-                                        <span class="d-block"> Bank Details : {{ company_info['bank_details']['acc_name'] }} </span>
-                                        <span class="d-block"> Bank : {{ company_info['bank_details']['bank'] }}</span>
-                                        <span class="d-block">BSB : {{ company_info['bank_details']['bsb'] }}</span>
-                                        <span class="d-block"> Acc no: {{ company_info['bank_details']['acc_no'] }} </span> 
+                                    <span class="d-block"> Bank Details : {{ company_info['bank_details']['acc_name'] }} </span>
+                                    <span class="d-block"> Bank : {{ company_info['bank_details']['bank'] }}</span>
+                                    <span class="d-block">BSB : {{ company_info['bank_details']['bsb'] }}</span>
+                                    <span class="d-block"> Acc no: {{ company_info['bank_details']['acc_no'] }} </span>
                                     {% endif %}
                                 </div>
                             </td>
