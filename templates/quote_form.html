@@ -250,9 +250,27 @@
           </div>
         </div>
 
+        {# Delivery Type #}
+        <div class="form-group row align-items-center mb-2">
+          <label for="delivery_type" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Delivery Type</label>
+          <div class="col-sm-9">
+            <select class="form-control form-control-sm pl-1"
+              id="delivery_type"
+              name="delivery_type"
+              required>
+              <option value=""></option>
+              {% for row in all_delivery_types %}
+              <option value="{{ row['delivery_type'] }}">
+                {{ row['delivery_type'] }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
         {# Delivery info #}
         <div class="form-group row align-items-center mb-4">
-          <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Delivery info</label>
+          <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Delivery address</label>
           <div class="col-sm-9">
             <input class="form-control form-control-sm"
               type="text"

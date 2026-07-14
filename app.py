@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 import os
 from waitress import serve
 
+import delivery_types as delivery_types
 import quote_builder_db_manager as quote_builder_db
 import company_info_manager
 import eo_excel_manager
@@ -130,7 +131,8 @@ def create_quote():
         if 'user_info' in session:
             all_company_info = company_info_manager.get_all_company_info()
             all_clients = quote_builder_db.get_all_clickup_clients()
-            return render_template('quote_form.html',  all_company_info=all_company_info , all_clients = all_clients)
+            all_delivery_types = delivery_types.get_all_delivery_types()
+            return render_template('quote_form.html',  all_company_info=all_company_info , all_clients = all_clients,all_delivery_types=all_delivery_types)
         else:
             return render_template('login_error.html')
     
@@ -164,11 +166,12 @@ def edit_quote(quote_id):
         if 'user_info' in session:
             all_company_info = company_info_manager.get_all_company_info()
             all_clients = quote_builder_db.get_all_clickup_clients()
+            all_delivery_types = delivery_types.get_all_delivery_types()
 
             quote_info = quote_builder_db.get_quote_info_by_quote_id(quote_id)
             quote_info['quoted_by'] = quote_builder_db.get_user_info_by_id(quote_info['user_id'])['full_name']
 
-            return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients)
+            return render_template('quote_form.html', quote_info = quote_info , all_company_info=all_company_info, all_clients=all_clients,all_delivery_types=all_delivery_types)
         else:
             return render_template('login_error.html')
     
