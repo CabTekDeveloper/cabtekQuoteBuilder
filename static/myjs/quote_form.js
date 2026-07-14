@@ -1,6 +1,7 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // windows variable set in quote_form.html
+let ALL_DELIVERY_TYPES = window.all_delivery_types || [];
 let CLICKUP_CLIENTS_DATA_DB = window.all_clients || [];
 let QUOTE_INFO = window.quote_info || null;
 let IS_EDIT = QUOTE_INFO !== null; // Dynamically sets your edit state flag
@@ -33,7 +34,7 @@ let deliveryTypeSelect = document.getElementById("delivery_type");
 
 // Delivery info/address
 let deliveryInfoInp = document.getElementById("delivery_info")
-
+let shipViaInp = document.getElementById("ship_via")
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Populate quote info when in edit mode
@@ -307,12 +308,10 @@ formSubmitBtn.addEventListener("click", onFormSubmit)
 
 async function onFormSubmit(event) {
     event.preventDefault(); // Stop form from refreshing
-
     let data = await getquoteFormData();
 
     // Check if data is valid and not empty (assuming getquoteFormData returns null on validation failure)
     if (data && !isEmpty(data)) {
-
         if (IS_EDIT) {
             data.quote_id = QUOTE_INFO.quote_id
         }
@@ -326,8 +325,7 @@ async function onFormSubmit(event) {
             } else {
                 window.location.href = `/add_quote_details/${encodeURIComponent(data.quote_name)}`;
             }
-        }
-        else {
+        } else {
             // Extract a specific error message from the backend if it exists, fallback to a default
             let errorMsg = response?.message || "Failed to save quote!";
             alert(`Error: ${errorMsg}\n\nPlease check your connection and try again.`);
@@ -406,18 +404,28 @@ async function getquoteFormData() {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Delivery type on change
 
-deliveryTypeSelect.addEventListener("change", (event)=>{
-    toggleDeliveryInfoInp(event.target.value)
-})
+// Delivery type on change
+deliveryTypeSelect.addEventListener("change", (event) => {
+    let deliveryType = event.target.value || "";
+    toggleDeliveryInfoInp(deliveryType);
+    toggleShipViaInp(deliveryType);
+});
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function toggleDeliveryInfoInp(delivery_type) {
-    let pickupDeliveryInfo = "7:30am - 3:00pm Mon to Fri"
+    let pickupDeliveryInfo = "7:30am - 3:00pm Mon to Fri";
     let isPickUp = delivery_type && delivery_type.toLowerCase().includes("pick up");
     deliveryInfoInp.value = isPickUp ? pickupDeliveryInfo : "";
-    deliveryInfoInp.readOnly = isPickUp
+    deliveryInfoInp.readOnly = isPickUp;
 }
 
+function toggleShipViaInp(delivery_type) {
+    let shipVia = "";
+    if (delivery_type) {
+        shipVia = ALL_DELIVERY_TYPES.find(item => item.delivery_type?.toLowerCase() === delivery_type.toLowerCase())?.ship_via || "";
+    }
+    shipViaInp.value = shipVia;
+}
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 // function uploadEoExcelFileToDb(event) {
 

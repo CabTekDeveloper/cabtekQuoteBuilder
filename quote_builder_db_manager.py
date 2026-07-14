@@ -73,7 +73,7 @@ def alter_add_column(table_name, new_column_name, dataType):
     connection.commit()
     cursor.close()
     connection.close()
-# alter_add_column(table_name= "quotes_table", new_column_name= "delivery_address", dataType= "TEXT")
+# alter_add_column(table_name= "quotes_table", new_column_name= "ship_via", dataType= "TEXT")
 
 def update_a_field(table_name, column_name, val):
     try:
@@ -121,7 +121,7 @@ def alter_empty_column_values(table_name, column_name, default_value=""):
         cursor.close()
         connection.close()
 
-# alter_empty_column_values(table_name="quotes_table",column_name="customer_company",default_value="")
+# alter_empty_column_values(table_name="quotes_table",column_name="ship_via",default_value="")
 #---------------------------- Frequently used texts  db manager ------------------------------#
 
 def create_frequently_used_text_table():
@@ -716,19 +716,21 @@ def create_quotes_table():
 
 def update_quote_info_by_quote_id(new_quote_info):
     try:
-        quote_id = int(new_quote_info['quote_id'])
-        quote_name = new_quote_info['quote_name']
-        customer_name = new_quote_info['customer_name'].strip().title()
-        customer_email = new_quote_info['customer_email']
-        customer_phone_no = new_quote_info['customer_phone_no']
-        delivery_info = new_quote_info['delivery_info']
-        is_template = new_quote_info['is_template']
-        quote_name_lower_case = quote_name.strip().lower()
-        time_stamp = helper.get_cur_datetime()['timestamp']
-        rev_date = f"{helper.get_cur_datetime()['date_today']} {helper.get_cur_datetime()['time_now']}"
-        company_id = int(new_quote_info['company_id'])
-        is_trade_client = new_quote_info['is_trade_client']
-        customer_company = new_quote_info['customer_company']
+        quote_id                = int(new_quote_info['quote_id'])
+        quote_name              = new_quote_info['quote_name']
+        customer_name           = new_quote_info['customer_name'].strip().title()
+        customer_email          = new_quote_info['customer_email']
+        customer_phone_no       = new_quote_info['customer_phone_no']
+        delivery_info           = new_quote_info['delivery_info']
+        is_template             = new_quote_info['is_template']
+        quote_name_lower_case   = quote_name.strip().lower()
+        time_stamp              = helper.get_cur_datetime()['timestamp']
+        rev_date                = f"{helper.get_cur_datetime()['date_today']} {helper.get_cur_datetime()['time_now']}"
+        company_id              = int(new_quote_info['company_id'])
+        is_trade_client         = new_quote_info['is_trade_client']
+        customer_company        = new_quote_info['customer_company']
+        delivery_type           = new_quote_info['delivery_type']
+        ship_via                = new_quote_info['ship_via']
 
         sql = ''' UPDATE quotes_table 
                 SET quote_name = ?,
@@ -742,12 +744,14 @@ def update_quote_info_by_quote_id(new_quote_info):
                 rev_date = ?,
                 company_id = ?,
                 is_trade_client = ?,
-                customer_company =?
+                customer_company =?,
+                delivery_type=?,
+                ship_via=?
                 
                 WHERE quote_id = ? '''
         connection = create_db_connection()
         cursor = connection.cursor()
-        cursor.execute(sql, [quote_name, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case , is_template, time_stamp, rev_date, company_id,is_trade_client,customer_company, quote_id])
+        cursor.execute(sql, [quote_name, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case , is_template, time_stamp, rev_date, company_id,is_trade_client,customer_company,delivery_type, ship_via, quote_id])
         connection.commit()
         cursor.close()
         connection.close()
@@ -755,7 +759,7 @@ def update_quote_info_by_quote_id(new_quote_info):
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
     
 
-def insert_into_quotes_table(quote_name, user_id, date_quote_created, customer_name="", customer_email="", customer_phone_no="", delivery_info="", is_template = "no" , company_id=0, is_trade_client="no", customer_company="",delivery_type=""):
+def insert_into_quotes_table(quote_name, user_id, date_quote_created, customer_name="", customer_email="", customer_phone_no="", delivery_info="", is_template = "no" , company_id=0, is_trade_client="no", customer_company="",delivery_type="", ship_via=""):
     try:
 
         quote_name_lower_case = quote_name.strip().lower()
@@ -770,9 +774,9 @@ def insert_into_quotes_table(quote_name, user_id, date_quote_created, customer_n
         
         connection = create_db_connection()
         cursor = connection.cursor()
-        sql = ''' INSERT INTO quotes_table (quote_name,user_id,date_quote_created,customer_name,customer_email,customer_phone_no,delivery_info,quote_name_lower_case,time_stamp, rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) '''
-        cursor.execute(sql, [quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case, time_stamp,rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type])
+        sql = ''' INSERT INTO quotes_table (quote_name,user_id,date_quote_created,customer_name,customer_email,customer_phone_no,delivery_info,quote_name_lower_case,time_stamp, rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type,ship_via) 
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) '''
+        cursor.execute(sql, [quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case, time_stamp,rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type,ship_via])
         connection.commit()
         cursor.close()
         connection.close()

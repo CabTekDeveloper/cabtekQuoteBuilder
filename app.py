@@ -147,7 +147,8 @@ def create_new_quote():
         user_id = quote_builder_db.get_user_info_by_full_name(data['quoted_by'])['user_id']
 
         quote_builder_db.insert_into_quotes_table(data['quote_name'], user_id, date_today, data['customer_name'], data['customer_email'], 
-                                                data['customer_phone_no'], data['delivery_info'],data['is_template'], data['company_id'], data['is_trade_client'], data['customer_company'] )
+                                                data['customer_phone_no'], data['delivery_info'],data['is_template'], data['company_id'], 
+                                                data['is_trade_client'], data['customer_company'], data['delivery_type'], data['ship_via'] )
         
         return jsonify({"success": True})
     except Exception as e:
