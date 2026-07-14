@@ -604,9 +604,13 @@ def copy_quote():
                 company_id = original_quote_info['company_id']
                 customer_company = original_quote_info['customer_company']
                 is_trade_client = original_quote_info['is_trade_client']
+                delivery_type= original_quote_info['delivery_type']
+                ship_via= original_quote_info['ship_via']
 
                 quote_builder_db.insert_into_quotes_table(new_quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, 
-                                                          is_template=is_template, company_id=company_id, customer_company=customer_company, is_trade_client=is_trade_client)
+                                                          is_template=is_template, company_id=company_id, customer_company=customer_company, is_trade_client=is_trade_client,
+                                                          delivery_type=delivery_type,ship_via=ship_via)
+                
                 # get info of copied quote and add quoted_by and quote_status
                 copied_quote_info = quote_builder_db.get_quote_info_by_quote_name(new_quote_name)
                 copied_quote_info['quoted_by'] = quote_builder_db.get_user_info_by_id(user_id)['full_name']
