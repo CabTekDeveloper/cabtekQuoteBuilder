@@ -73,7 +73,7 @@ def alter_add_column(table_name, new_column_name, dataType):
     connection.commit()
     cursor.close()
     connection.close()
-# alter_add_column(table_name= "quotes_table", new_column_name= "is_trade_client", dataType= "TEXT")
+# alter_add_column(table_name= "quotes_table", new_column_name= "delivery_address", dataType= "TEXT")
 
 def update_a_field(table_name, column_name, val):
     try:
@@ -96,8 +96,32 @@ def alter_rename_column(table_name, old_name, new_name):
     connection.commit()
     cursor.close()
     connection.close()
-# alter_rename_column(table_name= "quotes_tableXX", old_name = "company_id", new_name= "company_id")
+# alter_rename_column(table_name= "quotes_table", old_name = "delivery_address", new_name= "delivery_type")
 
+def alter_empty_column_values(table_name, column_name, default_value=""):
+    connection = create_db_connection()
+    cursor = connection.cursor()
+    
+    # Changed %s to ? for SQLite compatibility.
+    # We target rows where the column is currently NULL.
+    sql = f"""
+        UPDATE {table_name} 
+        SET {column_name} = ? 
+        WHERE {column_name} IS NULL;
+    """
+    
+    try:
+        cursor.execute(sql, (default_value,))
+        connection.commit()
+        print(f"Successfully updated NULL fields in {table_name}.{column_name} to '{default_value}'")
+    except Exception as e:
+        connection.rollback()
+        print(f"Error updating column: {e}")
+    finally:
+        cursor.close()
+        connection.close()
+
+# alter_empty_column_values(table_name="quotes_table",column_name="customer_company",default_value="")
 #---------------------------- Frequently used texts  db manager ------------------------------#
 
 def create_frequently_used_text_table():
@@ -731,7 +755,7 @@ def update_quote_info_by_quote_id(new_quote_info):
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
     
 
-def insert_into_quotes_table(quote_name, user_id, date_quote_created, customer_name="", customer_email="", customer_phone_no="", delivery_info="", is_template = "no" , company_id=0, is_trade_client="no", customer_company=""):
+def insert_into_quotes_table(quote_name, user_id, date_quote_created, customer_name="", customer_email="", customer_phone_no="", delivery_info="", is_template = "no" , company_id=0, is_trade_client="no", customer_company="",delivery_type=""):
     try:
 
         quote_name_lower_case = quote_name.strip().lower()
@@ -746,9 +770,9 @@ def insert_into_quotes_table(quote_name, user_id, date_quote_created, customer_n
         
         connection = create_db_connection()
         cursor = connection.cursor()
-        sql = ''' INSERT INTO quotes_table (quote_name,user_id,date_quote_created,customer_name,customer_email,customer_phone_no,delivery_info,quote_name_lower_case,time_stamp, rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) '''
-        cursor.execute(sql, [quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case, time_stamp,rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company])
+        sql = ''' INSERT INTO quotes_table (quote_name,user_id,date_quote_created,customer_name,customer_email,customer_phone_no,delivery_info,quote_name_lower_case,time_stamp, rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type) 
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) '''
+        cursor.execute(sql, [quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case, time_stamp,rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type])
         connection.commit()
         cursor.close()
         connection.close()
