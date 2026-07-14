@@ -2,7 +2,7 @@ DELIVERY_TYPES = [
     {   
         "id":1,
         "delivery_type":"Pick up from CabTek",
-        "delivery_address":"7:30am - 3:00pm Mon to Fri ",
+        "delivery_address":"7:30am - 3:00pm Mon to Fri",
         "ship_via":"Pick Up"
     },
     {   
