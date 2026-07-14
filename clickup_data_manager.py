@@ -100,16 +100,16 @@ def get_clickup_trade_contacts():
 
                 for field in task['custom_fields']:
                     if field['id'] == CUSTOM_FIELD_ID_CONTACT_NAME and "value" in field:
-                        task_info['name'] = field['value'] 
+                        task_info['name'] = str(field['value']).strip() 
 
                     elif field['id'] == CUSTOM_FIELD_ID_COMPANY and "value" in field:
-                        task_info['company'] = field['value'] 
+                        task_info['company'] = str(field['value']).strip() 
 
                     elif field['id'] == CUSTOM_FIELD_ID_EMAIL_T and "value" in field:
-                        task_info['email'] = field['value'] 
+                        task_info['email'] = str(field['value']).strip() 
 
                     elif field['id'] == CUSTOM_FIELD_ID_PHONE and "value" in field:
-                        task_info['phone'] = field['value'] 
+                        task_info['phone'] = str(field['value']).strip()
 
                 trade_contacts.append(task_info)
 
