@@ -53,7 +53,7 @@ def check_require_init_clickup_client_table():
         # Fallback to 0 if the key doesn't exist yet
         last_init = metadata.get(KEY_CLIENTS_TABLE_INIT_TS,0)
 
-        return (ts_now - last_init) > 60
+        return (ts_now - last_init) > 300
     
     except Exception as ex:
         # If errors, return True, so we will initialize the clients table regardless
