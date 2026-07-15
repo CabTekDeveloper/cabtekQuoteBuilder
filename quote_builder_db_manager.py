@@ -2165,7 +2165,7 @@ def get_quote_data(quote_name):
                 total_cost_ex_gst += section_detial_row['section_total_cost_row']
             
             # Wangchuk added 15-07-2026 - add section total cost to section info
-            temp_data['section_total_cost'] = section_total_cost
+            temp_data['section_total_cost'] = round(section_total_cost,2)
 
             # Add each row details
             temp_data['section_detail_rows'] = section_detail_rows

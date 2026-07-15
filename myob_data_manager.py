@@ -5,7 +5,11 @@
 #--------------------------------------------------------------------------------------------------------------------------------------#
 import csv
 import random
+
 import helper
+import file_folder_paths
+import quote_builder_db_manager as quote_builder_db
+
 #--------------------------------------------------------------------------------------------------------------------------------------#
 # COLUMN HEADINGS
 col1_name             = "Co./Last Name"               # Client company name
@@ -55,7 +59,7 @@ FIELD_NAMES = [
     col21_sale_status
 ]
 #--------------------------------------------------------------------------------------------------------------------------------------#
-
+# Default column values for myob data. 
 DEFAULT_COL_VALUES = {
     col6_date: helper.get_cur_datetime()['date_today'],
     col9_deliv_status: "A",
@@ -64,11 +68,11 @@ DEFAULT_COL_VALUES = {
     col21_sale_status: "O"  # Capital letter 'O'
 }
 
-ACCOUNT_NO = {
-    "flatpack"          : "4-1111",
-    "benchtop"          : "4-1119",
-    "assembly_install"  : "4-1115"
-}
+# MYOB account nos
+ACC_NO_JOINERY          = "4-1111"
+ACC_NO_BENCHTOP         = "4-1119"
+ACC_NO_ASSEMBLY_INSTALL = "4-1115"
+
 
 #--------------------------------------------------------------------------------------------------------------------------------------#
 # Returns a fresh dictionary record template populated with all heading keys.
@@ -78,21 +82,104 @@ def get_new_record_template():
 
 #--------------------------------------------------------------------------------------------------------------------------------------#
 
+def generate_myob_data_file(quote_name):
+    try:
+        timestamp = helper.get_cur_datetime()['timestamp']
+        folder_path = file_folder_paths.FOLDER_PATH_MYOB_DATA_FILE
+        file_name = f"{quote_name}_myob_{timestamp}.txt"
+        file_path = f"{folder_path}\\{file_name}"
 
+        formatted_quote_data = format_quote_data(quote_name)
 
-
+        return {
+            "folder_path": folder_path,
+            "file_name": file_name,
+            "file_path": file_path
+        }
+    
+    except Exception as ex:
+        print(f"Error in generate_myob_data_file: {ex}")
 
 #--------------------------------------------------------------------------------------------------------------------------------------#
-def generate_myob_data_file():
+
+def format_quote_data(quote_name):
     try:
-        pass
-    except:
-        pass
+        # 1. Fetch and validate baseline data
+        quote_info = quote_builder_db.get_quote_info_by_quote_name(quote_name)
+        quote_data = quote_builder_db.get_quote_data(quote_name)
+
+        if not quote_info or not quote_data:
+            return False
+        
+        all_sections_data = quote_data.get('all_sections_data')
+        if not all_sections_data:
+            return False
+
+        sections = []
+        delivery_info = {}
+        
+        # 2. First pass: Parse delivery and determine if an assembly section exists
+        # We also keep track of raw classifications so we don't have to re-evaluate string conditions
+        raw_sections = []
+        has_assembly_section = False
+
+        for value in all_sections_data.values():
+            section_name = value.get('section_name', '')
+            name_lower = section_name.lower()
+
+            # Handle delivery section separately
+            if "delivery" in name_lower:
+                if not delivery_info:
+                    delivery_cost = float(value.get('section_total_cost') or 0)
+                    delivery_info = {
+                        "delivery_cost": round(delivery_cost, 2),
+                        "tax_amount": round(delivery_cost * 0.1, 2)
+                    }
+                continue
+
+            # Classify standard sections
+            is_benchtop = "benchtop" in name_lower or "stone" in name_lower
+            is_assembly = "assembly" in name_lower or "install" in name_lower
+            
+            if is_assembly:
+                has_assembly_section = True
+
+            raw_sections.append({
+                "section_name": section_name,
+                "section_total_cost": value.get('section_total_cost'),
+                "is_benchtop": is_benchtop,
+                "is_assembly": is_assembly
+            })
+
+        # 3. Second pass: Construct final section objects with the correct account numbers
+        for item in raw_sections:
+            if item["is_benchtop"]:
+                account_no = ACC_NO_BENCHTOP
+            elif item["is_assembly"] or has_assembly_section:
+                account_no = ACC_NO_ASSEMBLY_INSTALL
+            else:
+                account_no = ACC_NO_JOINERY
+
+            sections.append({
+                "section_name": item["section_name"],
+                "section_total_cost": item["section_total_cost"],
+                "account_no": account_no
+            })
+
+        return {
+            "quote_info": quote_info,
+            "sections": sections,
+            "delivery_info": delivery_info
+        }
+    
+    except Exception as ex:
+        print(f"Error : {ex}")
+        return {}
+
+#--------------------------------------------------------------------------------------------------------------------------------------#
 
 
-
-
-
+generate_myob_data_file("QU-7511 Mel Twidale")
 
 
 

@@ -13,3 +13,6 @@ LIVE_QUOTING_DB_PATH = f"{FOLDER_PATH_QUOTE_BUILDER_DB}\\{QUOTING_DB_NAME}"     
 
 # Test paths
 TEST_QUOTING_DB_PATH = f"static\\test_db\\{QUOTING_DB_NAME}"                            # For Testing
+
+
+FOLDER_PATH_MYOB_DATA_FILE = f"static\\myob_data_file"
