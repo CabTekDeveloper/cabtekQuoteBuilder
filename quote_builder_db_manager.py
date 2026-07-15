@@ -2147,6 +2147,7 @@ def get_quote_data(quote_name):
             quote_details_by_quoteId_and_sectionId = get_quote_details_by_quoteId_and_sectionId(quote_id,section_name_id)
 
             section_detail_rows = []
+            section_total_cost = 0       #Wangchuk added 15-07-2026
             for section_detial_row in quote_details_by_quoteId_and_sectionId:
                 temp_row ={}
                 temp_row['section_sub_heading'] = section_detial_row['section_sub_heading']
@@ -2157,9 +2158,16 @@ def get_quote_data(quote_name):
                 temp_row['section_total_cost_row'] = section_detial_row['section_total_cost_row']
                 section_detail_rows.append(temp_row)
 
+                # Wangchuk added 15-07-2026 - add all rows total cost 
+                section_total_cost += section_detial_row['section_total_cost_row']
+
                 # add all the total_costs of each row
                 total_cost_ex_gst += section_detial_row['section_total_cost_row']
+            
+            # Wangchuk added 15-07-2026 - add section total cost to section info
+            temp_data['section_total_cost'] = section_total_cost
 
+            # Add each row details
             temp_data['section_detail_rows'] = section_detail_rows
 
             all_sections_data[section_name] = temp_data
@@ -2184,10 +2192,12 @@ def get_quote_data(quote_name):
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         return quote_data
     
-
+# print(get_quote_data("QU-7493"))
+# print(get_quote_info_by_quote_name("QU-7493"))
 
 # print(get_quote_section_info_by_quote_id(56))
 
+#--------------------------------------------------------------------------------------------#
 # This function will delete excel file from eo_excel_table, texts saved in eo_excel_text_table for the excel file being deleted, and finally remove the file itself from the folder
 def delete_old_eo_excel(user_id):
     try:
@@ -2204,7 +2214,7 @@ def delete_old_eo_excel(user_id):
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
 
-
+#--------------------------------------------------------------------------------------------#
 # this will delete quote and all its data from different tables
 def delete_quote_and_its_data(quote_id):
     try:
