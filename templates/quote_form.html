@@ -94,7 +94,7 @@
       {% endif %}
     </div>
 
-    {# Edit Quote column -------------------------------------------------------------------------------------------------------------- #}
+    {# Create/Edit Quote column -------------------------------------------------------------------------------------------------------------- #}
     <div class="col-md-4 ">
       <h5 class="bold {{ 'bg-success text-white' if quote_info else 'bg-warning text-dark' }} text-center p-2 mt-4">
         {# Dynamic Heading #}
@@ -178,6 +178,15 @@
         </div>
 
         {# Customer company #}
+        {# Since  all_clients can have duplicate company names, we will need to filter out the duplicates.#}
+        {# Create an empty list in a namespace to store unique company names #}
+        {% set ns = namespace(unique_companies=[]) %}
+        {% for client in all_clients %}
+          {% if client.company not in ns.unique_companies %}
+            {% set _ = ns.unique_companies.append(client.company) %}
+          {% endif %}
+        {% endfor %}
+
         <div class="form-group row align-items-center mb-2">
           <label for="customer_company" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
           <div class="col-sm-9">
@@ -186,9 +195,9 @@
               name="customer_company"
               required>
               <option value=""></option>
-              {% for row in all_clients %}
-              <option value="{{ row['company'] }}">
-                {{ row['company'] }}
+              {% for company in ns.unique_companies %}
+              <option value="{{ company}}">
+                {{ company }}
               </option>
               {% endfor %}
             </select>
