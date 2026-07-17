@@ -73,7 +73,7 @@ def alter_add_column(table_name, new_column_name, dataType):
     connection.commit()
     cursor.close()
     connection.close()
-# alter_add_column(table_name= "quotes_table", new_column_name= "ship_via", dataType= "TEXT")
+# alter_add_column(table_name= "section_names_table", new_column_name= "is_active", dataType= "TEXT")
 
 def update_a_field(table_name, column_name, val):
     try:
@@ -87,6 +87,8 @@ def update_a_field(table_name, column_name, val):
         connection.close()
     except:
         pass
+# update_a_field(table_name= "section_names_table", column_name= "is_active", val= "yes")
+
 
 def alter_rename_column(table_name, old_name, new_name):
     connection = create_db_connection()
