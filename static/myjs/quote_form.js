@@ -60,14 +60,19 @@ function initEditMode() {
 
     // Populate cutomer info fields
     if (isTradeClient) {
-        // Populate client company
-        const targetCompany = escapeHtml(QUOTE_INFO.customer_company);
+        // Select client company
+        // Check if targetCompany exists in the dropdown
+        let targetCompany = escapeHtml(QUOTE_INFO.customer_company);
+        let companyOptionExists = Array.from(customerCompanySelect.options).some(option => option.value === targetCompany)
+        if (!companyOptionExists) {
+            alert(`\nThe client company '${targetCompany}' is not in the database.\n\nIt's either removed or has been updated in the ClickUp App.`)
+            return;
+        }
         customerCompanySelect.value = targetCompany;
 
-        // Filter and build option for client name
+        // Build client name dropdown
+        // Then, select client name
         populateCustomerNameTag(targetCompany);
-
-        // Select client name from client name options
         const targetName = escapeHtml(QUOTE_INFO.customer_name);
         customerNameSelect.value = targetName;
 
@@ -117,11 +122,14 @@ function handleClientTypeChange() {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 function populateCompanyDropdown(isTradeClient) {
-    let optionHtml = "";
     customerCompanySelect.innerHTML = "";
+    customerNameSelect.innerHTML = `<option></option>`;     // Reset trade-specific dependent elements
+    customerNameInp.value = "";                             // Cashe sale client name input
+    customerEmailInp.value = "";
+    customerPhoneInp.value = "";
 
     if (isTradeClient) {
-        optionHtml = `<option></option>`;
+        let optionHtml = `<option></option>`;
 
         if (CLICKUP_CLIENTS_DATA_DB) {
             // Use a Set to keep track of unique company names
@@ -136,25 +144,13 @@ function populateCompanyDropdown(isTradeClient) {
                 }
             });
         }
-
-        // Reset trade-specific dependent elements
-        customerNameSelect.innerHTML = `<option></option>`;
-        customerEmailInp.value = "";
-        customerPhoneInp.value = "";
+        // Append to dropdown
+        customerCompanySelect.insertAdjacentHTML('beforeend', optionHtml);
 
     } else {
-        // Fallback option setup for Cash Sales
-        optionHtml = `<option value="Cash Sale" selected>Cash Sale</option>`;
-
-        // Reset plain text input elements
-        customerNameInp.value = "";
-        customerEmailInp.value = "";
-        customerPhoneInp.value = "";
+        customerCompanySelect.insertAdjacentHTML('beforeend', `<option value="Cash Sale" selected>Cash Sale</option>`);
     }
-
-    customerCompanySelect.insertAdjacentHTML('beforeend', optionHtml);
 }
-
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 // Customer company on change
@@ -254,52 +250,6 @@ function populateCustomerDetails(companyName, customerName) {
     customerEmailInp.value = emailVal;
     customerPhoneInp.value = phoneVal;
 }
-// if (customerNameSelect !== null) {
-//     customerNameSelect.addEventListener("change", function () {
-//         let customerCompany = customerCompanySelect.value.toLowerCase();
-//         let customerName = this.value.toLowerCase();
-//         let filteredClient = [];
-
-//         // Clear the inputs if customer name is blank
-//         if (!customerName) {
-//             customerEmailInp.value = "";
-//             customerPhoneInp.value = "";
-//             return;
-//         }
-
-//         if (CLICKUP_CLIENTS_DATA_DB) {
-//             filteredClient = CLICKUP_CLIENTS_DATA_DB.filter(item => {
-//                 const escapedCompany = escapeHtml(item['company']).toLowerCase();
-//                 const escapedName = escapeHtml(item['name']).toLowerCase();
-//                 return escapedCompany === customerCompany && escapedName === customerName;
-//             });
-//         }
-
-//         populateCustomerEmailTag(filteredClient);
-//         populateCustomerPhoneTag(filteredClient);
-//     });
-// }
-// //-----------------------------------------------------------------------------------------------------------------------------------------------------//
-// // Populate customer email
-// function populateCustomerEmailTag(filteredClient) {
-//     let val = ""
-//     if (!isEmpty(filteredClient)) {
-//         val = filteredClient[0]['email']
-//     }
-//     customerEmailInp.value = val
-// }
-
-// //-----------------------------------------------------------------------------------------------------------------------------------------------------//
-// // Populate customer phone no
-// function populateCustomerPhoneTag(filteredClient) {
-//     let val = ""
-//     if (!isEmpty(filteredClient)) {
-//         val = filteredClient[0]['phone']
-//     }
-//     customerPhoneInp.value = val
-// }
-
-
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------//
 // Create quote
