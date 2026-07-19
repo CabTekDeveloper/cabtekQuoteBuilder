@@ -24,7 +24,7 @@ app.secret_key = 'super secret key'
 socketio = SocketIO(app)
 
 #----------------------------------------------------------------------------------------------#
-# API end points for fetching data
+# API end points
 
 @app.route('/get_all_clickup_clients_db', methods=["GET"])
 def get_all_clickup_clients_db():
@@ -49,6 +49,35 @@ def check_quote_name_exists_db(quote_name):
     exists = quote_builder_db.check_quote_name_exists(quote_name)
     return jsonify({"exists": exists})
 
+@app.route('/sync_clickup_clients_table', methods=['POST'])
+def sync_clickup_clients_table():
+    try:
+        
+        init_elapsed_sec = helper.get_clickup_clients_table_sync_elapsed_seconds()
+        cooldown_limit = 120
+
+        # Stop user from smashing the sync process
+        if init_elapsed_sec < cooldown_limit:
+            wait_time = cooldown_limit - init_elapsed_sec
+            return jsonify({
+                "success" : False,
+                "message": f"Please wait for {wait_time} seconds before manually syncing again."
+            })
+        
+        # Perform sync process if time elapsed is more than cool down period
+        quote_builder_db.init_clickup_clients_table()
+
+        return jsonify({
+            "success": True,
+            "message": "Local client data successfully synchronized with ClickUp!"
+        })
+    
+    except Exception as ex:
+        print(f"Manual sync endpoint encountered an error: {ex}")
+        return jsonify({
+            "success": False,
+            "message": "An internal error occurred during synchronization."
+        })
 #----------------------------------------------------------------------------------------------#
 @app.route('/index')
 @app.route('/index/<showSavedTemplate>')
@@ -98,9 +127,6 @@ def login():
                 # Wangchuk, 18-03-2025,
                 quote_builder_db.backup_db(user_info['user_name'])
                 
-                # Initialize clickup clients table once when user logs in.
-                quote_builder_db.init_clickup_clients_table()
-
                 return redirect(url_for('index'))
             else:
                 flash("The username or password you entered is incorrect.")
@@ -129,6 +155,11 @@ def logout():
 def create_quote():
     try:
         if 'user_info' in session:
+
+            # Sync clickup clients table with local db if 1 hour has elapsed since last sync
+            if helper.get_clickup_clients_table_sync_elapsed_seconds() > 3600:
+                quote_builder_db.init_clickup_clients_table()
+
             all_company_info = company_info_manager.get_all_company_info()
             all_clients = quote_builder_db.get_all_clickup_clients()
             all_delivery_types = delivery_types.get_all_delivery_types()

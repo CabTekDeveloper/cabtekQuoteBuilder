@@ -100,10 +100,7 @@ function showActiveDisplayDiv(activeDisplayDiv) {
             el.classList.add('hide')
         }
     })
-
 }
-
-
 
 // DELETE QUOTE FROM TABLE
 async function deleteQuote(quoteDeleteBtn) {

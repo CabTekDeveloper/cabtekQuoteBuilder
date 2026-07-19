@@ -42,8 +42,7 @@ def delete_files_older_than_x_days(folder_path, days):
         
 #----------------------------------------------------------------------------------------------------------------------------#
 
-# If the last init was over 60 seconds, return True
-def check_require_init_clickup_client_table():
+def get_clickup_clients_table_sync_elapsed_seconds():
     try:
         ts_now = int(time.time())
 
@@ -53,14 +52,13 @@ def check_require_init_clickup_client_table():
         # Fallback to 0 if the key doesn't exist yet
         last_init = metadata.get(KEY_CLIENTS_TABLE_INIT_TS,0)
 
-        return (ts_now - last_init) > 600
+        return ts_now - last_init
     
     except Exception as ex:
-        # If errors, return True, so we will initialize the clients table regardless
-        print(ex)
-        return True
+        # Return a massive number so background sync runs and manual cooldown limits are cleanly bypassed
+        return 99999999
+
     
-#----------------------------------------------------------------------------------------------------------------------------#    
 def update_clickup_client_table_last_init():
     metadata={}
     try:

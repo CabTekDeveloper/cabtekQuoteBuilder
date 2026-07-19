@@ -182,15 +182,15 @@
         {# Create an empty list in a namespace to store unique company names #}
         {% set ns = namespace(unique_companies=[]) %}
         {% for client in all_clients %}
-          {% if client.company not in ns.unique_companies %}
-            {% set _ = ns.unique_companies.append(client.company) %}
-          {% endif %}
+        {% if client.company not in ns.unique_companies %}
+        {% set _ = ns.unique_companies.append(client.company) %}
+        {% endif %}
         {% endfor %}
 
-        <div class="form-group row align-items-center mb-2">
+        <div class="form-group row mb-2">
           <label for="customer_company" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
           <div class="col-sm-9">
-            <select class="form-control form-control-sm pl-1"
+            <select class="form-control form-control-sm "
               id="customer_company"
               name="customer_company"
               required>
@@ -201,6 +201,13 @@
               </option>
               {% endfor %}
             </select>
+            {# Sync clients table button #}
+            <button type="button"
+              class="btn btn-sm btn-link p-0"
+              id="sync_clickup_clients_btn"
+              {{'disabled' if quote_info and quote_info['is_trade_client'] == 'no' else '' }}>
+              <small class="p-0">Missing a client or updated a client? Sync with Clickup <strong>&#8635;</strong></small>
+            </button>
           </div>
         </div>
 

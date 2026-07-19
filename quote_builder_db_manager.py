@@ -2005,6 +2005,7 @@ def create_clickup_clients_table():
     connection.execute(sql)
     connection.close()
 
+
 # Initialzied clickup clients table
 def init_clickup_clients_table():
     connection = None
@@ -2015,10 +2016,6 @@ def init_clickup_clients_table():
             VALUES (:id, :name, :company, :email, :phone);
         '''
     try:
-        # If the last init is under 60 seconds, skip init.
-        if not helper.check_require_init_clickup_client_table(): 
-            return
-
         # If failed or there's no clickup contact data, skip init.
         clickup_client_data = clickup_manager.get_clickup_trade_contacts()
         if not clickup_client_data:

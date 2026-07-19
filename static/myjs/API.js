@@ -43,6 +43,13 @@ async function saveEOexcelFileInDB(uploadedFile, user_id) {
 }
 
 //POST JSON Data -----------------------------------------------------------------------------------------------------------//
+async function syncClickupClientsTable() {
+    let data = {}
+    const url = `/sync_clickup_clients_table`;
+    const res = await fetch(url, OPTIONS_POST_JSON_DATA);
+    data = await res.json();
+    return data;
+}
 
 async function saveEditedQuote(data_to_post) {
     let data = {}

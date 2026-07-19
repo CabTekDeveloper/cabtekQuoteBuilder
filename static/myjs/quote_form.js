@@ -10,6 +10,7 @@ let IS_EDIT = QUOTE_INFO !== null; // Dynamically sets your edit state flag
 let createQuoteDiv = document.getElementById("create_quote_div")
 let uploadFileMsg = document.getElementById('upload_msg')
 let eoFileInput = document.getElementById('eo_file_input')
+let syncClickupClientsBtn = document.getElementById("sync_clickup_clients_btn")
 
 let quoteForm = document.getElementById("quote_form")
 let quoteNameInp = document.getElementById('quote_name_inp')
@@ -105,6 +106,9 @@ function toggleFormFieldsByClientType(isTradeClient) {
     // Toggle readonly
     customerEmailInp.readOnly = isTradeClient;
     customerPhoneInp.readOnly = isTradeClient;
+
+    // toggle the sync button
+    syncClickupClientsBtn.disabled = !isTradeClient
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -377,58 +381,24 @@ function toggleShipViaInp(delivery_type) {
     shipViaInp.value = shipVia;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-// function uploadEoExcelFileToDb(event) {
 
-//     let user_id = event.getAttribute('data-user_id')
-//     let allowedExcelFileTypes = ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
-//     let uploadedFiles = eoFileInput.files;
-//     uploadFileMsg.innerText = "";
-//     quoteNameInp.value = ''
+syncClickupClientsBtn.addEventListener('click', async function () {
+    const confirmSync = confirm("Syncing will reload the page. Are you sure you want to proceed?");
+    if (!confirmSync) return;
+    this.disabled = true
 
-//     if (uploadedFiles.length > 0) {
-//         let uploadedFile = uploadedFiles[0]
-//         let fileType = uploadedFile['type'].toLowerCase();
+    try {
 
-//         if (allowedExcelFileTypes.includes(fileType)) {
-//             const formData = new FormData()
-//             formData.append("uploadedFile", uploadedFile)
-//             formData.append("user_id", user_id)
+        let response = await syncClickupClientsTable();
 
-//             const url = "/save_eo_excel_file_text_to_db"
-//             const options = {
-//                 method: "POST",
-//                 body: formData
-//             }
+        if (response && response.message) {
+            alert(response.message)
+        }
 
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        this.disabled = false
+    }
 
-//             // Post the image file to Flask App
-//             fetch(url, options).then(res => {
-//                 if (res.status == 200) {
-//                     return res.json()
-//                 }
-//                 else {
-//                     uploadFileMsg.innerText = "File not Uploaded. Try again."
-//                 }
-//             }).then(data => {
-//                 if (data && data["file_uploaded"] == true) {
-//                     uploadFileMsg.innerText = "File uploaded!"
-
-//                     let fileName = uploadedFile['name'].split('.')[0]
-//                     quoteNameInp.value = fileName
-//                     // refreshImageResultDiv()
-//                 }
-//                 else {
-//                     uploadFileMsg.innerText = data['message']
-//                 }
-//             })
-
-//         }
-//         else {
-
-//             uploadFileMsg.innerText = "The uploaded filetype is not supported. Make sure you upload only the excel files generated from Eze Order program.";
-
-//         }
-//     }
-
-// }
-
+});

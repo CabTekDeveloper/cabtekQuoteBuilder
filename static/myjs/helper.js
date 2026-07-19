@@ -102,7 +102,6 @@ function escapeHtml(str) {
 }
 
 
-
 // Calculates how similar two strings are using Levenshtein distance, returning a score from 0 to 100%
 function calculateTextSimilarityPercentage(str1, str2) {
     const s1 = str1.toLowerCase().trim();
