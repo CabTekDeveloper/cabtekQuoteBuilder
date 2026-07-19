@@ -164,7 +164,7 @@ async function getNewSectionNameAndAddToDBandSelectTag(optionSelectTag) {
     // => Save if a valid section name is entered.
     let data_to_post = { "new_section_name": newSectionName };
     let data = await saveNewSectionNameInDB(data_to_post);
-
+    
     if (data && data["added"] === true) {
         let updatedSectionNames = data["all_section_names"];
         updateSectionNameOptionSelectTag(optionSelectTag, updatedSectionNames, newSectionName);

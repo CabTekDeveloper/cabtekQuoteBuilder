@@ -1617,12 +1617,13 @@ def insert_into_section_names_table(section_name):
     try:
         section_name = section_name.strip()
         section_name_lower_case = section_name.strip().lower()
+        is_active= "yes"
 
         connection = create_db_connection()
         cursor = connection.cursor()
-        sql = ''' INSERT INTO section_names_table (section_name,section_name_lower_case) 
-                VALUES (?,?) '''
-        cursor.execute(sql, [section_name, section_name_lower_case])
+        sql = ''' INSERT INTO section_names_table (section_name,section_name_lower_case,is_active) 
+                VALUES (?,?,?) '''
+        cursor.execute(sql, [section_name, section_name_lower_case,is_active])
         connection.commit()
         cursor.close()
         connection.close()
@@ -1633,6 +1634,7 @@ def insert_into_section_names_table(section_name):
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         pass
 
+# insert_into_section_names_table("test")
 
 def check_section_name_exists(section_name):
     try:
@@ -1656,7 +1658,7 @@ def check_section_name_exists(section_name):
 def get_all_section_names():
     all_section_names = []
     try:
-        sql = ''' SELECT * FROM section_names_table ORDER BY section_name COLLATE NOCASE  ASC '''
+        sql = ''' SELECT * FROM section_names_table WHERE is_active = 'yes' ORDER BY section_name COLLATE NOCASE  ASC '''
         connection = create_db_connection()
         cursor = connection.cursor()
         cursor.execute(sql)
@@ -1671,8 +1673,6 @@ def get_all_section_names():
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
         return all_section_names
-
-
 
 def get_section_id_by_section_name(section_name):
     section_name_id = None
