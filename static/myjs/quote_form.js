@@ -385,20 +385,20 @@ function toggleShipViaInp(delivery_type) {
 syncClickupClientsBtn.addEventListener('click', async function () {
     const confirmSync = confirm("Syncing will reload the page. Are you sure you want to proceed?");
     if (!confirmSync) return;
-    this.disabled = true
-
+    toggleMessageModal("Sync in process!", true);
     try {
-
         let response = await syncClickupClientsTable();
-
+        toggleMessageModal("", false);
         if (response && response.message) {
             alert(response.message)
+
+            if (response.success) {
+                window.location.reload();
+                return;
+            }
         }
-
     } catch (error) {
+        toggleMessageModal("", false);
         alert(error.message);
-    } finally {
-        this.disabled = false
     }
-
 });
