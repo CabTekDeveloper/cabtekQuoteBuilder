@@ -82,3 +82,24 @@ def update_clickup_client_table_last_init():
 
 
 #----------------------------------------------------------------------------------------------------------------------------#
+
+def get_first_n_last_name(full_name):
+    names= {
+        'f_name' : "",
+        'l_name' : ""
+    }
+
+    if not isinstance(full_name, str):
+        return names
+    
+    parts = full_name.split()
+
+    if not parts:
+        return names
+    elif(len(parts) == 1):
+        names["f_name"] = parts[0]
+    else:
+        names["f_name"] = parts[0]
+        names["l_name"] = " ".join(parts[1:])
+
+    return names
