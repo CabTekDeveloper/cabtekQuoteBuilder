@@ -338,9 +338,9 @@ def _create_myob_text_file(quote_name, myob_data):
         return {}
 
     try:
-        timestamp = helper.get_cur_datetime()["timestamp"]
+
         folder_path = file_folder_paths.FOLDER_PATH_MYOB_DATA_FILE
-        file_name = f"{quote_name}_myob_{timestamp}.txt"
+        file_name = f"{quote_name}_myob.txt"
         file_path = os.path.join(folder_path, file_name)
 
         # FIX: Ensure destination folder exists before writing
