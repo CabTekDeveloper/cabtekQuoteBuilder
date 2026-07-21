@@ -8,6 +8,9 @@ let divForPrinting = document.getElementById('div_for_printing')
 let joinerySupplyTypeHeader = document.getElementById('joinery_supply_type_header')
 // let joinerySupplyTypeSelectTag = document.getElementById('joinery_supply_type')
 
+let downloadMyobBtn = document.getElementById("download_myob_btn");
+
+
 // Update joinery supply type header
 function updateJoinerySupplyType(joinerySupplyTypeSelectTag) {
     let quoteId = joinerySupplyTypeSelectTag.getAttribute('data-quote_id')
@@ -121,25 +124,36 @@ function removeBlankData(tableRow) {
 
 // Wangchuk added 21-07-2026
 async function downloadMyobFile(quoteName) {
-    let downloadMyobBtn = document.getElementById("download_myob_btn");
+    let promptMessage = "For accurate MYOB data generation,\n" +
+        "Ensure your quote meets these requirements:\n" +
+        " - Delivery info in 'Delivery' (Total cost field not empty if applicable)\n" +
+        " - Assembly info in 'Assembly' sections\n" +
+        " - Install info in 'Install' sections\n" +
+        " - Benchtop info in 'Benchtop' section\n" +
+        " - All other sections default to 'Joinery'\n\n" +
+        "Continue download?";
 
     try {
-        downloadMyobBtn.disabled = true
+        downloadMyobBtn.disabled = true;
+
+        let confirmDownload = confirm(promptMessage);
+
+        if (!confirmDownload) {
+            return;
+        }
 
         let blobFile = await getMyobFile(quoteName);
 
         if (blobFile !== null) {
-            let file_name = `${quoteName}_myob.txt`
+            let file_name = `${quoteName}_myob.txt`;
             triggerFileDownload(blobFile, file_name);
         } else {
-            alert("\nFailed to genereate MYOB file!")
+            alert("\nFailed to generate MYOB file!");
         }
 
     } catch (error) {
         console.log(error);
     } finally {
-        if (downloadMyobBtn) {
-            downloadMyobBtn.disabled = false;
-        }
+        downloadMyobBtn.disabled = false;
     }
 }
