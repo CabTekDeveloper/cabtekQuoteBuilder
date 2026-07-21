@@ -1,7 +1,9 @@
 {}
 Co./Last Name	Addr 1 - Line 1	Addr 1 - Line 2	Addr 1 - Line 3	Addr 1 - Line 4	Date	Customer PO	Ship Via	Delivery Status	Description	Account No.	Amount	Journal Memo	Salesperson Last Name	Salesperson First Name	Tax Code	Tax Amount	Freight Amount	Freight Tax Code	Freight Tax Amount	Sale Status
-Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	21/07/2026	test1	Pick Up	A	Client Email: shian@cabtek.com.au	4-1111	0.00	test1	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O
-Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	21/07/2026	test1	Pick Up	A	Benchtop	4-1119	2000.00	test1	Wangchuk	Wangchuk	GST	200.00	0.00	GST	0.00	O
-Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	21/07/2026	test1	Pick Up	A	5A Gymkhana Road	4-1111	12000.00	test1	Wangchuk	Wangchuk	GST	1200.00	0.00	GST	0.00	O
-Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	21/07/2026	test1	Pick Up	A	Bed 4	4-1111	9000.00	test1	Wangchuk	Wangchuk	GST	900.00	0.00	GST	0.00	O
-Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	21/07/2026	test1	Pick Up	A	Please pay the $0000 deposit to secure your allocated cut date. Production will begin once your deposit has been received. Please email your payment confirmation to accounts@cabtek.com.au.	4-1111	0.00	test1	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O
+Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	22/07/2026	test1	Pick Up	A	Client Email: shian@cabtek.com.au	4-1111	0.00	test1	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O
+Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	22/07/2026	test1	Pick Up	A	5A Gymkhana Road	4-1115	12000.00	test1	Wangchuk	Wangchuk	GST	1200.00	0.00	GST	0.00	O
+Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	22/07/2026	test1	Pick Up	A	Bed 4	4-1115	9000.00	test1	Wangchuk	Wangchuk	GST	900.00	0.00	GST	0.00	O
+Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	22/07/2026	test1	Pick Up	A	Assembly	4-1115	0.00	test1	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O
+Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	22/07/2026	test1	Pick Up	A	Benchtop	4-1119	2000.00	test1	Wangchuk	Wangchuk	GST	200.00	0.00	GST	0.00	O
+Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	22/07/2026	test1	Pick Up	A	Install	4-1115	0.00	test1	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O
+Cash Sale	Shian	02 6299 7000	Pick up from CabTek	7:30am - 3:00pm Mon to Fri	22/07/2026	test1	Pick Up	A	Please pay the $0000 deposit to secure your allocated cut date. Production will begin once your deposit has been received. Please email your payment confirmation to accounts@cabtek.com.au.	4-1111	0.00	test1	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O

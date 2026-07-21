@@ -1,6 +1,5 @@
-// Updated  : 14-03-2025
-// By       : Wangchuk
-
+// Updated by Wangchuk on 14-03-2025
+// Updated by Wangchuk on 22-07-2026
 
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = "none";
@@ -106,10 +105,10 @@ function escapeHtml(str) {
 function calculateTextSimilarityPercentage(str1, str2) {
     const s1 = str1.toLowerCase().trim();
     const s2 = str2.toLowerCase().trim();
-    
+
     if (s1 === s2) return 100;
     if (s1.length === 0 || s2.length === 0) return 0;
-    
+
     const costs = [];
     for (let i = 0; i <= s1.length; i++) {
         let lastValue = i;
@@ -127,7 +126,7 @@ function calculateTextSimilarityPercentage(str1, str2) {
         }
         if (i > 0) costs[s2.length] = lastValue;
     }
-    
+
     const distance = costs[s2.length];
     const maxLength = Math.max(s1.length, s2.length);
     return (1 - distance / maxLength) * 100;
@@ -140,11 +139,34 @@ function triggerFileDownload(blobFile, fileName) {
     tempAnchorTag.style.display = "none";
     tempAnchorTag.href = url;
     tempAnchorTag.download = fileName;
-    
+
     document.body.appendChild(tempAnchorTag);
     tempAnchorTag.click();
-    
+
     // Clean up
     window.URL.revokeObjectURL(url);
     tempAnchorTag.remove();
+}
+
+
+// 22-07-2026 Wangchuk
+// Old quotes lack the 'is_trade_client' field and require updating.
+// The quote is considered "old" if data exists but the specific field is empty/missing
+async function handleOutdatedQuote(quoteName) {
+    const resData = await getQuoteInfoDB(quoteName);
+    const isOld = !isEmpty(resData) && isEmpty(resData?.is_trade_client);
+
+    if (isOld) {
+        const userChoice = confirm(
+            "This is an older quote that requires updated information.\n" +
+            "Please update the missing fields first, then try again.\n\n" +
+            "Click 'OK' to edit the quote now."
+        );
+
+        if (userChoice) {
+            window.location.href = `/edit_quote/${resData.quote_id}`;
+        }
+        return true;
+    }
+    return false
 }

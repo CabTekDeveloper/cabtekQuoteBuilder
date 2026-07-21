@@ -16,6 +16,7 @@ let quoteStatusMsgDiv = document.getElementById('quote_status_msg_div')
 let quoteAcceptedImgDiv = document.getElementById('quote_accepted_img_div')
 let quoteRejectedImgDiv = document.getElementById("quote_rejected_img_div")
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // UPDATE QUOTE STATUS
 function update_quote_status(updateBtn) {
     hideElement(quoteAcceptedImgDiv);
@@ -65,7 +66,7 @@ function update_quote_status(updateBtn) {
 }
 
 
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // TOGGLE COLOR OF ACTIVE AND INACTIVE BUTTONS, HIDE OR UNHIDE DISPLAY DIVS
 function showSavedQuotesDiv() {
     addColorToActiveBtn(savedQuoteBtn)
@@ -77,6 +78,7 @@ function showSavedTemplateDiv() {
     showActiveDisplayDiv(savedTemplateDiv)
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 function addColorToActiveBtn(activeBtn) {
     let indexButtons = [savedQuoteBtn, createQuoteBtn, SavedTemplateBtn]
     indexButtons.forEach(el => {
@@ -90,6 +92,7 @@ function addColorToActiveBtn(activeBtn) {
 
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 function showActiveDisplayDiv(activeDisplayDiv) {
     let indexDisplayDivs = [savedQuotesDiv, savedTemplateDiv]
     indexDisplayDivs.forEach(el => {
@@ -102,6 +105,7 @@ function showActiveDisplayDiv(activeDisplayDiv) {
     })
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // DELETE QUOTE FROM TABLE
 async function deleteQuote(quoteDeleteBtn) {
     let quoteId = quoteDeleteBtn.getAttribute('data-quote_id')
@@ -130,64 +134,40 @@ async function deleteQuote(quoteDeleteBtn) {
     }
 }
 
-
-async function isOldQuote(quoteName) {
-    let resData = await getQuoteInfoDB(quoteName);
-    if (!isEmpty(resData)) {
-        if (isEmpty(resData.is_trade_client)) {
-            return true
-        }
-    }
-    return false
-}
-
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // COPY AND ADD THE COPIED QUOTE IN THE TOP ROW OF THE TABLE
 async function copyQuoteAndDetails(copyBtn) {
     let quoteId = copyBtn.getAttribute('data-quote_id')
     let quoteName = copyBtn.getAttribute('data-quote_name')
 
-    // Before duplicating, check if the quote uses the old data structure.
     // Old quotes lack the 'is_trade_client' field and require updating.
-    // The quote is considered "old" if data exists but the specific field is empty/missing
-    const resData = await getQuoteInfoDB(quoteName);
-    const isOld = !isEmpty(resData) && isEmpty(resData?.is_trade_client);
+    const isOld = await handleOutdatedQuote(quoteName);
+    if (isOld) return;
 
-    if (isOld) {
-        const userChoice = confirm(
-            "Cannot copy this quote.\n\n" +
-            "This is an older quote that requires updated information before it can be duplicated.\n" +
-            "Please update the missing fields first, then try copying it again.\n\n" +
-            "Click 'OK' to edit the quote now."
-        );
+    // Confirm copy
+    const confirmCopy = confirm(`Are you sure you make a copy of "${quoteName}"?`)
+    if (!confirmCopy) return;
 
-        if (userChoice) {
-            window.location.href = `/edit_quote/${quoteId}`;
+    // Conitnue with copying quote
+    toggleMessageModal("Copying quote!", true);
+
+    let data_to_post = { "quote_id": quoteId };
+    let data = await copyQuoteAndDetailsInDB(data_to_post);
+
+    if (data && data['data']) {
+        let copied_quote_info = data['data']
+
+        let trade_or_public_badge = "";
+
+        if (copied_quote_info.is_trade_client) {
+            const isTrade = copied_quote_info.is_trade_client.toLowerCase() === "yes";
+            trade_or_public_badge = `<span class="badge badge-pill badge-${isTrade ? 'primary' : 'success'} ml-2">${isTrade ? 'Trade' : 'Public'}</span>`;
         }
-        return;
-    }
-    // End of check for old quote structure
 
-    if (confirm(`Are you sure you make a copy of "${quoteName}"?`) == true) {
-        toggleMessageModal("Copying quote!", true);
+        let diy_badge = copied_quote_info['company_id'] == 2 ? `<span class="badge badge-pill badge-danger ml-2 ">DIY</span>` : "";
+        if (copied_quote_info['is_template'].toLowerCase().trim() == 'yes') {
 
-        let data_to_post = { "quote_id": quoteId };
-        let data = await copyQuoteAndDetailsInDB(data_to_post);
-
-        if (data && data['data']) {
-            let copied_quote_info = data['data']
-
-            let trade_or_public_badge = "";
-
-            if (copied_quote_info.is_trade_client) {
-                const isTrade = copied_quote_info.is_trade_client.toLowerCase() === "yes";
-                trade_or_public_badge = `<span class="badge badge-pill badge-${isTrade ? 'primary' : 'success'} ml-2">${isTrade ? 'Trade' : 'Public'}</span>`;
-            }
-
-            let diy_badge = copied_quote_info['company_id'] == 2 ? `<span class="badge badge-pill badge-danger ml-2 ">DIY</span>` : "";
-            if (copied_quote_info['is_template'].toLowerCase().trim() == 'yes') {
-
-                let newRow = `
+            let newRow = `
                         <tr id ="quote_id_${copied_quote_info['quote_id']}" class="text-danger">  
                             <td>${copied_quote_info['quote_name']}${trade_or_public_badge}${diy_badge}</td>
                             <td>${copied_quote_info['quoted_by']}</td>
@@ -198,10 +178,10 @@ async function copyQuoteAndDetails(copyBtn) {
                             <td class="border-0"><button type="button" class="btn btn-sm btn-secondary full-width p-0 m-0 visible-off" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id ="${copied_quote_info['quote_id']}" onclick="copyQuoteAndDetails(this)"><small class=" pl-1 pr-1">Copy</small></button></td>
                             <td class="border-0"><button  type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id="${copied_quote_info['quote_id']}" data-is_template="${copied_quote_info['is_template']}" onclick="deleteQuote(this)"><small class=" pl-1 pr-1">Delete</small></button></td>
                         </tr>`
-                savedTemplateTable.getElementsByTagName('tBody')[0].insertAdjacentHTML("afterbegin", newRow)
-            }
-            else {
-                let newRow = `
+            savedTemplateTable.getElementsByTagName('tBody')[0].insertAdjacentHTML("afterbegin", newRow)
+        }
+        else {
+            let newRow = `
                         <tr id ="quote_id_${copied_quote_info['quote_id']}" class="text-danger">  
                             <td>${copied_quote_info['quote_name']}${trade_or_public_badge}${diy_badge}</td>
                             <td>${copied_quote_info['quoted_by']}</td>
@@ -215,19 +195,16 @@ async function copyQuoteAndDetails(copyBtn) {
                             <td class="border-0"><button  type="button" class="btn btn-sm btn-danger full-width p-0 m-0 visible-off" data-quote_name ="${copied_quote_info['quote_name']}" data-quote_id="${copied_quote_info['quote_id']}" data-is_template="${copied_quote_info['is_template']}" onclick="deleteQuote(this)"><small class=" pl-1 pr-1">Delete</small></button></td>
                             
                         </tr>`
-                // <td><a href="/update_quote_status/${copied_quote_info['quote_id']}" type="button" class="btn btn-sm btn-warning full-width p-0 m-0"><small class=" pl-1 pr-1">Update status</small></a></td>
-                savedQuoteTable.getElementsByTagName('tBody')[0].insertAdjacentHTML("afterbegin", newRow)
-            }
+            // <td><a href="/update_quote_status/${copied_quote_info['quote_id']}" type="button" class="btn btn-sm btn-warning full-width p-0 m-0"><small class=" pl-1 pr-1">Update status</small></a></td>
+            savedQuoteTable.getElementsByTagName('tBody')[0].insertAdjacentHTML("afterbegin", newRow)
         }
-        else {
-            alert("Quote not deleted!");
-
-        }
-        toggleMessageModal("", false);  //Close modal
     }
     else {
-        return
+        alert("Quote not deleted!");
     }
+
+    toggleMessageModal("", false);  //Close modal
+
 }
-// END- COPY AND ADD THE COPIED QUOTE IN THE TOP ROW OF THE TABLE
+
 

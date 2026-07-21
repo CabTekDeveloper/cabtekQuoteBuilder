@@ -1064,7 +1064,6 @@ def on_connect():
 
     emit("update_client_list", clients, broadcast=True)
 
-
 @socketio.on("disconnect")
 def on_disconnect():
     # Remove client info when they disconnect

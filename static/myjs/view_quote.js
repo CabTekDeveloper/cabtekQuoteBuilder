@@ -2,15 +2,12 @@
 // By       : Wangchuk
 
 let quoteDateTable = document.getElementById('quote_date_table')
-// let pageTitle = document.querySelector('title')
 let divsToHide = document.getElementsByClassName('hide_in_printing_div')
 let divForPrinting = document.getElementById('div_for_printing')
 let joinerySupplyTypeHeader = document.getElementById('joinery_supply_type_header')
-// let joinerySupplyTypeSelectTag = document.getElementById('joinery_supply_type')
-
 let downloadMyobBtn = document.getElementById("download_myob_btn");
 
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Update joinery supply type header
 function updateJoinerySupplyType(joinerySupplyTypeSelectTag) {
     let quoteId = joinerySupplyTypeSelectTag.getAttribute('data-quote_id')
@@ -44,6 +41,7 @@ function updateJoinerySupplyType(joinerySupplyTypeSelectTag) {
 
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Add new rev data to quote
 function addRevDate(btn) {
     let quoteId = btn.getAttribute('data-quote_id')
@@ -87,8 +85,8 @@ function addRevDate(btn) {
 
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Format table so that it takes full width of viewport when printing
-
 function printQuote() {
     window.print()
 }
@@ -108,6 +106,7 @@ window.onafterprint = function () {
 }
 // end
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 function addBorderBottom(tableRow) {
     tableRow.classList.toggle('border-bottom-3')
 }
@@ -122,6 +121,7 @@ function removeBlankData(tableRow) {
 }
 
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Wangchuk added 21-07-2026
 async function downloadMyobFile(quoteName) {
     let promptMessage = "For accurate MYOB data generation,\n" +
@@ -136,12 +136,15 @@ async function downloadMyobFile(quoteName) {
     try {
         downloadMyobBtn.disabled = true;
 
+        // Old quotes lack the 'is_trade_client' field and require updating.
+        const isOld = await handleOutdatedQuote(quoteName);
+        if (isOld) return;
+
+        // Confirm download
         let confirmDownload = confirm(promptMessage);
+        if (!confirmDownload) return;
 
-        if (!confirmDownload) {
-            return;
-        }
-
+        // Continue with download
         let blobFile = await getMyobFile(quoteName);
 
         if (blobFile !== null) {
@@ -157,3 +160,5 @@ async function downloadMyobFile(quoteName) {
         downloadMyobBtn.disabled = false;
     }
 }
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+
