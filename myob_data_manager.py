@@ -191,9 +191,9 @@ def _format_quote_data(quote_name):
                     }
                 continue
 
-            # Classify standard sections
+            # Classify sections
             is_benchtop = "benchtop" in name_lower or "stone" in name_lower
-            is_assembly = "assembly" in name_lower or "install" in name_lower
+            is_assembly = "assembly" in name_lower or "install" in name_lower or "knockup" in name_lower
 
             if is_assembly:
                 has_assembly_section = True
