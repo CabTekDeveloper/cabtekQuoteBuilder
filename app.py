@@ -1073,7 +1073,6 @@ def on_disconnect():
 
     emit("update_client_list", clients, broadcast=True)
 
-
 # ----------------------------------------------------------------------------------------------#
 # Display details of the connected clients.
 @app.route("/active_connections", methods=["GET"])
@@ -1082,7 +1081,6 @@ def active_connections():
         return render_template("active_connections.html")
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
-
 
 # ----------------------------------------------------------------------------------------------#
 @app.route("/download_myob_file/<quote_name>", methods=["GET"])
@@ -1099,7 +1097,6 @@ def download_myob_file(quote_name):
         print(ex)
         return jsonify({"success": False}), 500 
     
-
 # ----------------------------------------------------------------------------------------------#
 if __name__ == "__main__":
     try:
