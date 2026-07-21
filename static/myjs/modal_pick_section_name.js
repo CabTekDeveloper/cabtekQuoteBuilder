@@ -16,8 +16,9 @@ const ActionTypes = Object.freeze({
 
 let commitButtonActionType = null;
 
-const RESERVED_SECTION_WORDS = ['assembly', 'install', 'benchtop', 'bench', 'delivery', 'knockup'];
-const RESERVED_SECTION_WORDS_MESSAGED = "The new Joinery section name cannot contain:\n" + RESERVED_SECTION_WORDS.map(word => `- ${word.charAt(0).toUpperCase() + word.slice(1)}`).join('\n')
+const RESERVED_SECTION_WORDS = ['assembly', 'install', 'knockup', 'stone', 'benchtop', 'bench', 'delivery'];
+const RESERVED_SECTION_WORDS_MESSAGED = "The new Joinery section name cannot contain:\n" + RESERVED_SECTION_WORDS.map(word => `  - ${word.charAt(0).toUpperCase() + word.slice(1)}`).join('\n')
+
 
 /* Functions ------------------------------------------------------------------------------------------------------------------------*/
 
@@ -116,7 +117,7 @@ if (addNewSectionNameBtn != null) {
 // Get new section name from the user, add it to the database and update the select optins tag
 async function getNewSectionNameAndAddToDBandSelectTag(optionSelectTag) {
 
-    let newSectionName = prompt(RESERVED_SECTION_WORDS_MESSAGED  + "\n\nEnter a new Joinery section name:");
+    let newSectionName = prompt(RESERVED_SECTION_WORDS_MESSAGED + "\nEnter a new Joinery section name:");
 
     // Return false instead of just empty return
     if (newSectionName == null || newSectionName.trim().length === 0) {
@@ -138,7 +139,7 @@ async function getNewSectionNameAndAddToDBandSelectTag(optionSelectTag) {
     const containsReservedSection = RESERVED_SECTION_WORDS.some(keyword => lowerNewName.includes(keyword));
 
     if (containsReservedSection) {
-        alert(`The name "${newSectionName}" is not allowed.\n\n${RESERVED_SECTION_WORDS_MESSAGED}`);
+        alert(`${RESERVED_SECTION_WORDS_MESSAGED}\nThe new section '${newSectionName}' is not allowed.`);
         return false;
     }
 
@@ -157,7 +158,7 @@ async function getNewSectionNameAndAddToDBandSelectTag(optionSelectTag) {
     }
 
     if (isTooSimilar) {
-        alert(`The name "${newSectionName}" is not allowed. Please choose a more distinct name.\n\n${RESERVED_SECTION_WORDS_MESSAGED}.`);
+        alert(`${RESERVED_SECTION_WORDS_MESSAGED}\nThe name "${newSectionName}" is not allowed. Please choose a more distinct name.`);
         return false;
     }
 
