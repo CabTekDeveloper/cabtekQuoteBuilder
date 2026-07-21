@@ -175,6 +175,19 @@ async function reorderSectionNamesInDB(data_to_post) {
 
 //GET -----------------------------------------------------------------------------------------------------------//
 
+
+async function getMyobFile(data) {
+    const url = `/download_myob_file/${data}`;
+    const res = await fetch(url, OPTIONS_GET);
+
+    if (res.status == 200) {
+        return await res.blob();
+    }   
+
+    return null
+}
+
+
 async function getClickupClientsDB() {
     let data = []
     const url = `/get_all_clickup_clients_db`;

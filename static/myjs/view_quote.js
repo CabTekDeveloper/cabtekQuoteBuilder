@@ -16,7 +16,7 @@ function updateJoinerySupplyType(joinerySupplyTypeSelectTag) {
     if (joinerySupplyType == null || joinerySupplyType.trim().length == 0) {
         return
     }
-    
+
     const formData = new FormData();
     formData.append("quote_id", quoteId)
     formData.append("joinery_supply_type", joinerySupplyType)
@@ -32,7 +32,7 @@ function updateJoinerySupplyType(joinerySupplyTypeSelectTag) {
             if (data && data['updated'] == true) {
                 joinerySupplyTypeHeader.innerText = joinerySupplyType
                 joinerySupplyTypeHeader.classList.add('text-danger')
-                
+
                 setTimeout(() => {
                     joinerySupplyTypeHeader.classList.remove('text-danger')
                 }, 500);
@@ -116,4 +116,30 @@ function addBlankData(tableRow) {
 
 function removeBlankData(tableRow) {
     tableRow.remove()
+}
+
+
+// Wangchuk added 21-07-2026
+async function downloadMyobFile(quoteName) {
+    let downloadMyobBtn = document.getElementById("download_myob_btn");
+
+    try {
+        downloadMyobBtn.disabled = true
+
+        let blobFile = await getMyobFile(quoteName);
+
+        if (blobFile !== null) {
+            let file_name = `${quoteName}_myob.txt`
+            triggerFileDownload(blobFile, file_name);
+        } else {
+            alert("\nFailed to genereate MYOB file!")
+        }
+
+    } catch (error) {
+        console.log(error);
+    } finally {
+        if (downloadMyobBtn) {
+            downloadMyobBtn.disabled = false;
+        }
+    }
 }

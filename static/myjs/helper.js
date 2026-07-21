@@ -132,3 +132,19 @@ function calculateTextSimilarityPercentage(str1, str2) {
     const maxLength = Math.max(s1.length, s2.length);
     return (1 - distance / maxLength) * 100;
 }
+
+// Trigger filedownd in the browser
+function triggerFileDownload(blobFile, fileName) {
+    const url = window.URL.createObjectURL(blobFile);
+    const tempAnchorTag = document.createElement("a");
+    tempAnchorTag.style.display = "none";
+    tempAnchorTag.href = url;
+    tempAnchorTag.download = fileName;
+    
+    document.body.appendChild(tempAnchorTag);
+    tempAnchorTag.click();
+    
+    // Clean up
+    window.URL.revokeObjectURL(url);
+    tempAnchorTag.remove();
+}

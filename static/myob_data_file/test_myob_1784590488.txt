@@ -1,7 +1,0 @@
-{}
-Co./Last Name	Addr 1 - Line 1	Addr 1 - Line 2	Addr 1 - Line 3	Addr 1 - Line 4	Date	Customer PO	Ship Via	Delivery Status	Description	Account No.	Amount	Journal Memo	Salesperson Last Name	Salesperson First Name	Tax Code	Tax Amount	Freight Amount	Freight Tax Code	Freight Tax Amount	Sale Status
-Cash Sale	Wangchuk Wangchuk	1111 111 111	Pls call before delivery	Test delivery address	21/07/2026	Test	TJS - 6232 9133	A	Client Email: wangchuk@cabtek.com.au	4-1111	0.00	Test	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O
-Cash Sale	Wangchuk Wangchuk	1111 111 111	Pls call before delivery	Test delivery address	21/07/2026	Test	TJS - 6232 9133	A	2 Bed Cabin	4-1115	5000.00	Test	Wangchuk	Wangchuk	GST	500.00	500.00	GST	50.00	O
-Cash Sale	Wangchuk Wangchuk	1111 111 111	Pls call before delivery	Test delivery address	21/07/2026	Test	TJS - 6232 9133	A	17A Wells Road	4-1115	600.00	Test	Wangchuk	Wangchuk	GST	60.00	500.00	GST	50.00	O
-Cash Sale	Wangchuk Wangchuk	1111 111 111	Pls call before delivery	Test delivery address	21/07/2026	Test	TJS - 6232 9133	A	Assembly	4-1115	0.00	Test	Wangchuk	Wangchuk	GST	0.00	500.00	GST	50.00	O
-Cash Sale	Wangchuk Wangchuk	1111 111 111	Pls call before delivery	Test delivery address	21/07/2026	Test	TJS - 6232 9133	A	Please pay the $0000 deposit to secure your allocated cut date. Production will begin once your deposit has been received. Please email your payment confirmation to accounts@cabtek.com.au.	4-1111	0.00	Test	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O
