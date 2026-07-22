@@ -1,7 +1,7 @@
 DELIVERY_TYPES = [
     {   
         "id":1,
-        "delivery_type":"Pick up from CabTek",
+        "delivery_type":"Pick up from Cabtek",
         "ship_via":"Pick Up"
     },
     {   
