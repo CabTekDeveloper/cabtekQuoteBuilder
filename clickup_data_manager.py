@@ -1,18 +1,20 @@
 # Wangchuk added, 08-07-2026
 
-# API key note: 
-# The "Authorization" key or the API key is generated from Factory's clickup account. 
-# Anyone who has access to Cabtek Clickup can generate the key from their account and update it here.
+# API key note:
+# The "Authorization" key is generated from Cabtek's factory ClickUp account.
+# Anyone who has access to Cabtek ClickUp can generate a new key from their account and update it in the .env file (CLICKUP_API_KEY).
 import copy
 import json
+import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #CLICKUP APP DETAILS ----------------------------------------------------------------------------------------------------------------------------#
 
-# API_KEY = "pk_88871404_IHEVPKK04HER89DOEKW29KQGNMGHQAIC"    # For Testing, generated from Jesse's account
-# API_KEY = 'pk_88879098_D11LHGTDFN87IUU864BM4Z7QH8V39IQ5'    # For Testing, generated from Wangchuk's account
+API_KEY = os.environ["CLICKUP_API_KEY"]
 
-API_KEY = "pk_88895266_ER73ZDCGD3DBZ6C5N1ELL7SOYFGH8JDW"    # For Release, generated from factory clickup account (email id : cabtek87@gmail.com : , password: pDmh1wtw?xr )
 TEAM_ID_CABTEK = "9003205324"
 HEADERS = { "Content-Type": "application/json", "Authorization": API_KEY }
 QUERY  = { "custom_task_ids": "true", "team_id": TEAM_ID_CABTEK }
