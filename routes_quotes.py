@@ -40,8 +40,8 @@ def create_quote():
     try:
         if "user_info" in session:
 
-            # Sync clickup clients table with local db if 1 hour has elapsed since last sync
-            if helper.get_clickup_clients_table_sync_elapsed_seconds() > 3600:
+            # Sync clickup clients table with local db if 2 hour has elapsed since last sync
+            if helper.get_clickup_clients_table_sync_elapsed_seconds() > 7200:
                 quote_builder_db.init_clickup_clients_table()
 
             all_company_info = company_info_manager.get_all_company_info()
@@ -88,6 +88,11 @@ def create_new_quote():
 def edit_quote(quote_id):
     try:
         if "user_info" in session:
+
+            # Sync clickup clients table with local db if 2 hour has elapsed since last sync
+            if helper.get_clickup_clients_table_sync_elapsed_seconds() > 7200:
+                quote_builder_db.init_clickup_clients_table()
+
             all_company_info = company_info_manager.get_all_company_info()
             all_clients = quote_builder_db.get_all_clickup_clients()
             all_delivery_types = delivery_types.get_all_delivery_types()

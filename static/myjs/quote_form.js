@@ -367,10 +367,12 @@ deliveryTypeSelect.addEventListener("change", (event) => {
 
 
 function toggleDeliveryInfoInp(delivery_type) {
-    let pickupDeliveryInfo = "7:30am - 3:00pm Mon to Fri";
-    let isPickUp = delivery_type && delivery_type.toLowerCase().includes("pick up");
-    deliveryInfoInp.value = isPickUp ? pickupDeliveryInfo : "";
-    deliveryInfoInp.readOnly = isPickUp;
+    let deliveryInfo = "";
+    if (delivery_type) {
+        deliveryInfo = ALL_DELIVERY_TYPES.find(item => item.delivery_type?.toLowerCase() === delivery_type.toLowerCase())?.delivery_info || ""
+    }
+    deliveryInfoInp.value = deliveryInfo;
+    deliveryInfoInp.readOnly = deliveryInfo.length > 0; // Make readonly if delivery info is auto populated
 }
 
 function toggleShipViaInp(delivery_type) {

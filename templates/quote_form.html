@@ -270,8 +270,7 @@
               required>
               <option value=""></option>
               {% for row in all_delivery_types %}
-              <option value="{{ row['delivery_type'] }}"
-                {% if quote_info and quote_info['is_trade_client'] and quote_info['delivery_type']|lower == row['delivery_type']|lower %}selected{% endif %}>
+              <option value="{{ row['delivery_type'] }}" {% if quote_info and quote_info['is_trade_client'] and quote_info['delivery_type']|lower == row['delivery_type']|lower %}selected{% endif %}>
                 {{ row['delivery_type'] }}
               </option>
               {% endfor %}
