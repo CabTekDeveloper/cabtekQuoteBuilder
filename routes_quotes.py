@@ -169,19 +169,21 @@ def copy_quote():
                     ship_via=ship_via,
                 )
 
-                # get info of copied quote and add quoted_by and quote_status
-                copied_quote_info = quote_builder_db.get_quote_info_by_quote_name(new_quote_name)
-                copied_quote_info["quoted_by"] = quote_builder_db.get_user_info_by_id(user_id)["full_name"]
-                copied_quote_info["quote_status"] = quote_builder_db.get_quote_status_name(copied_quote_info["quote_status_id"])
+                # # get info of copied quote and add quoted_by and quote_status
+                # copied_quote_info = quote_builder_db.get_quote_info_by_quote_name(new_quote_name)
+                # copied_quote_info["quoted_by"] = quote_builder_db.get_user_info_by_id(user_id)["full_name"]
+                # copied_quote_info["quote_status"] = quote_builder_db.get_quote_status_name(copied_quote_info["quote_status_id"])
 
-                # copy the quote details and section details of the original quote
-                original_quote_data = quote_builder_db.get_quote_data(original_quote_info["quote_name"])
-                quote_builder_db.copy_quote_details_to_new_quote(original_quote_data, copied_quote_info["quote_id"])
-                return jsonify({"data": copied_quote_info})
+                # # copy the quote details and section details of the original quote
+                # original_quote_data = quote_builder_db.get_quote_data(original_quote_info["quote_name"])
+                # quote_builder_db.copy_quote_details_to_new_quote(original_quote_data, copied_quote_info["quote_id"])
+                return jsonify({"success": True})
         else:
             return render_template("login_error.html")
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+        return jsonify({"success": True})
+
 
 
 @app.route("/delete_quote", methods=["POST"])
@@ -193,33 +195,12 @@ def delete_quote():
                 quote_id = int(data["quote_id"])
 
                 quote_builder_db.delete_quote_and_its_data(quote_id)
-                return jsonify({"deleted": True})
+                return jsonify({"success": True})
         else:
             return render_template("login_error.html")
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+        return jsonify({"success": False})
 
 
-# update quote status
-@app.route("/update_quote_status/<quote_id>", methods=["GET", "POST"])
-def update_quote_status(quote_id):
-    try:
-        if "user_info" in session:
-            quote_info = quote_builder_db.get_quote_info_by_quote_id(quote_id)
-            quote_info["quote_status"] = quote_builder_db.get_quote_status_name(quote_info["quote_status_id"])
-            all_quote_status = quote_builder_db.get_all_quote_status()
 
-            if request.method == "POST":
-                quote_id = request.form["quote_id"]
-                quote_status = request.form["quote_status"]
-                quote_status_id = quote_builder_db.get_quote_status_id(quote_status) if quote_builder_db.get_quote_status_id(quote_status) else 0
-                quote_builder_db.update_quote_status_by_quote_id(quote_id, quote_status_id)
-                return jsonify({"updated": True})
-
-            if request.method == "GET":
-                return render_template("update_quote_status.html", all_quote_status=all_quote_status, quote_info=quote_info)
-
-        else:
-            return render_template("login_error.html")
-    except Exception as ex:
-        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
