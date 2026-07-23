@@ -135,7 +135,7 @@ def generate_myob_data_file(quote_name):
 
         if not myob_data:
             return {}
-
+    
         file_info = _create_myob_text_file(quote_name, myob_data)
 
         return file_info
@@ -256,22 +256,19 @@ def _build_myob_data(formatted_quote_data):
             # Add a cashsale specific record
             if not is_trade_client:
                 cash_sale_default_record = default_record.copy()
-
                 cash_sale_default_record[col10_desc] = f"Client Email: {quote_info.get('customer_email', '')}"
-                cash_sale_default_record[col18_freight_amt] = "0.00"
-                cash_sale_default_record[col20_frt_tax_amt] = "0.00"
                 myob_data.append(cash_sale_default_record)
 
             # Add the section records
             for section in sections:
-                section_record = default_record.copy()
+                if float(section.get("section_total_cost",0) or 0)  > 0:
+                    section_record = default_record.copy()
+                    section_record[col10_desc] = section.get("section_name", "") or ""
+                    section_record[col11_acc_no] = section.get("account_no", "") or ACC_NO_JOINERY
+                    section_record[col12_amount] = section.get("section_total_cost", "0.00") or "0.00"
+                    section_record[col17_tax_amt] = section.get("section_tax_amount", "0.00") or "0.00"
 
-                section_record[col10_desc] = section["section_name"]
-                section_record[col11_acc_no] = section["account_no"]
-                section_record[col12_amount] = section["section_total_cost"]
-                section_record[col17_tax_amt] = section["section_tax_amount"]
-
-                myob_data.append(section_record)
+                    myob_data.append(section_record)
 
             # Add the mandatory record - This record will be added to both cash and trade clients
             required_record = default_record.copy()
@@ -280,8 +277,6 @@ def _build_myob_data(formatted_quote_data):
                 "Production will begin once your deposit has been received. "
                 "Please email your payment confirmation to accounts@cabtek.com.au."
             )
-            required_record[col18_freight_amt] = "0.00"
-            required_record[col20_frt_tax_amt] = "0.00"
 
             # Add the record to myob_data list
             myob_data.append(required_record)
@@ -370,4 +365,4 @@ def _create_myob_text_file(quote_name, myob_data):
 
 # --------------------------------------------------------------------------------------------------------------------------------------#
 
-# generate_myob_data_file("test")
+# generate_myob_data_file("QU-7353 - Test Import")
