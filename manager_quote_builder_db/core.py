@@ -61,15 +61,21 @@ def alter_delete_column(table_name, column_name):
     connection.close()
 # alter_delete_column(table_name = "quotes_tableX", column_name = "is_trade")
 
-def alter_add_column(table_name, new_column_name, dataType):
+def alter_add_column(table_name, new_column_name, dataType, default=None):
     connection = create_db_connection()
     cursor = connection.cursor()
-    sql = f"ALTER TABLE {table_name} ADD COLUMN {new_column_name} {dataType};"
+
+    sql = f"ALTER TABLE {table_name} ADD COLUMN {new_column_name} {dataType}"
+    if default is not None:
+        sql += f" DEFAULT {default!r}" if isinstance(default, str) else f" DEFAULT {default}"
+    sql += ";"
+
     cursor.execute(sql)
     connection.commit()
     cursor.close()
     connection.close()
-# alter_add_column(table_name= "section_names_table", new_column_name= "is_active", dataType= "TEXT")
+
+# alter_add_column(table_name= "quotes_table", new_column_name= "is_locked", dataType= "TEXT", default= "no")
 
 def update_a_field(table_name, column_name, val):
     try:

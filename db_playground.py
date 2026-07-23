@@ -20,7 +20,7 @@ from manager_quote_builder_db import clickup_clients
 from manager_quote_builder_db import quote_composite
 
 if __name__ == "__main__":
-    print()
+    print(quotes.get_quotes_by_user_id(2)[0])
 
 
     pass

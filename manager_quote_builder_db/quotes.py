@@ -85,12 +85,12 @@ def insert_into_quotes_table(quote_name, user_id, date_quote_created, customer_n
         quote_status_id = 0
         joinery_supply_type = 'Supply of customised joinery'
         company_id= int(company_id)
-
+        is_locked = "no"
         connection = create_db_connection()
         cursor = connection.cursor()
-        sql = ''' INSERT INTO quotes_table (quote_name,user_id,date_quote_created,customer_name,customer_email,customer_phone_no,delivery_info,quote_name_lower_case,time_stamp, rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type,ship_via)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) '''
-        cursor.execute(sql, [quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case, time_stamp,rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type,ship_via])
+        sql = ''' INSERT INTO quotes_table (quote_name,user_id,date_quote_created,customer_name,customer_email,customer_phone_no,delivery_info,quote_name_lower_case,time_stamp, rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type,ship_via, is_locked)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) '''
+        cursor.execute(sql, [quote_name, user_id, date_quote_created, customer_name, customer_email, customer_phone_no, delivery_info, quote_name_lower_case, time_stamp,rev_date, is_template, quote_status_id, joinery_supply_type, company_id,is_trade_client,customer_company,delivery_type,ship_via, is_locked])
         connection.commit()
         cursor.close()
         connection.close()
