@@ -2,9 +2,9 @@ from flask import render_template, request, session, jsonify, send_from_director
 import inspect
 
 from extensions import app
-import quote_builder_db_manager as quote_builder_db
-import company_info_manager
-import myob_data_manager
+import manager_quote_builder_db as quote_builder_db
+import manager_company_info as company_info_manager
+import manager_myob_data as myob_data_manager
 import helper
 
 

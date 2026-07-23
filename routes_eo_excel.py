@@ -4,8 +4,8 @@ import os
 import inspect
 
 from extensions import app
-import quote_builder_db_manager as quote_builder_db
-import eo_excel_manager
+import manager_quote_builder_db as quote_builder_db
+import manager_eo_excel as eo_excel_manager
 
 
 # eze oreder excel text routes

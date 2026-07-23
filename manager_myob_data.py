@@ -8,7 +8,7 @@ import os
 
 import helper
 import file_folder_paths
-import quote_builder_db_manager as quote_builder_db
+import manager_quote_builder_db as quote_builder_db
 
 #--------------------------------------------------------------------------------------------------------------------------------------#
 # COLUMN HEADINGS

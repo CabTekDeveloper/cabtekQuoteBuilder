@@ -4,7 +4,7 @@ import os
 import inspect
 
 from extensions import app
-import quote_builder_db_manager as quote_builder_db
+import manager_quote_builder_db as quote_builder_db
 
 
 @app.route("/save_image_info_to_db", methods=["POST"])

@@ -5,8 +5,8 @@ import os
 import helper
 import inspect
 import file_folder_paths
-import company_info_manager
-import clickup_data_manager as clickup_manager
+import manager_company_info as company_info_manager
+import manager_clickup_data as clickup_manager
 ###-------------------------------------------------------------------------------###
 
 def create_db_connection():

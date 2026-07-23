@@ -2,8 +2,8 @@ from flask import render_template, request, session, jsonify
 import inspect
 
 from extensions import app
-import quote_builder_db_manager as quote_builder_db
-import company_info_manager
+import manager_quote_builder_db as quote_builder_db
+import manager_company_info as company_info_manager
 import delivery_types as delivery_types
 import helper
 
