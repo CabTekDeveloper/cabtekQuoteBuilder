@@ -68,6 +68,10 @@
                                     <span class="badge badge-pill badge-danger ml-2 ">DIY</span>
                                     {% endif %}
 
+                                    {# Locked badge #}
+                                    {% if quote.is_locked == 'yes' %}
+                                    <i class="bi bi-lock-fill ml-2"></i> 
+                                    {% endif %}
                                 </td>
                                 <td>{{ quote['quoted_by'] }}</td>
                                 <!-- <td>{{ quote['quote_status'] }}</td> -->
@@ -159,6 +163,10 @@
                                     <span class="badge badge-pill badge-danger ml-2 ">
                                         DIY
                                     </span>
+                                    {% endif %}
+                                    {# Locked badge #}
+                                    {% if quote.is_locked == 'yes' %}
+                                    <i class="bi bi-lock-fill ml-2"></i> 
                                     {% endif %}
                                 </td>
                                 <td>{{ quote['quoted_by'] }}</td>
