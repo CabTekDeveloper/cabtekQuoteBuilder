@@ -1,4 +1,0 @@
-{}
-Co./Last Name	Addr 1 - Line 1	Addr 1 - Line 2	Addr 1 - Line 3	Addr 1 - Line 4	Date	Customer PO	Ship Via	Delivery Status	Description	Account No.	Amount	Journal Memo	Salesperson Last Name	Salesperson First Name	Tax Code	Tax Amount	Freight Amount	Freight Tax Code	Freight Tax Amount	Sale Status
-AB Joinery Works	AB Joinery Works	+61 482 010 158	Pls call before delivery	Test delivery address	24/07/2026	Test _Copy _Copy	TJS - 6232 9133	A	Assembly	4-1115	200.00	Test _Copy _Copy	Wangchuk	Wangchuk	GST	20.00	0.00	GST	0.00	O
-AB Joinery Works	AB Joinery Works	+61 482 010 158	Pls call before delivery	Test delivery address	24/07/2026	Test _Copy _Copy	TJS - 6232 9133	A	Please pay the $0000 deposit to secure your allocated cut date. Production will begin once your deposit has been received. Please email your payment confirmation to accounts@cabtek.com.au.	4-1111	0.00	Test _Copy _Copy	Wangchuk	Wangchuk	GST	0.00	0.00	GST	0.00	O

@@ -170,13 +170,13 @@ def copy_quote():
                 )
 
                 # # get info of copied quote and add quoted_by and quote_status
-                # copied_quote_info = quote_builder_db.get_quote_info_by_quote_name(new_quote_name)
+                copied_quote_info = quote_builder_db.get_quote_info_by_quote_name(new_quote_name)
                 # copied_quote_info["quoted_by"] = quote_builder_db.get_user_info_by_id(user_id)["full_name"]
                 # copied_quote_info["quote_status"] = quote_builder_db.get_quote_status_name(copied_quote_info["quote_status_id"])
 
                 # # copy the quote details and section details of the original quote
-                # original_quote_data = quote_builder_db.get_quote_data(original_quote_info["quote_name"])
-                # quote_builder_db.copy_quote_details_to_new_quote(original_quote_data, copied_quote_info["quote_id"])
+                original_quote_data = quote_builder_db.get_quote_data(original_quote_info["quote_name"])
+                quote_builder_db.copy_quote_details_to_new_quote(original_quote_data, copied_quote_info["quote_id"])
                 return jsonify({"success": True})
         else:
             return render_template("login_error.html")
