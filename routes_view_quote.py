@@ -12,6 +12,8 @@ import helper
 def view_quote(quote_name):
     try:
         quote_info = quote_builder_db.get_quote_info_by_quote_name(quote_name)
+        quote_info["quoted_by"] = quote_builder_db.get_user_info_by_id(quote_info['user_id'])["full_name"]
+
         quoted_by_info = quote_builder_db.get_user_info_by_id(quote_info["user_id"])
         quote_data = quote_builder_db.get_quote_data(quote_name)
 
