@@ -162,8 +162,7 @@
                 type="radio"
                 name="is_trade_client"
                 id="is_trade_client_yes"
-                value="yes"
-                checked />
+                value="yes" />
               <label class="form-check-label" for="is_trade_client_yes">Yes</label>
             </div>
             <div class="form-check form-check-inline mb-0">
@@ -171,7 +170,8 @@
                 type="radio"
                 name="is_trade_client"
                 id="is_trade_client_no"
-                value="no" />
+                value="no"
+                checked />
               <label class="form-check-label" for="is_trade_client_no">No</label>
             </div>
           </div>
@@ -180,12 +180,12 @@
         {# Customer company #}
         {# Since  all_clients can have duplicate company names, we will need to filter out the duplicates.#}
         {# Create an empty list in a namespace to store unique company names #}
-        {% set ns = namespace(unique_companies=[]) %}
+        {# {% set ns = namespace(unique_companies=[]) %}
         {% for client in all_clients %}
         {% if client.company not in ns.unique_companies %}
         {% set _ = ns.unique_companies.append(client.company) %}
         {% endif %}
-        {% endfor %}
+        {% endfor %} #}
 
         <div class="form-group row mb-2">
           <label for="customer_company" class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Company</label>
@@ -194,19 +194,14 @@
               id="customer_company"
               name="customer_company"
               required>
-              <option value=""></option>
-              {% for company in ns.unique_companies %}
-              <option value="{{ company}}">
-                {{ company }}
-              </option>
-              {% endfor %}
+              <option value="Cash Sale" selected>Cash Sale</option>
             </select>
             {# Sync clients table button #}
             <button type="button"
               class="btn btn-sm btn-link p-0"
               id="sync_clickup_clients_btn"
-              {{'disabled' if quote_info and quote_info['is_trade_client'] == 'no' else '' }}>
-              <small class="p-0">Missing a client or updated a client? Sync with Clickup <strong>&#8635;</strong></small>
+              disabled>
+              <small class="p-0">Missing a client or updated a client in Clickup? Click to Sync <strong>&#8635;</strong></small>
             </button>
           </div>
         </div>
@@ -215,18 +210,18 @@
         <div class="form-group row align-items-center mb-2">
           <label class="col-sm-3 col-form-label-sm bold text-sm-right mb-0">Name</label>
           <div class="col-sm-9">
-            <select class="form-control form-control-sm pl-1"
+            <select class="form-control form-control-sm pl-1 hide"
               id="customer_name_select"
               name="customer_name"
-              required>
+              required
+              disabled>
               <option value=""></option>
             </select>
-            <input class="form-control form-control-sm hide"
+            <input class="form-control form-control-sm"
               type="text"
               name="customer_name"
               id="customer_name_inp"
-              autocomplete="off"
-              disabled />
+              autocomplete="off" />
           </div>
         </div>
 
@@ -239,7 +234,6 @@
               name="customer_email"
               id="customer_email"
               autocomplete="off"
-              readonly
               required />
           </div>
         </div>
@@ -253,8 +247,7 @@
               name="customer_phone_no"
               id="customer_phone_no"
               autocomplete="off"
-              required
-              readonly />
+              required />
           </div>
         </div>
 

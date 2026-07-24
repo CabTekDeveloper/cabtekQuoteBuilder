@@ -387,7 +387,7 @@ function toggleShipViaInp(delivery_type) {
 syncClickupClientsBtn.addEventListener('click', async function () {
     const confirmSync = confirm("Syncing will reload the page. Are you sure you want to proceed?");
     if (!confirmSync) return;
-    toggleMessageModal("Sync in process!", true);
+    toggleMessageModal("Sync in progress!", true);
     try {
         let response = await syncClickupClientsTable();
         toggleMessageModal("", false);
