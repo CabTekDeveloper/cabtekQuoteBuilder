@@ -328,3 +328,21 @@ def update_joinery_supply_type(quote_id, joinery_supply_type):
         connection.close()
     except Exception as ex:
         print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')
+
+def update_is_locked(quote_id, is_locked):
+    try:
+        quote_id = int(quote_id)
+        is_locked = is_locked.strip()
+
+        sql = ''' UPDATE quotes_table
+                SET is_locked = ?
+                WHERE quote_id = ? '''
+
+        connection = create_db_connection()
+        cursor = connection.cursor()
+        cursor.execute(sql, [is_locked, quote_id])
+        connection.commit()
+        cursor.close()
+        connection.close()
+    except Exception as ex:
+        print(f'Error:"{ex}" [In function {inspect.stack()[0][3]}]')

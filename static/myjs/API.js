@@ -43,6 +43,16 @@ async function saveEOexcelFileInDB(uploadedFile, user_id) {
 }
 
 //POST JSON Data -----------------------------------------------------------------------------------------------------------//
+
+async function setQuoteIsLockedDB(data_to_post) {
+    let data = {}
+    OPTIONS_POST_JSON_DATA.body = JSON.stringify(data_to_post)
+    const url = `/set_quote_is_locked_db`;
+    const res = await fetch(url, OPTIONS_POST_JSON_DATA);
+    if (res.status == 200) { data = await res.json(); }
+    return data;
+}
+
 async function syncClickupClientsTable() {
     let data = {}
     const url = `/sync_clickup_clients_table`;

@@ -112,7 +112,12 @@ function addBorderBottom(tableRow) {
 }
 
 function addBlankData(tableRow) {
-    let emptyRow = `<h6 onclick="removeBlankData(this)">&nbsp;<small class=" font-italic btn-link text-danger disable-in-printing">- blank space<small></small></h6>`
+    let emptyRow = `<h6 onclick="removeBlankData(this)">
+                        &nbsp;
+                        <small class="font-italic btn-link text-danger disable-in-printing">
+                            - blank space
+                        </small>
+                    </h6>`
     tableRow.insertAdjacentHTML('afterend', emptyRow)
 }
 
@@ -120,29 +125,26 @@ function removeBlankData(tableRow) {
     tableRow.remove()
 }
 
-
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Wangchuk added 21-07-2026
-async function downloadMyobFile(quoteName) {
-    let promptMessage = "For accurate MYOB data generation,\n" +
-        "Ensure your quote meets these requirements:\n" +
-        " - Delivery info in 'Delivery' (Total cost field not empty if applicable)\n" +
-        " - Assembly info in 'Assembly' sections\n" +
-        " - Install info in 'Install' sections\n" +
-        " - Benchtop info in 'Benchtop' section\n" +
-        " - All other sections default to 'Joinery'\n\n" +
+async function downloadMyobFile(quoteName, isLocked) {
+    let promptMessage = "To generate accurate MYOB data, any delivery, assembly, install, or benchtop details must be entered in their own section.\n\n" +
+        "Note: Downloading this file will lock the quote from further edits.\n\n" +
         "Continue download?";
 
     try {
         downloadMyobBtn.disabled = true;
 
-        // Old quotes lack the 'is_trade_client' field and require updating.
-        const isOld = await handleOutdatedQuote(quoteName);
-        if (isOld) return;
+        // If the quote is not locked, check if it is an old quote and confirm download
+        if (isLocked !== 'yes') {
+            // Old quotes don't have the 'is_trade_client' field and require updating.
+            const isOld = await handleOutdatedQuote(quoteName);
+            if (isOld) return;
 
-        // Confirm download
-        let confirmDownload = confirm(promptMessage);
-        if (!confirmDownload) return;
+            // Confirm download
+            let confirmDownload = confirm(promptMessage);
+            if (!confirmDownload) return;
+        }
 
         // Continue with download
         let blobFile = await getMyobFile(quoteName);
@@ -150,6 +152,21 @@ async function downloadMyobFile(quoteName) {
         if (blobFile !== null) {
             let file_name = `${quoteName}_myob.txt`;
             triggerFileDownload(blobFile, file_name);
+
+            // If the quote was not locked, alert the user and update the locked status in the database
+            if (isLocked !== 'yes') {
+                alert(`MYOB file downloaded successfully.\n\nThe quote is now locked from further edits.`);
+
+                // Update the quote's locked status in the database
+                let res = await setQuoteIsLockedDB({ quote_name: quoteName, is_locked: 'yes' });
+                if (res && res.success) {
+                    // Refresh the page to reflect the locked status
+                    window.location.reload();
+                } else {
+                    alert("\nFailed to update quote locked status in the database!");
+                }
+            }
+
         } else {
             alert("\nFailed to generate MYOB file!");
         }

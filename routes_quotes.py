@@ -204,3 +204,24 @@ def delete_quote():
 
 
 
+@app.route("/set_quote_is_locked_db", methods=["POST"])
+def set_quote_is_locked_db():
+    try:
+        if "user_info" not in session:
+            return render_template("login_error.html")
+        
+        data = request.get_json()
+        quote_name = data.get("quote_name")
+        is_locked = data.get("is_locked")
+
+        # Get the quote_id based on the quote_name
+        quote_id = quote_builder_db.get_quote_id_by_quote_name(quote_name)
+
+        # Update the quote's locked status in the database
+        quote_builder_db.update_is_locked(quote_id, is_locked)
+
+        # Return a success response
+        return jsonify({"success": True})
+    except Exception as e:
+        print(f"Database error during quote edit save: {e}")
+        return jsonify({"success": False}), 500
