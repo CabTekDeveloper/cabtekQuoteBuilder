@@ -1,5 +1,5 @@
-// Updated  : 21-09-2023
-// By       : Wangchuk
+// Added by Wangchuk on 21-09-2023 
+// Updated by Wangchuk on 24-07-2026
 
 let quoteDateTable = document.getElementById('quote_date_table')
 let divsToHide = document.getElementsByClassName('hide_in_printing_div')
@@ -9,7 +9,7 @@ let downloadMyobBtn = document.getElementById("download_myob_btn");
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 // Update joinery supply type header
-function updateJoinerySupplyType(joinerySupplyTypeSelectTag) {
+async function updateJoinerySupplyType(joinerySupplyTypeSelectTag) {
     let quoteId = joinerySupplyTypeSelectTag.getAttribute('data-quote_id')
     let joinerySupplyType = joinerySupplyTypeSelectTag.value
 

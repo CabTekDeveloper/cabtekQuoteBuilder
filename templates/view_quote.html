@@ -204,7 +204,7 @@
                             <td class="border-right-1  "></td>
                             {% endif %}
 
-                            {% if row['section_total_cost_row'] > 0 %}
+                            {% if row['section_total_cost_row'] > 0 or row['section_total_cost_row'] < 0 %}
                             <td class="text-right pr-1 bold align-text-top"><span>$ </span><span>{{ "{:,.2f}".format(row['section_total_cost_row']) }}</span></td>
                             {% else %}
                             <td class="text-right"></td>
