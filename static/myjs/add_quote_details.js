@@ -119,16 +119,17 @@ async function deleteSelectedSection() {
     if (sectionName == null || sectionName.trim().length == 0) return
 
     if (confirm(`Are you sure you want to delete ''${sectionName}?`)) {
+        toggleMessageModal("Deleting!", true);
+
         let data_to_post = {
             'quote_name': quoteName.trim(),
             'section_name': sectionName.trim()
         }
-
         let data = await deleteSectionFromDB(data_to_post)
-
         if (data && data['deleted'] == true) {
             window.location.href = (`/add_quote_details/${quoteName}`)
         }
+        toggleMessageModal("", true);
     }
 }
 // END 
@@ -259,7 +260,7 @@ async function saveCurrentSectionDetailsToDB() {
         return;
     }
 
-    toggleMessageModal("Saving data!", true);
+    toggleMessageModal("Saving!", true);
 
     let data_to_post = prepareSectionDataToSave();
 
@@ -552,7 +553,7 @@ if (filterTextsByCurrentUserINP !== null) {
         localStorage.setItem(filterTextsByCurrentUserINP.id, e.target.checked);
         getSearchedTextsFromDb();
     }
-    
+
 }
 
 
@@ -569,7 +570,7 @@ async function getSearchedTextsFromDb() {
         return
     }
 
-    let data = await getFilteredTextsFromDB(filter_str,filterTextsByCurrentUser);
+    let data = await getFilteredTextsFromDB(filter_str, filterTextsByCurrentUser);
 
     textULblock.innerHTML = '<small class="bold">Searched texts</small>';
     frequentlyUsedTextUlBlock.innerHTML = ''
